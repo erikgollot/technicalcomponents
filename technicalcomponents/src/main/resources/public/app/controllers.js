@@ -1,3 +1,8 @@
-techApp.controller('techMainCtrl',function($scope) {
-	$scope.items=[{name:'name01'},{name:'name02'}];
+
+techApp.controller('techMainCtrl',function($scope,$http) {
+	 $http.get("/service/technicalComponents")
+	    .success(function(response) {
+	    	
+	    	$scope.items = response;
+	 });	
 });
