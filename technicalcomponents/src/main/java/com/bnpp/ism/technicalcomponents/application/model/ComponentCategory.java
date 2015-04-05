@@ -70,7 +70,7 @@ public class ComponentCategory {
 	}
 
 	public void addTechnicalComponent(TechnicalComponent component) {
-		if (this.technicalComponents == null) {
+		if (this.getTechnicalComponents() == null) {
 			this.technicalComponents = new ArrayList<TechnicalComponent>();
 		}
 		getTechnicalComponents().add(component);
@@ -81,7 +81,7 @@ public class ComponentCategory {
 	}
 
 	public void addComponentCategory(ComponentCategory category) {
-		if (this.subCategories == null) {
+		if (this.getSubCategories() == null) {
 			this.subCategories = new ArrayList<ComponentCategory>();
 		}
 		getSubCategories().add(category);

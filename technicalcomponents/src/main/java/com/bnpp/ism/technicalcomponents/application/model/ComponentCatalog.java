@@ -24,7 +24,7 @@ public class ComponentCatalog {
 	private List<ComponentCategory> categories;
 	
 	public void addComponentCategory(ComponentCategory category) {
-		if (this.categories == null) {
+		if (this.getCategories() == null) {
 			this.categories = new ArrayList<ComponentCategory>();
 		}
 		getCategories().add(category);
