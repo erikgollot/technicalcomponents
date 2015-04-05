@@ -2,6 +2,7 @@ package com.bnpp.ism.technicalcomponents.application.service;
 
 import javax.transaction.Transactional;
 
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,8 @@ public class TechnicalComponentService {
 	@Autowired
 	private TechnicalComponentDao dao;
 
+	@Autowired Mapper dozerBeanMapper;
+	
 	@Transactional
 	public Iterable<TechnicalComponent> getAll() {
 		return dao.findAll();

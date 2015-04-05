@@ -1,39 +1,21 @@
 package com.bnpp.ism.technicalcomponents.application.model;
 
-import java.io.Serializable;
-
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class TechnicalComponent implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8219439203365469775L;
+public class TechnicalComponent {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
-	@Column
-	private String vendorName;
-	@Column
-	private String vendorVersion;
-
-	@Column
-	private String vendorDescription;
-
-	@Column
-	private String localName;
-	@Column
-	private String localVersion;
-	@Column
-	private String localDescription;
 
 	public Long getId() {
 		return id;
@@ -43,51 +25,53 @@ public class TechnicalComponent implements Serializable {
 		this.id = id;
 	}
 
-	public String getVendorName() {
-		return vendorName;
+	@Embedded
+	@AttributeOverrides({
+			@AttributeOverride(name = "name", column = @Column(name = "vendor_name")),
+			@AttributeOverride(name = "version", column = @Column(name = "vendor_version")),
+			@AttributeOverride(name = "description", column = @Column(name = "vendor_description")),
+			@AttributeOverride(name = "availableDate", column = @Column(name = "vendor_availableDate")),
+			@AttributeOverride(name = "deprecatedDate", column = @Column(name = "vendor_deprecatedDate")),
+			@AttributeOverride(name = "unavailableDate", column = @Column(name = "vendor_unavailableDate")) })
+	ComponentVersionInfo vendorInformations;
+
+	public ComponentVersionInfo getVendorInformations() {
+		return vendorInformations;
 	}
 
-	public void setVendorName(String vendorName) {
-		this.vendorName = vendorName;
+	public void setVendorInformations(ComponentVersionInfo vendorInformations) {
+		this.vendorInformations = vendorInformations;
 	}
 
-	public String getVendorVersion() {
-		return vendorVersion;
+	@Embedded
+	@AttributeOverrides({
+			@AttributeOverride(name = "name", column = @Column(name = "local_name")),
+			@AttributeOverride(name = "version", column = @Column(name = "local_version")),
+			@AttributeOverride(name = "description", column = @Column(name = "local_description")),
+			@AttributeOverride(name = "availableDate", column = @Column(name = "local_availableDate")),
+			@AttributeOverride(name = "deprecatedDate", column = @Column(name = "local_deprecatedDate")),
+			@AttributeOverride(name = "unavailableDate", column = @Column(name = "local_unavailableDate")) })
+	ComponentVersionInfo localInformations;
+
+	public ComponentVersionInfo getLocalInformations() {
+		return localInformations;
 	}
 
-	public void setVendorVersion(String vendorVersion) {
-		this.vendorVersion = vendorVersion;
+	public void setLocalInformations(ComponentVersionInfo localInformations) {
+		this.localInformations = localInformations;
 	}
 
-	public String getVendorDescription() {
-		return vendorDescription;
+	@Column
+	private boolean forceObsolete = false;
+
+	public boolean isForceObsolete() {
+		return forceObsolete;
 	}
 
-	public void setVendorDescription(String vendorDescription) {
-		this.vendorDescription = vendorDescription;
+	public void setForceObsolete(boolean forceObsolete) {
+		this.forceObsolete = forceObsolete;
 	}
 
-	public String getLocalName() {
-		return localName;
-	}
-
-	public void setLocalName(String localName) {
-		this.localName = localName;
-	}
-
-	public String getLocalVersion() {
-		return localVersion;
-	}
-
-	public void setLocalVersion(String localVersion) {
-		this.localVersion = localVersion;
-	}
-
-	public String getLocalDescription() {
-		return localDescription;
-	}
-
-	public void setLocalDescription(String localDescription) {
-		this.localDescription = localDescription;
-	}
+	@ManyToOne
+	ObsolescenceStrategy obscolescenceStrategy;
 }

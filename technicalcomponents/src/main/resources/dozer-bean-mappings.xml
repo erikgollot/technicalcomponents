@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+          
+ 
+  
+  <configuration>
+    <date-format>dd/MM/yyyy</date-format>
+  </configuration>
+  
+  
+  <!--  <mapping>   <class-a>com.bnpp.ism.technicalcomponents.application.model.ComponentVersionInfo</class-a>
+    <class-b>com.bnpp.ism.technicalcomponents.application.model.ComponentVersionInfoView</class-b>
+    <field>
+      <a>availableDate</a>
+      <b>availableDate</b>
+    </field>
+    
+  </mapping> --> 
+  
+</mappings>
