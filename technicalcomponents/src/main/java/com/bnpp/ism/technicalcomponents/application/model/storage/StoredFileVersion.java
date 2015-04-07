@@ -1,10 +1,19 @@
 package com.bnpp.ism.technicalcomponents.application.model.storage;
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
+import org.apache.commons.io.FileUtils;
+
+@Entity
 public class StoredFileVersion {
 	@Column
 	@Id
@@ -16,6 +25,12 @@ public class StoredFileVersion {
 	String rootDirectory;
 	@Column
 	String filePathUnderDirectory;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	StoredFile file;
+
+	@Column
+	String mediaType;
 
 	public Long getId() {
 		return id;
@@ -49,4 +64,33 @@ public class StoredFileVersion {
 		this.filePathUnderDirectory = filePathUnderDirectory;
 	}
 
+	public StoredFile getFile() {
+		return file;
+	}
+
+	public void setFile(StoredFile file) {
+		this.file = file;
+	}
+
+	public String getFullName() {
+		return getRootDirectory() + "/" + getFilePathUnderDirectory();
+	}
+
+	public String getMediaType() {
+		return mediaType;
+	}
+
+	public void setMediaType(String mediaType) {
+		this.mediaType = mediaType;
+	}
+
+	public byte[] getContentBytes() {
+		File file = new File(getFullName());
+
+		try {
+			return FileUtils.readFileToByteArray(file);
+		} catch (IOException e) {
+			return null;
+		}
+	}	
 }

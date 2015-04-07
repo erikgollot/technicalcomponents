@@ -6,8 +6,11 @@
 /**
  * Main AngularJS Web Application
  */
-var app = angular.module('tutorialWebApp', [
-  'ngRoute'
+var app = angular.module('technicalComponents', [
+  'ngRoute',
+  'techMain',
+  'uploadControllers',
+  'angularFileUpload'
 ]);
 
 /**
@@ -18,16 +21,11 @@ app.config(['$routeProvider', function ($routeProvider) {
     // Home
     .when("/", {templateUrl: "partials/home.html", controller: "PageCtrl"})
     // Pages
-    .when("/catalog", {templateUrl: "partials/catalog.html", controller: "TechMainController"})    
+    .when("/catalog", {templateUrl: "partials/catalog.html", controller: "techMainController"})
+    .when("/upload", {templateUrl: "partials/upload.html", controller: "uploadCtrl"})  
     .otherwise("/404", {templateUrl: "partials/404.html", controller: "PageCtrl"});
 }]);
 
-/**
- * Controls the Blog
- */
-app.controller('BlogCtrl', function (/* $scope, $location, $http */) {
-  console.log("Blog Controller reporting for duty.");
-});
 
 /**
  * Controls all other Pages
@@ -46,8 +44,5 @@ app.controller('PageCtrl', function (/* $scope, $location, $http */) {
   })
 });
 
-app.controller('TechMainController',function ($scope, $http) {
-$http.get("/service/technicalComponents").success(function(response) {	    	
-	$scope.items = response;		 	
-	})
-});
+
+

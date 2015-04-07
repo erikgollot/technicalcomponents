@@ -15,17 +15,13 @@ public class StoredFile {
 	@Column
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	Long id;
+	Long id;	
 	@Column
-	String context;
-	@Column
-	String name;
-	@Column
-	String uniqueStorageKey;
+	String name;	
 	@Column
 	String fileType;
 
-	@OneToMany
+	@OneToMany(mappedBy="file")
 	List<StoredFileVersion> versions;
 
 	public String getName() {
@@ -42,15 +38,7 @@ public class StoredFile {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getUniqueStorageKey() {
-		return uniqueStorageKey;
-	}
-
-	public void setUniqueStorageKey(String uniqueStorageKey) {
-		this.uniqueStorageKey = uniqueStorageKey;
-	}
+	}	
 
 	public String getFileType() {
 		return fileType;
@@ -59,14 +47,7 @@ public class StoredFile {
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
 	}
-
-	public String getContext() {
-		return context;
-	}
-
-	public void setContext(String context) {
-		this.context = context;
-	}
+	
 
 	public List<StoredFileVersion> getVersions() {
 		return versions;

@@ -40,6 +40,18 @@
 			<artifactId>neo4j-cypher-compiler-2.1</artifactId>
 			<version>2.1.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.uuid</groupId>
+			<artifactId>java-uuid-generator</artifactId>
+			<version>3.1.4</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
