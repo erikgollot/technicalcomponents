@@ -1,0 +1,25 @@
+<div class="col-sm-12">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Identifier</th>
+				<th>Vendor name</th>
+				<th>Available date</th>
+				<th>Local Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in allComponents">
+				<td>
+					<button class="btn">
+						<span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
+						{{item.id}}
+					</button>
+				</td>
+				<td>{{item.vendorInformations.name}}</td>
+				<td>{{item.vendorInformations.availableDate}}</td>
+				<td>{{item.localInformations.name }}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

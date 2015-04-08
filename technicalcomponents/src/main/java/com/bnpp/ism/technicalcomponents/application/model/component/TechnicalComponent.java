@@ -74,4 +74,20 @@ public class TechnicalComponent {
 
 	@ManyToOne
 	ObsolescenceStrategy obscolescenceStrategy;
+
+	public boolean isAvailablePeriod() {
+		// TODO
+		return true;
+	}
+
+	public boolean isWarningPeriod() {
+		// TODO
+		return false;
+	}
+
+	public boolean isHotPeriod() {
+		// TODO
+		return false;
+	}
+
 }

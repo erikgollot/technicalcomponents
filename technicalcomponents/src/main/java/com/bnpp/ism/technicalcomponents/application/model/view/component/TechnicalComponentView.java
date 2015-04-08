@@ -48,4 +48,32 @@ public class TechnicalComponentView implements Serializable {
 	public void setForceObsolete(boolean forceObsolete) {
 		this.forceObsolete = forceObsolete;
 	}
+	
+	boolean isAvailablePeriod;
+	boolean isWarningPeriod;
+	boolean isHotPeriod;
+
+	public boolean isAvailablePeriod() {
+		return isAvailablePeriod;
+	}
+
+	public void setAvailablePeriod(boolean isAvailablePeriod) {
+		this.isAvailablePeriod = isAvailablePeriod;
+	}
+
+	public boolean isWarningPeriod() {
+		return isWarningPeriod;
+	}
+
+	public void setWarningPeriod(boolean isWarningPeriod) {
+		this.isWarningPeriod = isWarningPeriod;
+	}
+
+	public boolean isHotPeriod() {
+		return isHotPeriod;
+	}
+
+	public void setHotPeriod(boolean isHotPeriod) {
+		this.isHotPeriod = isHotPeriod;
+	}
 }

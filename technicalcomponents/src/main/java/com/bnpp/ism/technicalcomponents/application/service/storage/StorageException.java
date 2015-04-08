@@ -1,4 +1,4 @@
-package com.bnpp.ism.technicalcomponents.application.service;
+package com.bnpp.ism.technicalcomponents.application.service.storage;
 
 public class StorageException extends RuntimeException {
 

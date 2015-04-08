@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -22,12 +23,17 @@ public class ComponentCategory {
 	@Column
 	private String description;
 
-	@OneToMany
-	private List<ComponentCategory> subCategories;
-
+	@OneToMany(mappedBy="parent")
+	private List<ComponentCategory> categories;
+	
+	@ManyToOne
+	ComponentCategory parent;
+	
 	@OneToMany
 	private List<TechnicalComponent> technicalComponents;
 
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -52,12 +58,12 @@ public class ComponentCategory {
 		this.description = description;
 	}
 
-	public List<ComponentCategory> getSubCategories() {
-		return subCategories;
+	public List<ComponentCategory> getCategories() {
+		return categories;
 	}
 
-	public void setSubCategories(List<ComponentCategory> subCategories) {
-		this.subCategories = subCategories;
+	public void setCategories(List<ComponentCategory> subCategories) {
+		this.categories = subCategories;
 	}
 
 	public List<TechnicalComponent> getTechnicalComponents() {
@@ -81,13 +87,21 @@ public class ComponentCategory {
 	}
 
 	public void addComponentCategory(ComponentCategory category) {
-		if (this.getSubCategories() == null) {
-			this.subCategories = new ArrayList<ComponentCategory>();
+		if (this.getCategories() == null) {
+			this.categories = new ArrayList<ComponentCategory>();
 		}
-		getSubCategories().add(category);
+		getCategories().add(category);
 	}
 
 	public void removeComponentCategory(ComponentCategory category) {
-		getSubCategories().remove(category);
+		getCategories().remove(category);
+	}
+
+	public ComponentCategory getParent() {
+		return parent;
+	}
+
+	public void setParent(ComponentCategory parent) {
+		this.parent = parent;
 	}
 }

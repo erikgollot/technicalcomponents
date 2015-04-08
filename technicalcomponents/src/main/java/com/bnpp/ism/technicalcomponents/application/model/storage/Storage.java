@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.bnpp.ism.technicalcomponents.application.service.StorageException;
+import com.bnpp.ism.technicalcomponents.application.service.storage.StorageException;
 
 @Entity
 public class Storage {

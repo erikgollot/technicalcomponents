@@ -1,4 +1,4 @@
-package com.bnpp.ism.technicalcomponents.application.dao;
+package com.bnpp.ism.technicalcomponents.application.dao.component;
 
 import org.springframework.data.repository.CrudRepository;
 

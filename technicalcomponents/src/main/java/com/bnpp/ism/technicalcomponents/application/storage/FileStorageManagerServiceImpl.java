@@ -7,11 +7,11 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bnpp.ism.technicalcomponents.application.dao.StoredFileDao;
+import com.bnpp.ism.technicalcomponents.application.dao.storage.StoredFileDao;
 import com.bnpp.ism.technicalcomponents.application.model.storage.StorageManager;
 import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFile;
 import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFileVersion;
-import com.bnpp.ism.technicalcomponents.application.service.FileStorageManagerService;
+import com.bnpp.ism.technicalcomponents.application.service.storage.FileStorageManagerService;
 
 @Service
 public class FileStorageManagerServiceImpl implements FileStorageManagerService {

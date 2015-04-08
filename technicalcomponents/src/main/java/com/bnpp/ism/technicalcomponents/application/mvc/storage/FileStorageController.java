@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFileVersion;
-import com.bnpp.ism.technicalcomponents.application.service.FileStorageManagerService;
+import com.bnpp.ism.technicalcomponents.application.service.storage.FileStorageManagerService;
 
 @RestController
 public class FileStorageController {

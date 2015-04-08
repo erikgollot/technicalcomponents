@@ -1,4 +1,4 @@
-package com.bnpp.ism.technicalcomponents.application.service;
+package com.bnpp.ism.technicalcomponents.application.service.storage;
 
 public enum StorageStrategyAllocatorEnum {
 	ORDERED("ordered"), RANDOM("random");

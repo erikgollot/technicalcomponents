@@ -3,7 +3,7 @@ package com.bnpp.ism.technicalcomponents.application.model.storage;
 import java.util.HashMap;
 import java.util.List;
 
-import com.bnpp.ism.technicalcomponents.application.service.StorageStrategyAllocatorEnum;
+import com.bnpp.ism.technicalcomponents.application.service.storage.StorageStrategyAllocatorEnum;
 
 public interface StorageStrategyAllocator {
 	Storage findBest(Long sizeToCreate, List<Storage> storages);

@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.bnpp.ism.technicalcomponents.application.service.StorageStrategyAllocatorEnum;
+import com.bnpp.ism.technicalcomponents.application.service.storage.StorageStrategyAllocatorEnum;
 
 @Entity
 public class DefaultStorageSet implements StorageSet {

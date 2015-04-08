@@ -2,7 +2,7 @@ package com.bnpp.ism.technicalcomponents.application.model.storage;
 
 import java.util.List;
 
-import com.bnpp.ism.technicalcomponents.application.service.StorageStrategyAllocatorEnum;
+import com.bnpp.ism.technicalcomponents.application.service.storage.StorageStrategyAllocatorEnum;
 
 public interface StorageSet {
 	List<Storage> getStorages();

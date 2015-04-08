@@ -10,10 +10,10 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
-import com.bnpp.ism.technicalcomponents.application.dao.DefaultStorageSetDao;
-import com.bnpp.ism.technicalcomponents.application.dao.StoredFileDao;
-import com.bnpp.ism.technicalcomponents.application.dao.StoredFileVersionDao;
-import com.bnpp.ism.technicalcomponents.application.service.StorageException;
+import com.bnpp.ism.technicalcomponents.application.dao.storage.DefaultStorageSetDao;
+import com.bnpp.ism.technicalcomponents.application.dao.storage.StoredFileDao;
+import com.bnpp.ism.technicalcomponents.application.dao.storage.StoredFileVersionDao;
+import com.bnpp.ism.technicalcomponents.application.service.storage.StorageException;
 import com.fasterxml.uuid.Generators;
 
 @Configurable
