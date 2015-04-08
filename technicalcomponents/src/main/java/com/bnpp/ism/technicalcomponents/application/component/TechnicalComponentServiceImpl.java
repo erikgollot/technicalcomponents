@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bnpp.ism.technicalcomponents.application.dao.TechnicalComponentDao;
-import com.bnpp.ism.technicalcomponents.application.model.TechnicalComponent;
+import com.bnpp.ism.technicalcomponents.application.model.component.TechnicalComponent;
 import com.bnpp.ism.technicalcomponents.application.service.TechnicalComponentService;
 
 @Service

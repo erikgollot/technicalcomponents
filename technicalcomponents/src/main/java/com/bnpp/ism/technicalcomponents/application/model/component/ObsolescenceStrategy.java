@@ -1,4 +1,4 @@
-package com.bnpp.ism.technicalcomponents.application.model;
+package com.bnpp.ism.technicalcomponents.application.model.component;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

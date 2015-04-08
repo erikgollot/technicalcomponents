@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bnpp.ism.technicalcomponents.application.model.ComponentVersionInfo;
-import com.bnpp.ism.technicalcomponents.application.model.TechnicalComponent;
-import com.bnpp.ism.technicalcomponents.application.model.view.TechnicalComponentView;
+import com.bnpp.ism.technicalcomponents.application.model.component.ComponentVersionInfo;
+import com.bnpp.ism.technicalcomponents.application.model.component.TechnicalComponent;
+import com.bnpp.ism.technicalcomponents.application.model.view.component.TechnicalComponentView;
 import com.bnpp.ism.technicalcomponents.application.service.TechnicalComponentService;
 
 @RestController

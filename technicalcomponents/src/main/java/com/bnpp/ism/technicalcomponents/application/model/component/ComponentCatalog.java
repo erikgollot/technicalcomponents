@@ -1,14 +1,16 @@
-package com.bnpp.ism.technicalcomponents.application.model;
+package com.bnpp.ism.technicalcomponents.application.model.component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+@Entity
 public class ComponentCatalog {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

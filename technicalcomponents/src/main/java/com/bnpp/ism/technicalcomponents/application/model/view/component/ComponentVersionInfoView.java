@@ -1,4 +1,4 @@
-package com.bnpp.ism.technicalcomponents.application.model.view;
+package com.bnpp.ism.technicalcomponents.application.model.view.component;
 
 import java.io.Serializable;
 import java.util.Date;
