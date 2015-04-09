@@ -23,7 +23,7 @@ public class SwaggerConfig {
 	// Don't forget the @Bean annotation
 	public SwaggerSpringMvcPlugin customImplementation() {
 		return new SwaggerSpringMvcPlugin(this.springSwaggerConfig).apiInfo(
-				apiInfo()).includePatterns("/service.*");
+				apiInfo()).includePatterns("/.*");
 	}
 
 	private ApiInfo apiInfo() {

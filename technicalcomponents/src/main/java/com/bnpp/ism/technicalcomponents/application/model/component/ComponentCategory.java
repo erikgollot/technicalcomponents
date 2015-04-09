@@ -3,6 +3,7 @@ package com.bnpp.ism.technicalcomponents.application.model.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class ComponentCategory {
 	@Column
 	private String description;
 
-	@OneToMany(mappedBy="parent")
+	@OneToMany(mappedBy="parent",cascade=CascadeType.ALL)
 	private List<ComponentCategory> categories;
 	
 	@ManyToOne

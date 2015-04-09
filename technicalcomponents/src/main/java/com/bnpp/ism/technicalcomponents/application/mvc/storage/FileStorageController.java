@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFileVersion;
-import com.bnpp.ism.technicalcomponents.application.service.storage.FileStorageManagerService;
-import com.wordnik.swagger.annotations.ApiOperation;
+import com.bnpp.ism.technicalcomponents.application.service.storage.DefaultStorageSetManager;
 
 @RestController
 public class FileStorageController {
 
 	@Autowired
-	FileStorageManagerService storageManager;
+	DefaultStorageSetManager storageManager;
 
 	@RequestMapping(value = "/service/storeFile", method = RequestMethod.POST)	
 	public @ResponseBody

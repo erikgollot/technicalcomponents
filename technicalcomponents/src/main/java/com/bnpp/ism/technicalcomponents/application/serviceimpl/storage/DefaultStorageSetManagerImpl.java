@@ -1,4 +1,4 @@
-package com.bnpp.ism.technicalcomponents.application.model.storage;
+package com.bnpp.ism.technicalcomponents.application.serviceimpl.storage;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,26 +8,49 @@ import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bnpp.ism.technicalcomponents.application.dao.storage.DefaultStorageSetDao;
 import com.bnpp.ism.technicalcomponents.application.dao.storage.StoredFileDao;
 import com.bnpp.ism.technicalcomponents.application.dao.storage.StoredFileVersionDao;
+import com.bnpp.ism.technicalcomponents.application.model.storage.Storage;
+import com.bnpp.ism.technicalcomponents.application.model.storage.StorageSet;
+import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFile;
+import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFileVersion;
+import com.bnpp.ism.technicalcomponents.application.service.storage.DefaultStorageSetManager;
 import com.bnpp.ism.technicalcomponents.application.service.storage.StorageException;
 import com.fasterxml.uuid.Generators;
 
-@Configurable
-public class StorageManager {
-
+@Service
+public class DefaultStorageSetManagerImpl implements DefaultStorageSetManager {
+	@Autowired
+	StoredFileDao fileDao;
+	@Autowired
+	StoredFileVersionDao fileVersionDao;
 	@Autowired
 	DefaultStorageSetDao dao;
 
-	@Autowired
-	StoredFileDao fileDao;
+	@Transactional
+	@Override
+	public void removeFile(StoredFile image) {
+		// remove each version
+		if (image.getVersions() != null) {
+			for (StoredFileVersion version : image.getVersions()) {
+				removeVersion(version);
+			}
+			image.getVersions().clear();
+			fileDao.delete(image);
+		}
+	}
 
-	@Autowired
-	StoredFileVersionDao fileVersionDao;
+	private void removeVersion(StoredFileVersion version) {
+		fileVersionDao.delete(version);
+		FileUtils.deleteQuietly(new File(version.getFullName()));
+	}
 
+	@Transactional
+	@Override
 	public StoredFile store(String name, byte[] content) {
 		StorageSet storageSet = dao.findOne(1L);
 		if (storageSet != null) {
@@ -86,6 +109,7 @@ public class StorageManager {
 				// save it
 				fileDao.save(storedfile);
 				fileVersionDao.save(version);
+				return storedfile;
 
 			} catch (IOException e) {
 				StorageException ex = new StorageException();
@@ -93,10 +117,13 @@ public class StorageManager {
 						+ storage.getRootDir());
 				throw ex;
 			}
+		} else {
+			return null;
 		}
-		return null;
 	}
 
+	@Transactional
+	@Override
 	public StoredFileVersion getStoredFileVersion(Long id) {
 		return fileVersionDao.findOne(id);
 	}
