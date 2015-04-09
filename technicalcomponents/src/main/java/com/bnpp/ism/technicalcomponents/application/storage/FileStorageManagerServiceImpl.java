@@ -34,7 +34,7 @@ public class FileStorageManagerServiceImpl implements FileStorageManagerService 
 	 * return : unique generated id of the file in the store.
 	 */
 	@Override
-	@Transactional(value=TxType.REQUIRED)
+	@Transactional(value = TxType.REQUIRED)
 	public String store(String name, byte[] content) {
 		StoredFile f = storageManager.store(name, content);
 		if (f != null) {
@@ -45,8 +45,8 @@ public class FileStorageManagerServiceImpl implements FileStorageManagerService 
 	}
 
 	@Override
-	@Transactional(value=TxType.REQUIRED)
+	@Transactional(value = TxType.REQUIRED)
 	public StoredFileVersion getStoredFileVersion(Long id) {
-		return storageManager.getStoredFileVersion(id);		
+		return storageManager.getStoredFileVersion(id);
 	}
 }

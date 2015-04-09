@@ -2,6 +2,8 @@ package com.bnpp.ism.technicalcomponents.application.model.view.component;
 
 import java.io.Serializable;
 
+import com.bnpp.ism.technicalcomponents.application.model.view.storage.StoredFileVersionView;
+
 public class TechnicalComponentView implements Serializable {
 
 	/**
@@ -9,6 +11,8 @@ public class TechnicalComponentView implements Serializable {
 	 */
 	private static final long serialVersionUID = -6470667767638775042L;
 	private Long id;
+
+	private StoredFileVersionView image;
 
 	public Long getId() {
 		return id;
@@ -48,7 +52,7 @@ public class TechnicalComponentView implements Serializable {
 	public void setForceObsolete(boolean forceObsolete) {
 		this.forceObsolete = forceObsolete;
 	}
-	
+
 	boolean isAvailablePeriod;
 	boolean isWarningPeriod;
 	boolean isHotPeriod;
@@ -76,4 +80,13 @@ public class TechnicalComponentView implements Serializable {
 	public void setHotPeriod(boolean isHotPeriod) {
 		this.isHotPeriod = isHotPeriod;
 	}
+
+	public StoredFileVersionView getImage() {
+		return image;
+	}
+
+	public void setImage(StoredFileVersionView image) {
+		this.image = image;
+	}
+
 }

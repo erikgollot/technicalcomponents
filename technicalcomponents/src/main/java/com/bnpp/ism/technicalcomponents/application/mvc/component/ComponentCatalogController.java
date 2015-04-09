@@ -21,6 +21,7 @@ import com.bnpp.ism.technicalcomponents.application.model.component.TechnicalCom
 import com.bnpp.ism.technicalcomponents.application.model.view.component.ComponentCatalogView;
 import com.bnpp.ism.technicalcomponents.application.model.view.component.TechnicalComponentView;
 import com.bnpp.ism.technicalcomponents.application.service.component.ComponentCatalogService;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @RestController
 public class ComponentCatalogController {
@@ -122,7 +123,40 @@ public class ComponentCatalogController {
 
 	@RequestMapping(value = "/service/moveCategory/{idNewParent}/{idMovedCategory}", method = RequestMethod.POST, headers = "Accept=application/json")
 	public @ResponseBody
-	boolean moveCategory(@PathVariable("idNewParent") Long idNewParent,@PathVariable("idMovedCategory") Long idMovedCategory) {
+	boolean moveCategory(@PathVariable("idNewParent") Long idNewParent,
+			@PathVariable("idMovedCategory") Long idMovedCategory) {
 		return service.moveCategory(idMovedCategory, idNewParent);
+	}
+
+	@RequestMapping(value = "/service/createComponent/{idParentCategory}", method = RequestMethod.POST, headers = "Accept=application/json")
+	public @ResponseBody
+	TechnicalComponentView createComponent(
+			@RequestParam("component") TechnicalComponentView toCreate,
+			@PathVariable("idParentCategory") Long parentCategoryId) {
+
+		TechnicalComponent created = service.createComponent(toCreate,
+				parentCategoryId);
+		if (created != null) {
+			return dozerBeanMapper.map(created, TechnicalComponentView.class);
+		} else {
+			return null;
+		}
+
+	}
+
+	@RequestMapping(value = "/service/updateComponent", method = RequestMethod.POST, headers = "Accept=application/json")
+	public @ResponseBody
+	@ApiOperation(value="updateComponent", notes = "Image update is not taken into account here")
+	void updateComponent(
+			@RequestParam("component") TechnicalComponentView toUpdate) {
+
+		TechnicalComponent updated = service.updateComponent(toUpdate);
+
+	}
+	@RequestMapping(value = "/service/setImageComponent/{idComponent}/{idImage}", method = RequestMethod.POST, headers = "Accept=application/json")
+	public @ResponseBody
+	@ApiOperation(value="setImageComponent", notes = "Image update is not taken into account here")
+	void setImageComponent(@PathVariable("idComponent") Long idComponent, @PathVariable("idImage") Long idImage) {
+		service.setImageComponent(idComponent, idImage);
 	}
 }

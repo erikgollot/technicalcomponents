@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFileVersion;
 
 @Entity
 public class TechnicalComponent {
@@ -24,6 +27,9 @@ public class TechnicalComponent {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	@OneToOne
+	private StoredFileVersion image;
 
 	@Embedded
 	@AttributeOverrides({
@@ -76,18 +82,47 @@ public class TechnicalComponent {
 	ObsolescenceStrategy obscolescenceStrategy;
 
 	public boolean isAvailablePeriod() {
-		// TODO
-		return true;
+		return getCalculator().isAvailablePeriod(getInfo());
 	}
 
 	public boolean isWarningPeriod() {
-		// TODO
-		return false;
+		return getCalculator().isWarningPeriod(getInfo());
 	}
 
 	public boolean isHotPeriod() {
-		// TODO
-		return false;
+		return getCalculator().isHotPeriod(getInfo());
+	}
+
+	private ComponentVersionInfo getInfo() {
+		if (getLocalInformations() != null)
+			return getLocalInformations();
+		else
+			return getVendorInformations();
+	}
+
+	public StoredFileVersion getImage() {
+		return image;
+	}
+
+	public void setImage(StoredFileVersion image) {
+		this.image = image;
+	}
+
+	private ObsolescenceStrategyCalculator getCalculator() {
+		if (getObscolescenceStrategy() == null) {
+			return new DefaultObscolescenceStrategyCalculator();
+		} else {
+			return getObscolescenceStrategy();
+		}
+	}
+
+	public ObsolescenceStrategy getObscolescenceStrategy() {
+		return obscolescenceStrategy;
+	}
+
+	public void setObscolescenceStrategy(
+			ObsolescenceStrategy obscolescenceStrategy) {
+		this.obscolescenceStrategy = obscolescenceStrategy;
 	}
 
 }
