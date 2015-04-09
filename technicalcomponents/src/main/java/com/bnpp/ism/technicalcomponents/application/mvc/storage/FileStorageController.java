@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFileVersion;
 import com.bnpp.ism.technicalcomponents.application.service.storage.FileStorageManagerService;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @RestController
 public class FileStorageController {
@@ -20,7 +21,7 @@ public class FileStorageController {
 	@Autowired
 	FileStorageManagerService storageManager;
 
-	@RequestMapping(value = "/service/storeFile", method = RequestMethod.POST)
+	@RequestMapping(value = "/service/storeFile", method = RequestMethod.POST)	
 	public @ResponseBody
 	String uploadFile(@RequestParam("file") MultipartFile file) {
 

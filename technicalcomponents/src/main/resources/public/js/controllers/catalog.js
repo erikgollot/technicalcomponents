@@ -37,8 +37,8 @@ techMain.controller('techMainController', function($scope, $http) {
 		},
 		dropped : function(e) {
 			console.log("dropped");
-			//console.log("move source "+e.source.nodeScope.$modelValue.id);
-			//console.log("to destination "+e.dest.nodesScope.$modelValue.id);
+			console.log("move source "+e.source.nodeScope.$modelValue.id);
+			console.log("to destination "+e.dest.nodesScope.$modelValue.id);
 			//$http.post('/service/moveCategory/' +e.dest.nodesScope.$modelValue.id + '/'+ e.source.nodeScope.$modelValue.id).success(
 				//	function(data, status, headers, config) {
 					//	
