@@ -83,4 +83,12 @@ public class Storage {
 	public File getRootAsDirFile() {
 		return new File(getRootDir());
 	}
+
+	public DefaultStorageSet getStorageSet() {
+		return storageSet;
+	}
+
+	public void setStorageSet(DefaultStorageSet storageSet) {
+		this.storageSet = storageSet;
+	}
 }

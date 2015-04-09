@@ -2,6 +2,7 @@ package com.bnpp.ism.technicalcomponents.application.service.component;
 
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCatalog;
 import com.bnpp.ism.technicalcomponents.application.model.component.TechnicalComponent;
+import com.bnpp.ism.technicalcomponents.application.model.view.component.ComponentCatalogView;
 import com.bnpp.ism.technicalcomponents.application.model.view.component.TechnicalComponentView;
 
 public interface ComponentCatalogService {
@@ -9,7 +10,7 @@ public interface ComponentCatalogService {
 
 	Iterable<TechnicalComponent> getAllComponents();
 
-	Iterable<ComponentCatalog> catalogs();
+	Iterable<ComponentCatalogView> catalogs();
 
 	boolean moveCategory(Long categoryId, Long newParentId);
 
@@ -17,7 +18,6 @@ public interface ComponentCatalogService {
 			Long parentCategoryId);
 
 	TechnicalComponent updateComponent(TechnicalComponentView toUpdate);
-	
-	TechnicalComponent setImageComponent(Long componentId,
-			Long imageId);
+
+	TechnicalComponent setImageComponent(Long componentId, Long imageId);
 }

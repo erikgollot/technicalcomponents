@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bnpp.ism.technicalcomponents.application.dao.storage.DefaultStorageSetDao;
 import com.bnpp.ism.technicalcomponents.application.dao.storage.StoredFileDao;
 import com.bnpp.ism.technicalcomponents.application.dao.storage.StoredFileVersionDao;
+import com.bnpp.ism.technicalcomponents.application.model.storage.DefaultStorageSet;
 import com.bnpp.ism.technicalcomponents.application.model.storage.Storage;
 import com.bnpp.ism.technicalcomponents.application.model.storage.StorageSet;
 import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFile;
@@ -52,70 +53,75 @@ public class DefaultStorageSetManagerImpl implements DefaultStorageSetManager {
 	@Transactional
 	@Override
 	public StoredFile store(String name, byte[] content) {
-		StorageSet storageSet = dao.findOne(1L);
-		if (storageSet != null) {
-			String extension = name.substring(name.lastIndexOf(".") + 1);
+		Iterable<DefaultStorageSet> storages = dao.findAll();
+		if (storages.iterator().hasNext()) {
+			StorageSet storageSet = storages.iterator().next();
+			if (storageSet != null) {
+				String extension = name.substring(name.lastIndexOf(".") + 1);
 
-			// Generate unique filename
-			UUID uuid = Generators.timeBasedGenerator().generate();
-			String physicalFilename = uuid.toString() + "." + extension;
+				// Generate unique filename
+				UUID uuid = Generators.timeBasedGenerator().generate();
+				String physicalFilename = uuid.toString() + "." + extension;
 
-			int hashcode = physicalFilename.hashCode();
-			int mask = 255;
-			int firstDir = hashcode & mask;
-			int secondDir = (hashcode >> 8) & mask;
-			int thridDir = (hashcode >> 8 >> 8) & mask;
+				int hashcode = physicalFilename.hashCode();
+				int mask = 255;
+				int firstDir = hashcode & mask;
+				int secondDir = (hashcode >> 8) & mask;
+				int thridDir = (hashcode >> 8 >> 8) & mask;
 
-			StringBuilder sb = new StringBuilder(File.separator);
-			sb.append(String.format("%02x", firstDir));
-			sb.append("/");
-			sb.append(String.format("%02x", secondDir));
-			sb.append("/");
-			sb.append(String.format("%02x", thridDir));
+				StringBuilder sb = new StringBuilder(File.separator);
+				sb.append(String.format("%02x", firstDir));
+				sb.append("/");
+				sb.append(String.format("%02x", secondDir));
+				sb.append("/");
+				sb.append(String.format("%02x", thridDir));
 
-			String physicalDirectory = sb.toString();
+				String physicalDirectory = sb.toString();
 
-			Storage storage = storageSet.findBest(new Long(content.length));
+				Storage storage = storageSet.findBest(new Long(content.length));
 
-			String fullStoragePhysicalDirectory = storage.getRootDir() + "/"
-					+ physicalDirectory;
-			File fdFullStoragePhysicalDirectory = new File(
-					fullStoragePhysicalDirectory);
+				String fullStoragePhysicalDirectory = storage.getRootDir()
+						+ "/" + physicalDirectory;
+				File fdFullStoragePhysicalDirectory = new File(
+						fullStoragePhysicalDirectory);
 
-			try {
-				FileUtils.forceMkdir(fdFullStoragePhysicalDirectory);
-				String pathUnderRoot = fullStoragePhysicalDirectory + "/"
-						+ physicalFilename;
-				File fd = new File(pathUnderRoot);
+				try {
+					FileUtils.forceMkdir(fdFullStoragePhysicalDirectory);
+					String pathUnderRoot = fullStoragePhysicalDirectory + "/"
+							+ physicalFilename;
+					File fd = new File(pathUnderRoot);
 
-				// Write content
-				FileOutputStream fop = new FileOutputStream(fd);
-				fop.write(content);
-				fop.flush();
-				fop.close();
+					// Write content
+					FileOutputStream fop = new FileOutputStream(fd);
+					fop.write(content);
+					fop.flush();
+					fop.close();
 
-				// now create StoredFile
-				StoredFile storedfile = new StoredFile();
-				storedfile.setFileType(extension);
-				storedfile.setName(name);
-				// And first version
-				StoredFileVersion version = new StoredFileVersion();
-				version.setRootDirectory(storage.getRootDir());
-				version.setFilePathUnderDirectory(physicalDirectory + "/"
-						+ physicalFilename);
-				version.setVersion(1L);
-				version.setMediaType(Files.probeContentType(fd.toPath()));
+					// now create StoredFile
+					StoredFile storedfile = new StoredFile();
+					storedfile.setFileType(extension);
+					storedfile.setName(name);
+					// And first version
+					StoredFileVersion version = new StoredFileVersion();
+					version.setRootDirectory(storage.getRootDir());
+					version.setFilePathUnderDirectory(physicalDirectory + "/"
+							+ physicalFilename);
+					version.setVersion(1L);
+					version.setMediaType(Files.probeContentType(fd.toPath()));
 
-				// save it
-				fileDao.save(storedfile);
-				fileVersionDao.save(version);
-				return storedfile;
+					// save it
+					fileDao.save(storedfile);
+					fileVersionDao.save(version);
+					return storedfile;
 
-			} catch (IOException e) {
-				StorageException ex = new StorageException();
-				ex.setMessage("Cannot create file in directory "
-						+ storage.getRootDir());
-				throw ex;
+				} catch (IOException e) {
+					StorageException ex = new StorageException();
+					ex.setMessage("Cannot create file in directory "
+							+ storage.getRootDir());
+					throw ex;
+				}
+			} else {
+				return null;
 			}
 		} else {
 			return null;

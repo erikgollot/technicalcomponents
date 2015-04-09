@@ -109,16 +109,14 @@ public class ComponentCatalogController {
 	@RequestMapping(value = "/service/catalogs", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
 	List<ComponentCatalogView> catalogs() {
-		Iterable<ComponentCatalog> all = service.catalogs();
-		if (all != null) {
-			List<ComponentCatalogView> ret = new ArrayList<ComponentCatalogView>();
-			for (ComponentCatalog c : all) {
-				ret.add(dozerBeanMapper.map(c, ComponentCatalogView.class));
-			}
-			return ret;
-		} else {
-			return null;
+		Iterable<ComponentCatalogView> all = service.catalogs();
+
+		List<ComponentCatalogView> ret = new ArrayList<ComponentCatalogView>();
+		for (ComponentCatalogView c : all) {
+			ret.add(c);
 		}
+		return ret;
+
 	}
 
 	@RequestMapping(value = "/service/moveCategory/{idNewParent}/{idMovedCategory}", method = RequestMethod.POST, headers = "Accept=application/json")
@@ -146,17 +144,19 @@ public class ComponentCatalogController {
 
 	@RequestMapping(value = "/service/updateComponent", method = RequestMethod.POST, headers = "Accept=application/json")
 	public @ResponseBody
-	@ApiOperation(value="updateComponent", notes = "Image update is not taken into account here")
+	@ApiOperation(value = "updateComponent", notes = "Image update is not taken into account here")
 	void updateComponent(
 			@RequestParam("component") TechnicalComponentView toUpdate) {
 
 		TechnicalComponent updated = service.updateComponent(toUpdate);
 
 	}
+
 	@RequestMapping(value = "/service/setImageComponent/{idComponent}/{idImage}", method = RequestMethod.POST, headers = "Accept=application/json")
 	public @ResponseBody
-	@ApiOperation(value="setImageComponent", notes = "Image update is not taken into account here")
-	void setImageComponent(@PathVariable("idComponent") Long idComponent, @PathVariable("idImage") Long idImage) {
+	@ApiOperation(value = "setImageComponent", notes = "Image update is not taken into account here")
+	void setImageComponent(@PathVariable("idComponent") Long idComponent,
+			@PathVariable("idImage") Long idImage) {
 		service.setImageComponent(idComponent, idImage);
 	}
 }

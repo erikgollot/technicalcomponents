@@ -3,6 +3,7 @@ package com.bnpp.ism.technicalcomponents.application.model.storage;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -26,7 +27,7 @@ public class DefaultStorageSet implements StorageSet {
 	private StorageStrategyAllocatorEnum strategyStorageAllocator = StorageStrategyAllocatorEnum.ORDERED;
 
 	@OneToMany
-	(mappedBy="storageSet")
+	(mappedBy="storageSet",cascade=CascadeType.ALL)
 	private List<Storage> storages;
 
 	@Override

@@ -1,5 +1,8 @@
 package com.bnpp.ism.technicalcomponents.application.serviceimpl.component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.dozer.Mapper;
@@ -14,6 +17,7 @@ import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCat
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCategory;
 import com.bnpp.ism.technicalcomponents.application.model.component.TechnicalComponent;
 import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFileVersion;
+import com.bnpp.ism.technicalcomponents.application.model.view.component.ComponentCatalogView;
 import com.bnpp.ism.technicalcomponents.application.model.view.component.TechnicalComponentView;
 import com.bnpp.ism.technicalcomponents.application.service.component.ComponentCatalogService;
 
@@ -51,8 +55,13 @@ public class ComponentCatalogServiceImpl implements ComponentCatalogService {
 
 	@Transactional
 	@Override
-	public Iterable<ComponentCatalog> catalogs() {
-		return catalogDao.findAll();
+	public Iterable<ComponentCatalogView> catalogs() {
+		Iterable<ComponentCatalog> cats = catalogDao.findAll();
+		List<ComponentCatalogView> catViews = new ArrayList<ComponentCatalogView>();
+		for (ComponentCatalog c : cats) {
+			catViews.add(dozerBeanMapper.map(c, ComponentCatalogView.class));
+		}
+		return catViews;
 	}
 
 	@Transactional

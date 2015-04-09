@@ -2,7 +2,7 @@ var techMain = angular.module('techMain', ['ui.tree']);
 
 techMain.controller('techMainController', function($scope, $http) {
 	$http.get("/service/technicalComponents").success(function(response) {
-		$scope.items = response;
+		$scope.allComponents = response;
 	});
 
 	$http.get("/service/catalogs").success(function(response) {

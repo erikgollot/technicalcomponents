@@ -9,9 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bnpp.ism.technicalcomponents.application.dao.component.ComponentCatalogDao;
 import com.bnpp.ism.technicalcomponents.application.dao.component.ComponentCategoryDao;
 import com.bnpp.ism.technicalcomponents.application.dao.component.ComponentGalleryDao;
+import com.bnpp.ism.technicalcomponents.application.dao.storage.DefaultStorageSetDao;
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCatalog;
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCategory;
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentGallery;
+import com.bnpp.ism.technicalcomponents.application.model.storage.DefaultStorageSet;
+import com.bnpp.ism.technicalcomponents.application.model.storage.Storage;
 
 @Service
 public class InitialContentInitializer {
@@ -22,6 +25,8 @@ public class InitialContentInitializer {
 
 	@Autowired
 	ComponentGalleryDao galleryDao;
+	@Autowired
+	DefaultStorageSetDao storageDao;
 
 	@PostConstruct
 	@Transactional
@@ -32,6 +37,22 @@ public class InitialContentInitializer {
 		// Default Gallery Catalog
 		initGalleryCatalog();
 
+		initDefaultStorage();
+	}
+
+	private void initDefaultStorage() {
+		Iterable<DefaultStorageSet> storages = storageDao.findAll();
+		if (!storages.iterator().hasNext()) {		
+			DefaultStorageSet  storage = new DefaultStorageSet();
+			Storage s =new Storage();
+			s.setActive(true);
+			s.setOrderInSet(1);
+			s.setQuota(100);
+			s.setRootDir("c:/ismstorage/store1");
+			storage.addStorage(s);
+			s.setStorageSet(storage);
+			storageDao.save(storage);
+		}
 	}
 
 	private void initGalleryCatalog() {

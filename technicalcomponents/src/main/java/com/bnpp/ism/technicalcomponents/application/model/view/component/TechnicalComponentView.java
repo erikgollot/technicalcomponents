@@ -57,6 +57,10 @@ public class TechnicalComponentView implements Serializable {
 	boolean isWarningPeriod;
 	boolean isHotPeriod;
 
+	public boolean getIsAvailable() {
+		return isAvailablePeriod();
+	}
+
 	public boolean isAvailablePeriod() {
 		return isAvailablePeriod;
 	}
@@ -65,12 +69,20 @@ public class TechnicalComponentView implements Serializable {
 		this.isAvailablePeriod = isAvailablePeriod;
 	}
 
+	public boolean getIsWarningPeriod() {
+		return isWarningPeriod();
+	}
+
 	public boolean isWarningPeriod() {
 		return isWarningPeriod;
 	}
 
 	public void setWarningPeriod(boolean isWarningPeriod) {
 		this.isWarningPeriod = isWarningPeriod;
+	}
+
+	public boolean getIsHotPeriod() {
+		return isHotPeriod();
 	}
 
 	public boolean isHotPeriod() {
