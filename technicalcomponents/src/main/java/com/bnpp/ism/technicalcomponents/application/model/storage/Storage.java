@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 
 import com.bnpp.ism.technicalcomponents.application.service.storage.StorageException;
 
@@ -26,7 +27,16 @@ public class Storage {
 	private boolean active = true;
 	@Column
 	private int orderInSet;
+	@Version
+    private Long version;
+	
+	public Long getVersion() {
+		return version;
+	}
 
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	@ManyToOne(fetch=FetchType.LAZY)
 	DefaultStorageSet storageSet;
 	

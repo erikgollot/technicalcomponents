@@ -29,7 +29,8 @@ public class DefaultObscolescenceStrategyCalculator implements
 
 		// Today, we're before avaliablilty date,...no problem
 		if (info.getAvailableDate() != null
-				&& info.getAvailableDate().after(now)) {
+				&& (info.getAvailableDate().after(now) || info
+						.getAvailableDate().equals(now))) {
 			return ObscolescencePeriodEnum.AVAILABLE;
 		} else {
 			// if deprecated is set, warning is between deprecated and before

@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 
 import org.apache.commons.io.FileUtils;
 
@@ -31,6 +32,8 @@ public class StoredFileVersion {
 
 	@Column
 	String mediaType;
+	@Version
+	private Long persistantVersion;
 
 	public Long getId() {
 		return id;
@@ -92,5 +95,13 @@ public class StoredFileVersion {
 		} catch (IOException e) {
 			return null;
 		}
-	}	
+	}
+
+	public Long getPersitantVersion() {
+		return persistantVersion;
+	}
+
+	public void setPersitantVersion(Long persitantVersion) {
+		this.persistantVersion = persitantVersion;
+	}
 }

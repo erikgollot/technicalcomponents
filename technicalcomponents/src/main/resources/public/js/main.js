@@ -10,7 +10,7 @@ var app = angular.module('technicalComponents', [
   'ngRoute',
   'techMain',
   'uploadControllers',
-  'angularFileUpload'
+  'galleryControllers'
 ]);
 
 /**
@@ -22,7 +22,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     .when("/", {templateUrl: "partials/home.html", controller: "PageCtrl"})
     // Pages
     .when("/catalog", {templateUrl: "partials/catalog.html", controller: "techMainController"})
-    .when("/upload", {templateUrl: "partials/upload.html", controller: "uploadCtrl"})  
+    .when("/gallery", {templateUrl: "partials/gallery.html", controller: "galleryController"})  
     .otherwise("/404", {templateUrl: "partials/404.html", controller: "PageCtrl"});
 }]);
 

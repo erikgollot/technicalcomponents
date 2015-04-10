@@ -1,7 +1,6 @@
 package com.bnpp.ism.technicalcomponents.application.model.view.component;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class ComponentVersionInfoView implements Serializable {
 
@@ -70,5 +69,4 @@ public class ComponentVersionInfoView implements Serializable {
 		this.unavailableDate = unavailableDate;
 	}
 
-	
 }

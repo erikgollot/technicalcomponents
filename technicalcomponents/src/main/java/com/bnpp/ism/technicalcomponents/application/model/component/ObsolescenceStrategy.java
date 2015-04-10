@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Version;
 
 /**
  * ok period | Low warning period | High warning period
@@ -19,7 +20,16 @@ public class ObsolescenceStrategy implements ObsolescenceStrategyCalculator {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Version
+    private Long version;
+	
+	public Long getVersion() {
+		return version;
+	}
 
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	@Column
 	private String name;
 

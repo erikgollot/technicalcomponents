@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 @Entity
 public class StoredFile {
@@ -20,7 +21,16 @@ public class StoredFile {
 	String name;	
 	@Column
 	String fileType;
+	@Version
+    private Long version;
+	
+	public Long getVersion() {
+		return version;
+	}
 
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	@OneToMany(mappedBy="file")
 	List<StoredFileVersion> versions;
 

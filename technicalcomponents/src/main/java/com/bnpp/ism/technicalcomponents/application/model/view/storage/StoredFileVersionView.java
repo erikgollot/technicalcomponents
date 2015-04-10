@@ -18,6 +18,8 @@ public class StoredFileVersionView implements Serializable {
 	String filePathUnderDirectory;
 
 	String mediaType;
+	
+	Long persistantVersion;
 
 	public Long getId() {
 		return id;
@@ -61,5 +63,13 @@ public class StoredFileVersionView implements Serializable {
 
 	public void setMediaType(String mediaType) {
 		this.mediaType = mediaType;
+	}
+
+	public Long getPersistantVersion() {
+		return persistantVersion;
+	}
+
+	public void setPersistantVersion(Long persistantVersion) {
+		this.persistantVersion = persistantVersion;
 	}
 }

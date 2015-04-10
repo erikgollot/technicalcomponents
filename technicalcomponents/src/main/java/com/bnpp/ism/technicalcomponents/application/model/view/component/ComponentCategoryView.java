@@ -12,7 +12,15 @@ public class ComponentCategoryView  implements Serializable {
 	private static final long serialVersionUID = 5079820437993514066L;
 
 	private Long id;
+private Long version;
+	
+	public Long getVersion() {
+		return version;
+	}
 
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	private String name;
 
 	private String description;

@@ -108,7 +108,9 @@ public class DefaultStorageSetManagerImpl implements DefaultStorageSetManager {
 							+ physicalFilename);
 					version.setVersion(1L);
 					version.setMediaType(Files.probeContentType(fd.toPath()));
-
+					storedfile.addVersion(version);
+					version.setFile(storedfile);
+					
 					// save it
 					fileDao.save(storedfile);
 					fileVersionDao.save(version);

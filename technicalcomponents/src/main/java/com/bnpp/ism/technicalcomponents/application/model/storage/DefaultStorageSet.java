@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 import com.bnpp.ism.technicalcomponents.application.service.storage.StorageStrategyAllocatorEnum;
 
@@ -21,7 +22,16 @@ public class DefaultStorageSet implements StorageSet {
 	@Column
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Version
+    private Long version;
+	
+	public Long getVersion() {
+		return version;
+	}
 
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	@Enumerated(EnumType.STRING)
 	@Column
 	private StorageStrategyAllocatorEnum strategyStorageAllocator = StorageStrategyAllocatorEnum.ORDERED;

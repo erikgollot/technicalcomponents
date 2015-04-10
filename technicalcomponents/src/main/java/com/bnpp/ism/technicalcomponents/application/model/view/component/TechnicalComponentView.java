@@ -11,6 +11,17 @@ public class TechnicalComponentView implements Serializable {
 	 */
 	private static final long serialVersionUID = -6470667767638775042L;
 	private Long id;
+	private Long version;
+	
+	ObsolescenceStrategyView obscolescenceStrategy;
+	
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 
 	private StoredFileVersionView image;
 
@@ -99,6 +110,15 @@ public class TechnicalComponentView implements Serializable {
 
 	public void setImage(StoredFileVersionView image) {
 		this.image = image;
+	}
+
+	public ObsolescenceStrategyView getObscolescenceStrategy() {
+		return obscolescenceStrategy;
+	}
+
+	public void setObscolescenceStrategy(
+			ObsolescenceStrategyView obscolescenceStrategy) {
+		this.obscolescenceStrategy = obscolescenceStrategy;
 	}
 
 }
