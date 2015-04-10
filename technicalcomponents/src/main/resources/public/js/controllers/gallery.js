@@ -1,5 +1,5 @@
-var galleryControllers = angular.module('galleryControllers',
-		[ 'angularFileUpload','angularModalService' ]);
+var galleryControllers = angular.module('galleryControllers', [
+		'angularFileUpload', 'angularModalService' ]);
 
 galleryControllers.controller('galleryController', function($scope, $http,
 		$upload) {
@@ -9,8 +9,7 @@ galleryControllers.controller('galleryController', function($scope, $http,
 	});
 
 	$scope.hasImages = false;
-	
-	
+
 	$scope.refreshGallery = function() {
 		$http.get("/componentGallery/all").success(function(response) {
 			$scope.galleryImages = response;
@@ -19,14 +18,33 @@ galleryControllers.controller('galleryController', function($scope, $http,
 		});
 	}
 
-	$scope.refreshGallery();		
-	
+	$scope.refreshGallery();
+
 	$scope.removeImage = function(id) {
-		$http.post("/componentGallery/removeImage/"+id).success(function(response) {
-			$scope.refreshGallery();
+
+		BootstrapDialog.show({
+			title : 'Confirm',
+			message : 'Please confirm image suppress',
+			buttons : [
+					{
+						label : 'Close',
+						action : function(dialog) {
+							dialog.close();
+						}
+					},
+					{
+						label : 'Delete',
+						action : function(dialog) {
+							$http.post("/componentGallery/removeImage/" + id)
+									.success(function(response) {
+										$scope.refreshGallery();
+									});
+							dialog.close();
+						}
+					} ]
 		});
 	}
-	
+
 	$scope.upload = function(files) {
 		console.log("called, files = " + files);
 		if (files && files.length) {
