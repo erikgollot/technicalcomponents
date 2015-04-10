@@ -1,42 +1,5 @@
 <div class="col-sm-12">
-	<table border="0" cellspacing="10" cellpadding="10">
-		<tr>
-
-			<td>
-				<h3>Catalog</h3>
-			</td>
-			<td>
-				<div class="dropdown">
-					<button class="btn btn-default dropdown-toggle" type="button"
-						id="menu1" data-toggle="dropdown">
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="menu1"
-						ng-repeat="catalog in catalogs">
-						<li role="presentation"><a role="menuitem" tabindex="-1">
-								<a ng-click="selectCatalog(catalog)">{{catalog.name}}</a></li>
-					</ul>
-				</div>
-			</td>
-		</tr>
-	</table>
-	<div>
-		<script type="text/ng-template" id="nodes_renderer.html">
-          <div ui-tree-handle class="tree-node tree-node-content">
-            <a class="btn btn-success btn-xs" ng-if="cat.categories && cat.categories.length > 0" data-nodrag ng-click="toggle(this)"><span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span></a>
-            {{cat.name}}            
-            <a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="toggleModal()" style="margin-right: 8px;"><span class="glyphicon glyphicon-plus"></span></a>
-          </div>
-          <ol ui-tree-nodes="" ng-model="cat.categories" ng-class="{hidden: collapsed}">
-            <li ng-repeat="cat in cat.categories" ui-tree-node ng-include="'nodes_renderer.html'">
-            </li>
-          </ol>
-        </script>
-		<div ui-tree="catalogTreeOptions" id="treeCatalog">
-			<ol ui-tree-nodes="" ng-model="selectedCatalog.categories">
-				<li ng-repeat="cat in selectedCatalog.categories" ui-tree-node
-					ng-include="'nodes_renderer.html'"></li>
-			</ol>
-		</div>
-	</div>
+	<h3>Catalog structure</h3>	
+	<abn-tree tree-data="example_treedata" icon-leaf="glyphicon glyphicon-th"
+		icon-expand="glyphicon glyphicon-plus" expand-level="3" icon-collapse="glyphicon glyphicon-minus"></abn-tree>
 </div>

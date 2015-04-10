@@ -23,6 +23,7 @@ galleryControllers.controller('galleryController', function($scope, $http,
 	$scope.removeImage = function(id) {
 
 		BootstrapDialog.show({
+			size : BootstrapDialog.SIZE_NORMAL,
 			title : 'Confirm',
 			message : 'Please confirm image suppress',
 			buttons : [
