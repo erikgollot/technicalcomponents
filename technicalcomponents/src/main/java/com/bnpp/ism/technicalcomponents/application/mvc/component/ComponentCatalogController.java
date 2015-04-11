@@ -159,4 +159,10 @@ public class ComponentCatalogController {
 			@PathVariable("idImage") Long idImage) {
 		service.setImageComponent(idComponent, idImage);
 	}
+	
+	@RequestMapping(value = "/service/componentsOfCategory/{idCategory}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody
+	List<TechnicalComponentView> getComponentsOfCategory(@PathVariable("idCategory") Long categoryId) {
+		return service.getComponentsOfCategory(categoryId);
+	}
 }

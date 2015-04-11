@@ -6,12 +6,14 @@ techMain.controller('techMainController', function($scope, $http) {
 		this.label = _label;
 	}	
 	
-	$scope.example_treedata = [];
+	$scope.component_catalog = [];
 	
-	$http.get("/service/technicalComponents").success(function(response) {
-		$scope.allComponents = response;		
-	});
-
+	$scope.on_select_category = function(category) {		
+		$http.get("/service/componentsOfCategory/"+category.category_id).success(function(response) {
+			$scope.allComponents = response;		
+		});
+	}
+	
 	$http.get("/service/catalogs").success(function(response) {
 		$scope.catalogs = response;
 		var allarray = new Array();
@@ -19,18 +21,22 @@ techMain.controller('techMainController', function($scope, $http) {
 			var p = new Object();
 			var cat = $scope.catalogs[0].categories[i];
 			p.label = cat.name;
+			p.onSelect = $scope.on_select_category;
+			p.category_id = cat.id;
 			allarray.push(p);
 			if (cat.categories!=null) {
 				p.children = new Array();
 				for (j=0;j<cat.categories.length;j++) {
 					var subCat = new Object();
 					subCat.label = cat.categories[j].name;
+					subCat.onSelect = $scope.on_select_category;
+					subCat.category_id = cat.categories[j].id;
 					p.children.push(subCat);
 				}
 			}
 			
 		}
-		$scope.example_treedata  = allarray;	
+		$scope.component_catalog  = allarray;	
 	});
 
 	$scope.selectedCatalog = [];
