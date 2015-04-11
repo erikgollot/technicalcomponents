@@ -1,5 +1,13 @@
 <div class="col-sm-12">
-	<h3>Catalog structure</h3>	
+	<h3>Catalog structure</h3>
+	<p class="text-left">
+		<button class="btn btn-default" data-toggle="modal"
+			data-target="#newComponentDialog" data-ng-disabled="!hasSelectedCategory">Create new component</button>
+	</p>
 	<abn-tree tree-data="component_catalog" icon-leaf="fa fa-cubes"
-		icon-expand="fa fa-caret-right" expand-level="3" icon-collapse="fa fa-caret-down"></abn-tree>
+		icon-expand="fa fa-caret-right" expand-level="3"
+		icon-collapse="fa fa-caret-down"></abn-tree>
 </div>
+<div ng-include='"templates/new_catalog_component_popup.html"'></div>
+
+

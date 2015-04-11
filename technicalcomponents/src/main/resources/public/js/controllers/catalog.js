@@ -7,11 +7,20 @@ techMain.controller('techMainController', function($scope, $http) {
 	}	
 	
 	$scope.component_catalog = [];
+	$scope.new_component = new Object();
+	$scope.new_component.vendor = new Object();
+	$scope.new_component.local = new Object();
 	
-	$scope.on_select_category = function(category) {		
+	$scope.on_select_category = function(category) {
+		$scope.selectedCategoryId = category.category_id;
+		$scope.hasSelectedCategory = true;
 		$http.get("/service/componentsOfCategory/"+category.category_id).success(function(response) {
 			$scope.allComponents = response;		
 		});
+	}
+	$scope.hasSelectedCategory = false;
+	$scope.createNewComponent = function() {
+		console.log("create : "+$scope.new_component.vendor.name + " - " + $scope.new_component.local.name)
 	}
 	
 	$http.get("/service/catalogs").success(function(response) {
@@ -55,28 +64,5 @@ techMain.controller('techMainController', function($scope, $http) {
 	$scope.selectCatalog = function(choice) {
 		$scope.selectedCatalog = choice;		
 	}
-
-	$scope.catalogTreeOptions = {
-		accept : function(sourceNodeScope, destNodesScope, destIndex) {
-			console.log ("accept"); 
-			return true;
-		},
-		beforeDrap : function(sourceNodeScope) {
-			console.log ("before drag"); 
-			return true;
-		},
-		dropped : function(e) {
-			console.log("dropped");
-			console.log("move source "+e.source.nodeScope.$modelValue.id);
-			console.log("to destination "+e.dest.nodesScope.$modelValue.id);
-			//$http.post('/service/moveCategory/' +e.dest.nodesScope.$modelValue.id + '/'+ e.source.nodeScope.$modelValue.id).success(
-				//	function(data, status, headers, config) {
-					//	
-					//}).error(function(data, status, headers, config) {
-							
-		//	});  
-		},
-		
-	};	
 });
 

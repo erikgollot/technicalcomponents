@@ -1,0 +1,90 @@
+<div class="modal fade" id="newComponentDialog" tabindex="-1"
+	role="dialog" aria-labelledby="Name" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">New Component</h4>
+			</div>
+
+			<div class="modal-body">
+				<form id="newComponentForm" method="post" class="form-horizontal">
+					<div class="panel panel-default">
+						<div class="panel-heading">Vendor Information</div>
+						<br>
+						<div class="form-group form-group-sm">
+							<label class="col-xs-3 control-label">Name</label>
+							<div class="col-xs-5">
+								<input type="text" class="form-control" name="vendor"
+									data-ng-model="new_component.vendor.name" />
+							</div>
+						</div>
+
+						<div class="form-group form-group-sm">
+							<label class="col-xs-3 control-label">Description</label>
+							<div class="col-xs-5">
+								<input type="text" class="form-control" name="vendor.description"
+									data-ng-model="new_component.vendor.description" />
+							</div>
+						</div>
+
+						<div class="form-group form-group-sm">
+							<label class="col-xs-3 control-label">Version</label>
+							<div class="col-xs-5">
+								<input type="text" class="form-control" name="vendorr.version"
+									data-ng-model="new_component.vendor.version" />
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">Local Information</div>
+						<br>
+						<div class="form-group form-group-sm">
+							<label class="col-xs-3 control-label">Name</label>
+							<div class="col-xs-5">
+								<input type="text" class="form-control" name="local.name"
+									data-ng-model="new_component.local.name" />
+							</div>
+						</div>
+
+						<div class="form-group form-group-sm">
+							<label class="col-xs-3 control-label">Description</label>
+							<div class="col-xs-5">
+								<input type="text" class="form-control" name="local.description"
+									data-ng-model="new_component.local.description" />
+							</div>
+						</div>
+
+						<div class="form-group form-group-sm">
+							<label class="col-xs-3 control-label">Version</label>
+							<div class="col-xs-5">
+								<input type="text" class="form-control" name="local.version"
+									data-ng-model="new_component.local.version" />
+							</div>
+						</div>
+					</div>
+					<div class="form-group form-group-sm">
+						<label class="col-xs-3 control-label">Force obsolete</label>
+						<div class="col-xs-5">
+							<input class="checkbox" type="checkbox"
+								data-ng-model="new_component.forceObsolete">
+						</div>
+					</div>
+
+					<div class="form-group form-group-sm">
+						<div class="col-xs-5 col-xs-offset-3">
+							<button type="submit" class="btn btn-primary" data-dismiss="modal"
+								ng-click="createNewComponent()">Save</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Cancel</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
