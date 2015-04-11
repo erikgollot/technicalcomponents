@@ -149,4 +149,20 @@ public class ComponentCatalogServiceImpl implements ComponentCatalogService {
 		}
 		return loaded;
 	}
+
+	@Transactional
+	@Override
+	public List<TechnicalComponentView> getComponentsOfCategory(
+			Long categoryId) {
+		ComponentCategory cat = componentCategoryDao.findOne(categoryId);
+		if (cat != null && cat.getTechnicalComponents() != null) {
+			List<TechnicalComponentView> views = new ArrayList<TechnicalComponentView>();
+			for (TechnicalComponent c : cat.getTechnicalComponents()) {
+				views.add(dozerBeanMapper.map(c, TechnicalComponentView.class));
+			}
+			return views;
+		} else {
+			return null;
+		}
+	}
 }

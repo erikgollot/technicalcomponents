@@ -1,5 +1,7 @@
 package com.bnpp.ism.technicalcomponents.application.service.component;
 
+import java.util.List;
+
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCatalog;
 import com.bnpp.ism.technicalcomponents.application.model.component.TechnicalComponent;
 import com.bnpp.ism.technicalcomponents.application.model.view.component.ComponentCatalogView;
@@ -9,6 +11,8 @@ public interface ComponentCatalogService {
 	ComponentCatalog createCatalog(String name, String description);
 
 	Iterable<TechnicalComponent> getAllComponents();
+	
+	List<TechnicalComponentView> getComponentsOfCategory(Long categoryId);
 
 	Iterable<ComponentCatalogView> catalogs();
 

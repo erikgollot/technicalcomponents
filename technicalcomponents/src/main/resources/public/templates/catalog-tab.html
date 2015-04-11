@@ -12,12 +12,10 @@
 			<tr ng-repeat="item in allComponents">
 				<td>
 					<button class="btn">
-						<span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
-						{{item.id}}
-					</button>
+						<span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</button>
 				</td>
-				<td>{{item.vendorInformations.name}}</td>
-				<td>{{item.vendorInformations.availableDate}}</td>
+				<td>{{item.localInformations.name}}</td>
+				<td>{{item.localInformations.availableDate}}</td>
 				<td>{{item.localInformations.name }}</td>
 			</tr>
 		</tbody>

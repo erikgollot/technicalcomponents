@@ -1,5 +1,8 @@
 package com.bnpp.ism.technicalcomponents.application.configuration;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bnpp.ism.technicalcomponents.application.dao.component.ComponentCatalogDao;
 import com.bnpp.ism.technicalcomponents.application.dao.component.ComponentCategoryDao;
 import com.bnpp.ism.technicalcomponents.application.dao.component.ComponentGalleryDao;
+import com.bnpp.ism.technicalcomponents.application.dao.component.TechnicalComponentDao;
 import com.bnpp.ism.technicalcomponents.application.dao.storage.DefaultStorageSetDao;
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCatalog;
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCategory;
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentGallery;
+import com.bnpp.ism.technicalcomponents.application.model.component.ComponentVersionInfo;
+import com.bnpp.ism.technicalcomponents.application.model.component.TechnicalComponent;
 import com.bnpp.ism.technicalcomponents.application.model.storage.DefaultStorageSet;
 import com.bnpp.ism.technicalcomponents.application.model.storage.Storage;
 
@@ -22,7 +28,8 @@ public class InitialContentInitializer {
 	ComponentCatalogDao catalog;
 	@Autowired
 	ComponentCategoryDao categoryDao;
-
+	@Autowired
+	TechnicalComponentDao componentDao;
 	@Autowired
 	ComponentGalleryDao galleryDao;
 	@Autowired
@@ -42,9 +49,9 @@ public class InitialContentInitializer {
 
 	private void initDefaultStorage() {
 		Iterable<DefaultStorageSet> storages = storageDao.findAll();
-		if (!storages.iterator().hasNext()) {		
-			DefaultStorageSet  storage = new DefaultStorageSet();
-			Storage s =new Storage();
+		if (!storages.iterator().hasNext()) {
+			DefaultStorageSet storage = new DefaultStorageSet();
+			Storage s = new Storage();
 			s.setActive(true);
 			s.setOrderInSet(1);
 			s.setQuota(100);
@@ -92,7 +99,67 @@ public class InitialContentInitializer {
 			database.setParent(open);
 			open.addComponentCategory(database);
 
+			// Add default components
+			TechnicalComponent c1 = new TechnicalComponent();
+			ComponentVersionInfo vendorInfo = new ComponentVersionInfo();
+			vendorInfo.setName("SpringBoot");
+			vendorInfo.setVersion("1.3.0");
+			
+			SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
+			try {
+				vendorInfo.setAvailableDate(format.parse(
+						"01/01/2015"));
+				vendorInfo.setDescription("SpringBoot library from Genius");
+			} catch (ParseException e) {				
+				e.printStackTrace();
+			}
+			c1.setVendorInformations(vendorInfo);
+			
+			ComponentVersionInfo localInfo = new ComponentVersionInfo();
+			localInfo.setName("SpringBoot");
+			localInfo.setVersion("1.3.0");
+			try {
+				localInfo.setAvailableDate(format.parse(
+						"01/04/2015"));
+				localInfo.setDescription("SpringBoot packaged by BNPP");
+			} catch (ParseException e) {				
+				e.printStackTrace();
+			}
+			c1.setLocalInformations(localInfo);			
+			open.addTechnicalComponent(c1);
+			componentDao.save(c1);
+			
+			c1 = new TechnicalComponent();
+			vendorInfo = new ComponentVersionInfo();
+			vendorInfo.setName("Oracle");
+			vendorInfo.setVersion("10i");
+			
+		
+			try {
+				vendorInfo.setAvailableDate(format.parse(
+						"01/01/2014"));
+				vendorInfo.setDescription("Oracle Database RAC");
+			} catch (ParseException e) {				
+				e.printStackTrace();
+			}
+			c1.setVendorInformations(vendorInfo);
+			
+			localInfo = new ComponentVersionInfo();
+			localInfo.setName("Oracle");
+			localInfo.setVersion("10i");
+			try {
+				localInfo.setAvailableDate(format.parse(
+						"27/04/2014"));
+				localInfo.setDescription("Oracle Database RAC packaged by BNPP");
+			} catch (ParseException e) {				
+				e.printStackTrace();
+			}
+			c1.setLocalInformations(localInfo);			
+			database.addTechnicalComponent(c1);
+
+			componentDao.save(c1);
 			catalog.save(cat);
+			
 		}
 	}
 }
