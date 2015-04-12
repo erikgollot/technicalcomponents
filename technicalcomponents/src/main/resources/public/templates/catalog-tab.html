@@ -14,7 +14,8 @@
 					<button class="btn">
 						<span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</button>
 				</td>
-				<td>{{item.localInformations.name}}</td>
+				<td><img height="64" width="64" ng-show="item.image != null"
+								ng-src="/service/file/{{item.image.id}}" />{{item.localInformations.name}}</td>
 				<td>{{item.localInformations.availableDate}}</td>
 				<td>{{item.localInformations.name }}</td>
 			</tr>

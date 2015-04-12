@@ -6,7 +6,7 @@
 
 
 	<configuration>
-		<date-format>dd/mmm/yyyy</date-format>
+		<date-format>dd-mm-yyyy</date-format>
 	</configuration>
 
 
