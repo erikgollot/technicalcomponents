@@ -77,4 +77,10 @@ public class ComponentGalleryController {
 		return galleryManager.getImages();
 	}
 
+	@RequestMapping(value = "/componentGallery/canStoreImage", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody
+	boolean canStoreImages() {
+		return galleryManager.canStoreImages();
+	}
+
 }

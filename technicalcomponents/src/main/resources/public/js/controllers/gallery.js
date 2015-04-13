@@ -4,6 +4,11 @@ var galleryControllers = angular.module('galleryControllers', [
 galleryControllers.controller('galleryController', function($scope, $http,
 		$upload) {
 
+	$scope.isGalleryAvailable = false;
+	$http.get("/componentGallery/canStoreImage").success(function(response) {
+		$scope.isGalleryAvailable = response;		
+	});
+	
 	$scope.$watch('files', function() {
 		$scope.upload($scope.files);
 	});

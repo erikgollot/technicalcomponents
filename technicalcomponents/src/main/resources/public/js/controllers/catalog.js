@@ -64,9 +64,7 @@ techMain
 
 					$scope.refreshGallery();
 
-					$scope.convertDate = function(aDate) {
-						var months = [ "Jan", "Feb", "Mar", "Apr", "May",
-								"Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+					$scope.convertDate = function(aDate) {						
 						var formatedDate = new Date(aDate);
 						var formatedDateAsString = "";
 						formatedDateAsString = formatedDateAsString + formatedDate.getDate() + "-"

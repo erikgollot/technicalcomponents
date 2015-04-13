@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,8 +24,8 @@ public class DefaultStorageSet implements StorageSet {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Version
-    private Long version;
-	
+	private Long version;
+
 	public Long getVersion() {
 		return version;
 	}
@@ -32,12 +33,12 @@ public class DefaultStorageSet implements StorageSet {
 	public void setVersion(Long version) {
 		this.version = version;
 	}
+
 	@Enumerated(EnumType.STRING)
 	@Column
 	private StorageStrategyAllocatorEnum strategyStorageAllocator = StorageStrategyAllocatorEnum.ORDERED;
 
-	@OneToMany
-	(mappedBy="storageSet",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "storageSet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Storage> storages;
 
 	@Override
@@ -50,13 +51,15 @@ public class DefaultStorageSet implements StorageSet {
 		if (getStorages() == null || getStorages().size() == 0) {
 			return null;
 		} else {
-			StorageStrategyAllocator allocator = StorageStrategyAllocator.strategies.get(getStrategyStorageAllocator());			
+			StorageStrategyAllocator allocator = StorageStrategyAllocator.strategies
+					.get(getStrategyStorageAllocator());
 			return allocator.findBest(sizeToCreate, getStorages());
 		}
 	}
 
 	@Override
-	public void setStrategyStorageAllocator(StorageStrategyAllocatorEnum strategy) {
+	public void setStrategyStorageAllocator(
+			StorageStrategyAllocatorEnum strategy) {
 		this.strategyStorageAllocator = strategy;
 	}
 
@@ -65,6 +68,7 @@ public class DefaultStorageSet implements StorageSet {
 		return this.strategyStorageAllocator;
 	}
 
+	@Override
 	public void addStorage(Storage storage) {
 		if (getStorages() == null) {
 			this.storages = new ArrayList<Storage>();
@@ -72,7 +76,19 @@ public class DefaultStorageSet implements StorageSet {
 		getStorages().add(storage);
 	}
 
+	@Override
 	public void removeStorage(Storage s) {
 		getStorages().remove(s);
+	}
+
+	@Override
+	public Storage getStorageFromPrimaryKey(Long id) {
+		if (getStorages()!=null) {
+			for (Storage s : getStorages()) {
+				if (s.getId().equals(id))
+					return s;
+			}
+		}
+		return null;
 	}
 }

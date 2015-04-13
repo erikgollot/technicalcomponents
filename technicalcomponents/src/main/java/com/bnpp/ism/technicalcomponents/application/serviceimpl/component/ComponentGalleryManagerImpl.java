@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bnpp.ism.technicalcomponents.application.dao.component.ComponentGalleryDao;
 import com.bnpp.ism.technicalcomponents.application.dao.storage.StoredFileVersionDao;
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentGallery;
+import com.bnpp.ism.technicalcomponents.application.model.storage.Storage;
+import com.bnpp.ism.technicalcomponents.application.model.storage.StorageSet;
 import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFile;
 import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFileVersion;
 import com.bnpp.ism.technicalcomponents.application.model.view.component.ImageGallery;
@@ -30,9 +32,8 @@ public class ComponentGalleryManagerImpl implements ComponentGalleryManager {
 	@Transactional
 	@Override
 	public void addImage(StoredFile image) {
-		Iterable<ComponentGallery> galleries = galleryDao.findAll();
-		if (galleries != null) {
-			ComponentGallery gallery = galleries.iterator().next();
+		ComponentGallery gallery = getGallery();
+		if (gallery != null) {
 			gallery.addImage(image);
 			galleryDao.save(gallery);
 		}
@@ -41,9 +42,8 @@ public class ComponentGalleryManagerImpl implements ComponentGalleryManager {
 	@Transactional
 	@Override
 	public void removeImage(Long imageVersionId) {
-		Iterable<ComponentGallery> galleries = galleryDao.findAll();
-		if (galleries != null) {
-			ComponentGallery gallery = galleries.iterator().next();
+		ComponentGallery gallery = getGallery();
+		if (gallery != null) {
 			StoredFileVersion image = fileVersionDao.findOne(imageVersionId);
 			if (gallery != null && image != null) {
 				gallery.removeImage(image.getFile());
@@ -58,9 +58,8 @@ public class ComponentGalleryManagerImpl implements ComponentGalleryManager {
 	@Transactional
 	@Override
 	public List<ImageGallery> getImages() {
-		Iterable<ComponentGallery> galleries = galleryDao.findAll();
-		if (galleries != null) {
-			ComponentGallery gallery = galleries.iterator().next();
+		ComponentGallery gallery = getGallery();
+		if (gallery != null) {
 			List<StoredFile> images = gallery.getImages();
 			if (images != null) {
 				List<ImageGallery> galleryImages = new ArrayList<ImageGallery>();
@@ -75,6 +74,38 @@ public class ComponentGalleryManagerImpl implements ComponentGalleryManager {
 			} else {
 				return null;
 			}
+		} else {
+			return null;
+		}
+	}
+
+	@Transactional
+	@Override
+	public boolean canStoreImages() {
+		ComponentGallery gallery = getGallery();
+		if (gallery != null) {
+			StorageSet defaultStorage = storageManager.getDefault();
+			if (defaultStorage != null) {
+				for (Storage s : defaultStorage.getStorages()) {
+					// If found at least one active storage, say OK...even if
+					// there is no space left. This point will be addresse
+					// during file upload.
+					if (s.isActive())
+						return true;
+				}
+				return false;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	private ComponentGallery getGallery() {
+		Iterable<ComponentGallery> galleries = galleryDao.findAll();
+		if (galleries != null) {
+			return galleries.iterator().next();
 		} else {
 			return null;
 		}

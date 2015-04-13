@@ -11,4 +11,6 @@ public interface ComponentGalleryManager {
 	void removeImage(Long imageId);
 
 	List<ImageGallery> getImages();
+
+	boolean canStoreImages();
 }

@@ -10,7 +10,8 @@ var app = angular.module('technicalComponents', [
   'ngRoute',
   'techMain',
   'uploadControllers',
-  'galleryControllers'
+  'galleryControllers',
+  'storageControllers'
 ]);
 
 /**
@@ -23,6 +24,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     // Pages
     .when("/catalog", {templateUrl: "partials/catalog.html", controller: "techMainController"})
     .when("/gallery", {templateUrl: "partials/gallery.html", controller: "galleryController"})  
+    .when("/storage", {templateUrl: "partials/storage.html", controller: "storageController"})
     .otherwise("/404", {templateUrl: "partials/404.html", controller: "PageCtrl"});
 }]);
 

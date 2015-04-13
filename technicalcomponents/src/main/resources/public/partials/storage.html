@@ -1,0 +1,79 @@
+<div class="container-fluid">
+
+
+	<div id="panel-edit-new" class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">New storage</h3>
+		</div>
+		<div class="panel-body">
+			<form class="form-inline">
+				<div class="form-group">
+					<label class="col-xs-4 for="rootDir">Root directory</label>
+					<div class="col-xs-5">
+						<input type="text" ng-model="newStorage.rootDir"
+							class="form-control" id="new_rootDir" ng-required="true"
+							)
+								placeholder="Enter root directory">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-4 for="quota">Quota</label>
+					<div class="col-xs-5">
+						<input class="form-control" placeholder="Enter quota"
+							type="number" min="1" max="100" id="new_quota"
+							ng-model="newStorage.quota">
+					</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<label class="col-xs-6 control-label">Active</label>
+					<div class="col-xs-5">
+						<input placeholder="Enter Active" for="active" type="checkbox"
+							class="control-label" id="new_active"
+							ng-model="newStorage.active">
+					</div>
+				</div>
+				<button type="button" class="btn btn-primary"
+					ng-click="createNewStorage(newStorage)">Create new</button>
+			</form>
+		</div>
+	</div>
+	<div id="panel-list" class="panel panel-default">
+		<div class="panel-heading">Storage directories</div>
+		<div class="panel-body">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Directory</th>
+						<th>Quota</th>
+						<th>Active</th>
+						<th>Order</th>
+						<th>Available space</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="storage in storages">
+						<td>
+							<button class="btn" ng-click="openEditStorageDialog(storage)">
+								<span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
+							</button>
+						</td>
+						<td><img height="32" width="32"
+							src="/images/database_32_32.png" />{{storage.rootDir}}</td>
+						<td><span class="label label-success">{{storage.quota}}%</span></td>
+						<td>{{storage.active}}</td>
+						<td>{{storage.orderInSet}}</td>
+						<td>{{storage.availableDiskSpaceInGo}} Go</td>
+						<td><button class="btn btn-danger"
+								ng-click="deleteStorage(storage)">
+								<span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete
+							</button></td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+</div>
+<div ng-include src="'templates/storage_edit.html'"></div>

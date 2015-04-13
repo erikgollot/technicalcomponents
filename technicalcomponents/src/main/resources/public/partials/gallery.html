@@ -1,27 +1,41 @@
-<div ng-include src="'templates/add_image_gallery.html'"></div>
-<hr>
-<div class="container">
-	<div class="panel panel-default">
-		<div class="panel-heading">Image Gallery for Components</div>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Image</th>
-					<th>Name</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="img in galleryImages" ng-if="hasImages">
-					<td><img height="64" width="64"
-						ng-src="/service/file/{{img.fileId}}" /></td>
-					<td>{{img.name}}</td>
-					<td><button type="button" class="btn btn-default btn-sm"
-							ng-click="removeImage(img.fileId)">
-							<span class="glyphicon glyphicon-remove"></span> Delete
-						</button></td>
-				</tr>
-			</tbody>
-		</table>
+<div ng-show="!isGalleryAvailable">
+
+	<div class="jumbotron">
+		<h1>Gallery not initialized!</h1>
+		<p>You've not initialized any storage directory. Please, register
+			as least one.</p>
+		<p>
+			<a class="btn btn-primary btn-lg" href="#/storage" role="button">Configure
+				storages</a>
+		</p>
+	</div>
+</div>
+<div ng-show="isGalleryAvailable">
+	<div ng-include src="'templates/add_image_gallery.html'"></div>
+	<hr>
+	<div class="container">
+		<div class="panel panel-default">
+			<div class="panel-heading">Image Gallery for Components</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Image</th>
+						<th>Name</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="img in galleryImages" ng-if="hasImages">
+						<td><img height="64" width="64"
+							ng-src="/service/file/{{img.fileId}}" /></td>
+						<td>{{img.name}}</td>
+						<td><button type="button" class="btn btn-default btn-sm"
+								ng-click="removeImage(img.fileId)">
+								<span class="glyphicon glyphicon-remove"></span> Delete
+							</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>

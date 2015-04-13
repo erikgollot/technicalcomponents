@@ -12,4 +12,10 @@ public interface StorageSet {
 	void setStrategyStorageAllocator(StorageStrategyAllocatorEnum strategy);
 
 	StorageStrategyAllocatorEnum getStrategyStorageAllocator();
+	
+	void addStorage(Storage storage);
+	
+	void removeStorage(Storage s);
+	
+	Storage getStorageFromPrimaryKey(Long id);
 }
