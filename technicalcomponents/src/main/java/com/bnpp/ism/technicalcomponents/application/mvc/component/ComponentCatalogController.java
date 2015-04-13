@@ -129,7 +129,7 @@ public class ComponentCatalogController {
 	@RequestMapping(value = "/service/createComponent/{idParentCategory}", method = RequestMethod.POST, headers = "Accept=application/json")
 	public @ResponseBody
 	TechnicalComponentView createComponent(
-			@RequestParam("component") TechnicalComponentView toCreate,
+			@RequestBody TechnicalComponentView toCreate,
 			@PathVariable("idParentCategory") Long parentCategoryId) {
 
 		TechnicalComponent created = service.createComponent(toCreate,
@@ -159,10 +159,11 @@ public class ComponentCatalogController {
 			@PathVariable("idImage") Long idImage) {
 		service.setImageComponent(idComponent, idImage);
 	}
-	
+
 	@RequestMapping(value = "/service/componentsOfCategory/{idCategory}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
-	List<TechnicalComponentView> getComponentsOfCategory(@PathVariable("idCategory") Long categoryId) {
+	List<TechnicalComponentView> getComponentsOfCategory(
+			@PathVariable("idCategory") Long categoryId) {
 		return service.getComponentsOfCategory(categoryId);
 	}
 }

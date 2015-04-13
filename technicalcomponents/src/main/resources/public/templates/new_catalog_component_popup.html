@@ -1,6 +1,6 @@
-<div class="modal fade" id="newComponentDialog" tabindex="-1"
+<div class="modal fade " id="newComponentDialog" tabindex="-1"
 	role="dialog" aria-labelledby="Name" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
@@ -12,79 +12,214 @@
 
 			<div class="modal-body">
 				<form id="newComponentForm" method="post" class="form-horizontal">
-					<div class="panel panel-default">
-						<div class="panel-heading">Vendor Information</div>
-						<br>
-						<div class="form-group form-group-sm">
-							<label class="col-xs-3 control-label">Name</label>
-							<div class="col-xs-5">
-								<input type="text" class="form-control" name="vendor"
-									data-ng-model="new_component.vendor.name" />
-							</div>
-						</div>
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="panel panel-primary">
+									<div class="panel-heading">Vendor Information</div>
+									<br>
+									<div class="form-group form-group-sm">
+										<label class="col-xs-4 control-label">Name</label>
+										<div class="col-xs-5">
+											<input type="text" class="form-control" name="vendor"
+												data-ng-model="new_component.vendorInformations.name" />
+										</div>
+									</div>
 
-						<div class="form-group form-group-sm">
-							<label class="col-xs-3 control-label">Description</label>
-							<div class="col-xs-5">
-								<input type="text" class="form-control" name="vendor.description"
-									data-ng-model="new_component.vendor.description" />
-							</div>
-						</div>
+									<div class="form-group form-group-sm">
+										<label class="col-xs-4 control-label">Description</label>
+										<div class="col-xs-5">
+											<input type="text" class="form-control"
+												name="vendor.description"
+												data-ng-model="new_component.vendorInformations.description" />
+										</div>
+									</div>
 
-						<div class="form-group form-group-sm">
-							<label class="col-xs-3 control-label">Version</label>
-							<div class="col-xs-5">
-								<input type="text" class="form-control" name="vendorr.version"
-									data-ng-model="new_component.vendor.version" />
-							</div>
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading">Local Information</div>
-						<br>
-						<div class="form-group form-group-sm">
-							<label class="col-xs-3 control-label">Name</label>
-							<div class="col-xs-5">
-								<input type="text" class="form-control" name="local.name"
-									data-ng-model="new_component.local.name" />
-							</div>
-						</div>
+									<div class="form-group form-group-sm">
+										<label class="col-xs-4 control-label">Version</label>
+										<div class="col-xs-5">
+											<input type="text" class="form-control" name="vendor.version"
+												data-ng-model="new_component.vendorInformations.version" />
+										</div>
+									</div>
+									<!--  Vendor Availabilty date -->
+									<div class="form-group form-group-sm">
+										<label class="col-xs-4 control-label">Availabilty *</label>
 
-						<div class="form-group form-group-sm">
-							<label class="col-xs-3 control-label">Description</label>
-							<div class="col-xs-5">
-								<input type="text" class="form-control" name="local.description"
-									data-ng-model="new_component.local.description" />
+										<div class="col-xs-5">
+											<p class="input-group">
+												<input type="text" class="form-control"
+													datepicker-popup="dd-MMMM-yyyy"
+													ng-model="new_component.vendorInformations.availableDate" init-date="today()"
+													is-open="vendorFieldsOption.availabilityDateOpened"
+													ng-required="true" /> <span class="input-group-btn">
+													<button type="button" class="btn btn-default"
+														ng-click="openVendorAvailabiltyDate($event);">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</button>
+												</span>
+											</p>
+										</div>
+									</div>
+									<!--  Vendor deprecated date -->
+									<div class="form-group form-group-sm">
+										<label class="col-xs-4 control-label">Deprecated</label>
+
+										<div class="col-xs-5">
+											<p class="input-group">
+												<input type="text" class="form-control"
+													datepicker-popup="dd-MMMM-yyyy"
+													ng-model="new_component.vendorInformations.deprecatedDate" init-date="today()"
+													is-open="vendorFieldsOption.deprecatedDateOpened"
+													ng-required="false" /> <span class="input-group-btn">
+													<button type="button" class="btn btn-default"
+														ng-click="openVendorDeprecatedDate($event);">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</button>
+												</span>
+											</p>
+										</div>
+									</div>
+									<!--  Vendor unavailability date -->
+									<div class="form-group form-group-sm">
+										<label class="col-xs-4 control-label">Unavailabilty</label>
+
+										<div class="col-xs-5">
+											<p class="input-group">
+												<input type="text" class="form-control"
+													datepicker-popup="dd-MMMM-yyyy"
+													ng-model="new_component.vendorInformations.unavailableDate" init-date="today()"
+													is-open="vendorFieldsOption.unavailabilityDateOpened"
+													ng-required="true" /> <span class="input-group-btn">
+													<button type="button" class="btn btn-default"
+														ng-click="openVendorUnavailabilityDate($event);">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</button>
+												</span>
+											</p>
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="panel panel-primary">
+									<div class="panel-heading">Local Information</div>
+									<br>
+									<div class="form-group form-group-sm">
+										<label class="col-xs-4 control-label">Name</label>
+										<div class="col-xs-5">
+											<input type="text" class="form-control" name="local.name"
+												data-ng-model="new_component.localInformations.name" />
+										</div>
+									</div>
+
+									<div class="form-group form-group-sm">
+										<label class="col-xs-4 control-label">Description</label>
+										<div class="col-xs-5">
+											<input type="text" class="form-control"
+												name="local.description"
+												data-ng-model="new_component.localInformations.description" />
+										</div>
+									</div>
+
+									<div class="form-group form-group-sm">
+										<label class="col-xs-4 control-label">Version</label>
+										<div class="col-xs-5">
+											<input type="text" class="form-control" name="local.version"
+												data-ng-model="new_component.localInformations.version" />
+										</div>
+									</div>
+									<!--  Local Availabilty date -->
+									<div class="form-group form-group-sm">
+										<label class="col-xs-4 control-label">Availabilty *</label>
+
+										<div class="col-xs-5">
+											<p class="input-group">
+												<input type="text" class="form-control"
+													datepicker-popup="dd-MMMM-yyyy"
+													ng-model="new_component.localInformations.availableDate" init-date="today()"
+													is-open="localFieldsOption.availabilityDateOpened"
+													ng-required="true" /> <span class="input-group-btn">
+													<button type="button" class="btn btn-default"
+														ng-click="openLocalAvailabiltyDate($event);">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</button>
+												</span>
+											</p>
+										</div>
+									</div>
+									<!--  Local deprecated date -->
+									<div class="form-group form-group-sm">
+										<label class="col-xs-4 control-label">Deprecated</label>
+
+										<div class="col-xs-5">
+											<p class="input-group">
+												<input type="text" class="form-control"
+													datepicker-popup="dd-MMMM-yyyy"
+													ng-model="new_component.localInformations.deprecatedDate" init-date="today()"
+													is-open="localFieldsOption.deprecatedDateOpened"
+													ng-required="false" /> <span class="input-group-btn">
+													<button type="button" class="btn btn-default"
+														ng-click="openLocalDeprecatedDate($event);">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</button>
+												</span>
+											</p>
+										</div>
+									</div>
+									<!--  Local unavailability date -->
+									<div class="form-group form-group-sm">
+										<label class="col-xs-4 control-label">Unavailabilty</label>
+
+										<div class="col-xs-5">
+											<p class="input-group">
+												<input type="text" class="form-control"
+													datepicker-popup="dd-MMMM-yyyy"
+													ng-model="new_component.localInformations.unavailableDate" init-date="today()"
+													is-open="localFieldsOption.unavailabilityDateOpened"
+													ng-required="true" /> <span class="input-group-btn">
+													<button type="button" class="btn btn-default"
+														ng-click="openLocalUnavailabilityDate($event);">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</button>
+												</span>
+											</p>
+										</div>
+									</div>
+
+								</div>
 							</div>
 						</div>
-
-						<div class="form-group form-group-sm">
-							<label class="col-xs-3 control-label">Version</label>
-							<div class="col-xs-5">
-								<input type="text" class="form-control" name="local.version"
-									data-ng-model="new_component.local.version" />
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group form-group-sm">
+									<label class="col-md-2 control-label">Force obsolete</label>
+									<div class="col-xs-5">
+										<input class="checkbox" type="checkbox"
+											data-ng-model="new_component.forceObsolete">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<button type="button" class="btn btn-primary btn-sm"
+									ng-click="openSelectLogoDialog()">Select logo</button>
 							</div>
 						</div>
-					</div>
-					<div class="form-group form-group-sm">
-						<label class="col-xs-3 control-label">Force obsolete</label>
-						<div class="col-xs-5">
-							<input class="checkbox" type="checkbox"
-								data-ng-model="new_component.forceObsolete">
-						</div>
-					</div>
-
-					<div class="form-group form-group-sm">
-						<div class="col-xs-5 col-xs-offset-3">
-							<button type="submit" class="btn btn-primary" data-dismiss="modal"
-								ng-click="createNewComponent()">Save</button>
-							<button type="button" class="btn btn-default"
-								data-dismiss="modal">Cancel</button>
+						<div class="row">
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-primary"
+									data-dismiss="modal" ng-click="createNewComponent(new_component)">Save</button>
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Cancel</button>
+							</div>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
-	</div>
+	</div>	
 </div>
-</div>
+<div ng-include src="'templates/select_logo.html'"></div>
+
+
