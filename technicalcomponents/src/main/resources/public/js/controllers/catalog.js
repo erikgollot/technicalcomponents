@@ -74,22 +74,26 @@ techMain
 					}
 
 					// Handlers
-
-					$scope.on_select_category = function(category) {
-						$scope.selectedCategoryId = category.category_id;
-						console.log("selected parent = "
-								+ $scope.selectedCategoryId);
-						$scope.hasSelectedCategory = true;
+					$scope.loadComponentsOfSelectedCategory = function(category_id) {
+						$scope.selectedCategoryId = category_id;
 						$http.get(
 								"/service/componentsOfCategory/"
-										+ category.category_id).success(
+										+ category_id).success(
 								function(response) {
 									$scope.allComponents = response;
 								});
 					}
+					
+					$scope.on_select_category = function(category) {						
+						$scope.hasSelectedCategory = true;
+						$scope.loadComponentsOfSelectedCategory(category.category_id);
+					}
+					
+					
 
 					// Create new component on dialog save button click
-					$scope.createNewComponent = function(newComp) {
+					$scope.createNewComponent = function(newCompEdited) {
+						newComp = angular.copy(newCompEdited);
 						if (newComp.image == null) {
 							newComp.image = new Object();
 						}
@@ -99,6 +103,7 @@ techMain
 						// ok in datepicker, the displayed format is not set to
 						// the field that
 						// hold the date
+						
 						if (newComp.localInformations.availableDate != null) {
 							newComp.localInformations.availableDate = $scope.convertDate(newComp.localInformations.availableDate);
 						}
@@ -120,8 +125,8 @@ techMain
 						$http.post(
 								"/service/createComponent/"
 										+ $scope.selectedCategoryId, newComp)
-								.success(function(response) {
-									console.log("component created...youpi");
+								.success(function(response) {									
+									$scope.loadComponentsOfSelectedCategory($scope.selectedCategoryId);
 								})
 								.error(function(data, status, headers, config) {
 									BootstrapDialog.show({

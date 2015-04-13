@@ -99,7 +99,7 @@ public class ComponentCatalogServiceImpl implements ComponentCatalogService {
 
 			// If logo is not null, attache storedfileversion
 			Long logoId = null;
-			if (toCreate.getImage() != null && toCreate.getImage().getId()!=-1) {
+			if (toCreate.getImage() != null && toCreate.getImage().getId()!=null && toCreate.getImage().getId()!=-1) {
 				logoId = toCreate.getImage().getId();
 			}
 			if (logoId != null) {

@@ -2,22 +2,44 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Identifier</th>
+				<th></th>
+				<th>Status</th>
+				<th>Local Name</th>
 				<th>Vendor name</th>
 				<th>Available date</th>
-				<th>Local Name</th>
+				<th>Deprecated date</th>
+				<th>Unavailable date</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in allComponents">
 				<td>
 					<button class="btn">
-						<span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</button>
+						<span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
+					</button>
+				</td>
+				<td>
+					<button ng-show="item.isAvailable" type="button"
+						class="btn btn-success btn-xs">
+						<span class="glyphicon glyphicon-ok-sign"></span>
+					</button>
+					<button ng-show="item.isWarningPeriod" type="button"
+						class="btn btn-warning btn-xs">
+						<span class="glyphicon glyphicon-warning-sign "></span>
+					</button>
+					<button ng-show="item.isHotPeriod" type="button"
+						class="btn btn-danger btn-xs">
+						<span class="glyphicon glyphicon-ban-circle"></span>
+					</button>
 				</td>
 				<td><img height="64" width="64" ng-show="item.image != null"
-								ng-src="/service/file/{{item.image.id}}" />{{item.localInformations.name}}</td>
-				<td>{{item.localInformations.availableDate}}</td>
+					ng-src="/service/file/{{item.image.id}}" />{{item.localInformations.name}}</td>
 				<td>{{item.localInformations.name }}</td>
+				<td>{{item.localInformations.availableDate}}</td>
+				<td ng-show="item.localInformations.unavailableDate!=null">{{item.localInformations.unavailableDate}}</td>
+				<td ng-show="item.localInformations.unavailableDate==null">Not defined</td>
+				<td ng-show="item.localInformations.unavailableDate!=null">{{item.localInformations.unavailableDate}}</td>
+				<td ng-show="item.localInformations.unavailableDate==null">Not defined</td>
 			</tr>
 		</tbody>
 	</table>
