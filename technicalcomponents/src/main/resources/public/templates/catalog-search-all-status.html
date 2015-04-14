@@ -1,0 +1,41 @@
+<hr>
+<div class="col-sm-12" role="tabpanel" id="myTab">
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a href="#warning"
+			aria-controls="warning" role="tab" data-toggle="tab">Warning
+				Components</a></li>
+		<li role="presentation"><a href="#hot" aria-controls="hot"
+			role="tab" data-toggle="tab">Hot Components</a></li>
+		<li role="presentation"><a href="#available" aria-controls="available"
+			role="tab" data-toggle="tab">Available Components</a></li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane active" id="warning">
+			<button type="button" class="btn btn-primary btn-sm"
+				ng-click="searchWarningComponents()">Search warning
+				components...</button>
+			<div ng-include src="'templates/warning_components.html'"></div>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="hot">
+			<button type="button" class="btn btn-primary btn-sm"
+				ng-click="searchHotComponents()">Search hot components...</button>
+			<div ng-include src="'templates/hot_components.html'"></div>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="available">
+			<button type="button" class="btn btn-primary btn-sm"
+				ng-click="searchAvailableComponents()">Search available
+				components...</button>
+			<div ng-include src="'templates/available_components.html'"></div>
+		</div>
+	</div>
+
+</div>
+
+<script>
+	$('#myTab a').click(function(e) {
+		e.preventDefault()
+		$(this).tab('show')
+	})
+</script>

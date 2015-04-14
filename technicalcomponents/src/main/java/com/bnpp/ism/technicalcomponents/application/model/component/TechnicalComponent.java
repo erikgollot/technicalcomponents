@@ -5,6 +5,7 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,8 +22,8 @@ public class TechnicalComponent {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Version
-    private Long version;
-	
+	private Long version;
+
 	public Long getVersion() {
 		return version;
 	}
@@ -39,6 +40,9 @@ public class TechnicalComponent {
 		this.id = id;
 	}
 
+	@ManyToOne(fetch=FetchType.LAZY)
+	private ComponentCategory category;
+	
 	@OneToOne
 	private StoredFileVersion image;
 
@@ -136,4 +140,15 @@ public class TechnicalComponent {
 		this.obscolescenceStrategy = obscolescenceStrategy;
 	}
 
+	public static final String WARNING_STATUS = "WARNING";
+	public static final String HOT_STATUS = "HOT";
+	public static final String AVAILABLE_STATUS = "AVAILABLE";
+
+	public ComponentCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ComponentCategory category) {
+		this.category = category;
+	}
 }

@@ -98,8 +98,9 @@ public class InitialContentInitializer {
 			database.setDescription("Open components");
 			database.setParent(open);
 			open.addComponentCategory(database);
-
+			
 			// Add default components
+			// ***********************************************
 			TechnicalComponent c1 = new TechnicalComponent();
 			ComponentVersionInfo vendorInfo = new ComponentVersionInfo();
 			vendorInfo.setName("SpringBoot");
@@ -127,9 +128,9 @@ public class InitialContentInitializer {
 			}
 			c1.setLocalInformations(localInfo);			
 			open.addTechnicalComponent(c1);
-			componentDao.save(c1);
 			
-			c1 = new TechnicalComponent();
+			
+			TechnicalComponent c2 = new TechnicalComponent();
 			vendorInfo = new ComponentVersionInfo();
 			vendorInfo.setName("Oracle");
 			vendorInfo.setVersion("10i");
@@ -142,7 +143,7 @@ public class InitialContentInitializer {
 			} catch (ParseException e) {				
 				e.printStackTrace();
 			}
-			c1.setVendorInformations(vendorInfo);
+			c2.setVendorInformations(vendorInfo);
 			
 			localInfo = new ComponentVersionInfo();
 			localInfo.setName("Oracle");
@@ -154,10 +155,10 @@ public class InitialContentInitializer {
 			} catch (ParseException e) {				
 				e.printStackTrace();
 			}
-			c1.setLocalInformations(localInfo);			
-			database.addTechnicalComponent(c1);
+			c2.setLocalInformations(localInfo);			
+			database.addTechnicalComponent(c2);
 
-			componentDao.save(c1);
+			//componentDao.save(c1);
 			catalog.save(cat);
 			
 		}

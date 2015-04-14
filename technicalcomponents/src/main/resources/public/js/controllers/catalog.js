@@ -15,9 +15,6 @@ techMain
 
 					$scope.component_catalog = [];
 					$scope.selectedCatalog = [];
-					$scope.new_component = new Object();
-					$scope.new_component.vendorInformations = new Object();
-					$scope.new_component.localInformations = new Object();
 					$scope.image = new Object();
 					$scope.selectedCategoryId = -1;
 					$scope.hasSelectedCategory = false;
@@ -64,71 +61,114 @@ techMain
 
 					$scope.refreshGallery();
 
-					$scope.convertDate = function(aDate) {						
-						var formatedDate = new Date(aDate);
+					$scope.convertDate = function(aDate) {
+						var formatedDate = Date.parse(aDate,'dd-mm-yyyy');
 						var formatedDateAsString = "";
-						formatedDateAsString = formatedDateAsString + formatedDate.getDate() + "-"
-								+ (formatedDate.getMonth()+1)+ "-"
+						formatedDateAsString = formatedDateAsString
+								+ formatedDate.getDate() + "-"
+								+ (formatedDate.getMonth() + 1) + "-"
 								+ formatedDate.getFullYear();
 						return formatedDateAsString;
 					}
 
 					// Handlers
-
-					$scope.on_select_category = function(category) {
-						$scope.selectedCategoryId = category.category_id;
-						console.log("selected parent = "
-								+ $scope.selectedCategoryId);
-						$scope.hasSelectedCategory = true;
+					$scope.loadComponentsOfSelectedCategory = function(
+							category_id) {
+						$scope.selectedCategoryId = category_id;
 						$http.get(
-								"/service/componentsOfCategory/"
-										+ category.category_id).success(
-								function(response) {
+								"/service/componentsOfCategory/" + category_id)
+								.success(function(response) {
 									$scope.allComponents = response;
 								});
 					}
 
+					$scope.on_select_category = function(category) {
+						$scope.hasSelectedCategory = true;
+						$scope
+								.loadComponentsOfSelectedCategory(category.category_id);
+					}
+
 					// Create new component on dialog save button click
-					$scope.createNewComponent = function(newComp) {
+					$scope.createOrUpdateComponent = function(theComp) {
+						newComp = angular.copy(theComp);
 						if (newComp.image == null) {
 							newComp.image = new Object();
 						}
-						newComp.image.id = $scope.image.id;
+						if ($scope.image.id!=null) {
+							newComp.image.id = $scope.image.id;
+						}
 						// Need to transform date in the right format. Even if
 						// display format is
 						// ok in datepicker, the displayed format is not set to
 						// the field that
 						// hold the date
+
 						if (newComp.localInformations.availableDate != null) {
-							newComp.localInformations.availableDate = $scope.convertDate(newComp.localInformations.availableDate);
+							newComp.localInformations.availableDate = $scope
+									.convertDate(newComp.localInformations.availableDate);
 						}
 						if (newComp.localInformations.deprecatedDate != null) {
-							newComp.localInformations.deprecatedDate = $scope.convertDate(newComp.localInformations.deprecatedDate);
+							newComp.localInformations.deprecatedDate = $scope
+									.convertDate(newComp.localInformations.deprecatedDate);
 						}
 						if (newComp.localInformations.unavailableDate != null) {
-							newComp.localInformations.unavailableDate = $scope.convertDate(newComp.localInformations.unavailableDate);
+							newComp.localInformations.unavailableDate = $scope
+									.convertDate(newComp.localInformations.unavailableDate);
 						}
 						if (newComp.vendorInformations.availableDate != null) {
-							newComp.vendorInformations.availableDate = $scope.convertDate(newComp.vendorInformations.availableDate);
+							newComp.vendorInformations.availableDate = $scope
+									.convertDate(newComp.vendorInformations.availableDate);
 						}
 						if (newComp.vendorInformations.deprecatedDate != null) {
-							newComp.vendorInformations.deprecatedDate = $scope.convertDate(newComp.vendorInformations.deprecatedDate);
+							newComp.vendorInformations.deprecatedDate = $scope
+									.convertDate(newComp.vendorInformations.deprecatedDate);
 						}
 						if (newComp.vendorInformations.unavailableDate != null) {
-							newComp.vendorInformations.unavailableDate = $scope.convertDate(newComp.vendorInformations.unavailableDate);
+							newComp.vendorInformations.unavailableDate = $scope
+									.convertDate(newComp.vendorInformations.unavailableDate);
 						}
-						$http.post(
-								"/service/createComponent/"
-										+ $scope.selectedCategoryId, newComp)
-								.success(function(response) {
-									console.log("component created...youpi");
-								})
-								.error(function(data, status, headers, config) {
-									BootstrapDialog.show({
-										title : 'Error',
-										message : 'Cannot create component'
-									});
-								});
+						// It's a new one
+						if (newComp.id == null) {
+							$http
+									.post(
+											"/service/createComponent/"
+													+ $scope.selectedCategoryId,
+											newComp)
+									.success(
+											function(response) {
+												$scope
+														.loadComponentsOfSelectedCategory($scope.selectedCategoryId);
+											})
+									.error(
+											function(data, status, headers,
+													config) {
+												BootstrapDialog
+														.show({
+															title : 'Error',
+															message : 'Cannot create component'
+														});
+											});
+						} else {
+							// Update existing one
+							$http
+									.post("/service/updateComponent", newComp)
+									.success(
+											function(response) {
+												$scope
+														.loadComponentsOfSelectedCategory($scope.selectedCategoryId);
+											})
+									.error(
+											function(data, status, headers,
+													config) {
+												BootstrapDialog
+														.show({
+															title : 'Error',
+															message : 'Cannot update component'
+														});
+											});
+														
+						}
+						$scope.component_under_edition=null;
 					}
 
 					$scope.saved = false;
@@ -218,4 +258,62 @@ techMain
 						$scope.image.id = -1;
 					}
 
+					$scope.searchWarningComponents = function() {
+						$http
+								.get(
+										"/service/searchTechnicalComponentsWithStatus/WARNING")
+								.success(function(response) {
+									$scope.warningComponents = response;
+								});
+
+					}
+					$scope.searchHotComponents = function() {
+						$http
+								.get(
+										"/service/searchTechnicalComponentsWithStatus/HOT")
+								.success(function(response) {
+									$scope.hotComponents = response;
+								});
+
+					}
+					$scope.searchAvailableComponents = function() {
+						$http
+								.get(
+										"/service/searchTechnicalComponentsWithStatus/AVAILABLE")
+								.success(function(response) {
+									$scope.availableComponents = response;
+								});
+
+					}
+
+					$scope.setEditedComponent = function(component) {
+						$scope.component_under_edition = angular.copy(component);
+					}
+					
+					$scope.empty_component_under_edition = {};
+					$scope.resetEditedComponent = function(component) {
+						$scope.component_under_edition = angular.copy($scope.empty_component_under_edition);
+						
+
+					}
+					$scope.resetEditedComponent();
+					
+					$scope.deleteComponent = function(component) {
+						$http
+						.post("/service/deleteComponent/"+component.id)
+						.success(
+								function(response) {
+									$scope
+											.loadComponentsOfSelectedCategory($scope.selectedCategoryId);
+								})
+						.error(
+								function(data, status, headers,
+										config) {
+									BootstrapDialog
+											.show({
+												title : 'Error',
+												message : 'Cannot delete component'
+											});
+								});
+					}
 				});
