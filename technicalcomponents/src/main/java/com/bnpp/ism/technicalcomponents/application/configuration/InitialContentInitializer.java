@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bnpp.ism.technicalcomponents.application.dao.application.ApplicationVersionDao;
 import com.bnpp.ism.technicalcomponents.application.dao.component.ComponentCatalogDao;
 import com.bnpp.ism.technicalcomponents.application.dao.component.ComponentCategoryDao;
 import com.bnpp.ism.technicalcomponents.application.dao.component.ComponentGalleryDao;
 import com.bnpp.ism.technicalcomponents.application.dao.component.TechnicalComponentDao;
 import com.bnpp.ism.technicalcomponents.application.dao.storage.DefaultStorageSetDao;
+import com.bnpp.ism.technicalcomponents.application.model.application.ApplicationVersion;
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCatalog;
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCategory;
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentGallery;
@@ -34,6 +36,8 @@ public class InitialContentInitializer {
 	ComponentGalleryDao galleryDao;
 	@Autowired
 	DefaultStorageSetDao storageDao;
+	@Autowired
+	ApplicationVersionDao appDao;
 
 	@PostConstruct
 	@Transactional
@@ -45,6 +49,16 @@ public class InitialContentInitializer {
 		initGalleryCatalog();
 
 		initDefaultStorage();
+		
+		initSomeApplications();
+	}
+
+	private void initSomeApplications() {
+		for (int i=0;i<10;i++) {
+			ApplicationVersion app =new ApplicationVersion();
+			app.setName("Application "+i+" [1.0.0]");
+			appDao.save(app);
+		}
 	}
 
 	private void initDefaultStorage() {
