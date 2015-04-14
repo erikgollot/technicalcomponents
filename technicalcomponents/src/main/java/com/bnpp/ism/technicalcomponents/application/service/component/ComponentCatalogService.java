@@ -24,4 +24,9 @@ public interface ComponentCatalogService {
 	TechnicalComponent updateComponent(TechnicalComponentView toUpdate);
 
 	TechnicalComponent setImageComponent(Long componentId, Long imageId);
+
+	List<TechnicalComponentView> searchTechnicalComponentsWithStatus(
+			String status);
+	
+	void deleteComponent(Long componentId);
 }

@@ -99,7 +99,9 @@ public class ComponentCatalogServiceImpl implements ComponentCatalogService {
 
 			// If logo is not null, attache storedfileversion
 			Long logoId = null;
-			if (toCreate.getImage() != null && toCreate.getImage().getId()!=null && toCreate.getImage().getId()!=-1) {
+			if (toCreate.getImage() != null
+					&& toCreate.getImage().getId() != null
+					&& toCreate.getImage().getId() != -1) {
 				logoId = toCreate.getImage().getId();
 			}
 			if (logoId != null) {
@@ -152,8 +154,7 @@ public class ComponentCatalogServiceImpl implements ComponentCatalogService {
 
 	@Transactional
 	@Override
-	public List<TechnicalComponentView> getComponentsOfCategory(
-			Long categoryId) {
+	public List<TechnicalComponentView> getComponentsOfCategory(Long categoryId) {
 		ComponentCategory cat = componentCategoryDao.findOne(categoryId);
 		if (cat != null && cat.getTechnicalComponents() != null) {
 			List<TechnicalComponentView> views = new ArrayList<TechnicalComponentView>();
@@ -163,6 +164,48 @@ public class ComponentCatalogServiceImpl implements ComponentCatalogService {
 			return views;
 		} else {
 			return null;
+		}
+	}
+
+	@Transactional
+	@Override
+	public List<TechnicalComponentView> searchTechnicalComponentsWithStatus(
+			String status) {
+		Iterable<TechnicalComponent> all = technicalComponentDao.findAll();
+		if (all != null) {
+			List<TechnicalComponentView> ret = new ArrayList<TechnicalComponentView>();
+			for (TechnicalComponent c : all) {
+				if (TechnicalComponent.WARNING_STATUS.equals(status)
+						&& c.isWarningPeriod()) {
+					ret.add(dozerBeanMapper
+							.map(c, TechnicalComponentView.class));
+				} else if (TechnicalComponent.HOT_STATUS.equals(status)
+						&& c.isHotPeriod()) {
+					ret.add(dozerBeanMapper
+							.map(c, TechnicalComponentView.class));
+				} else if (TechnicalComponent.AVAILABLE_STATUS.equals(status)
+						&& c.isAvailablePeriod()) {
+					ret.add(dozerBeanMapper
+							.map(c, TechnicalComponentView.class));
+				}
+			}
+			return (ret.size() > 0 ? ret : null);
+		}
+		return null;
+	}
+
+	@Transactional
+	@Override
+	public void deleteComponent(Long componentId) {
+		if (componentId!=null) {
+			TechnicalComponent component = technicalComponentDao.findOne(componentId);
+			if (component!=null) {
+				ComponentCategory parent = component.getCategory();
+				parent.removeTechnicalComponent(component);
+				technicalComponentDao.delete(component);
+				componentCategoryDao.save(parent);
+				
+			}
 		}
 	}
 }

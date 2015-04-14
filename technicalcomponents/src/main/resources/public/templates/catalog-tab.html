@@ -9,12 +9,15 @@
 				<th>Available date</th>
 				<th>Deprecated date</th>
 				<th>Unavailable date</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in allComponents">
 				<td>
-					<button class="btn">
+					<button class="btn" data-toggle="modal"
+						ng-click="setEditedComponent(item)"
+						data-target="#editComponentDialog">
 						<span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
 					</button>
 				</td>
@@ -34,12 +37,19 @@
 				</td>
 				<td><img height="64" width="64" ng-show="item.image != null"
 					ng-src="/service/file/{{item.image.id}}" />{{item.localInformations.name}}</td>
-				<td>{{item.localInformations.name }}</td>
+				<td>{{item.vendorInformations.name }}</td>
 				<td>{{item.localInformations.availableDate}}</td>
 				<td ng-show="item.localInformations.unavailableDate!=null">{{item.localInformations.unavailableDate}}</td>
-				<td ng-show="item.localInformations.unavailableDate==null">Not defined</td>
+				<td ng-show="item.localInformations.unavailableDate==null">Not
+					defined</td>
 				<td ng-show="item.localInformations.unavailableDate!=null">{{item.localInformations.unavailableDate}}</td>
-				<td ng-show="item.localInformations.unavailableDate==null">Not defined</td>
+				<td ng-show="item.localInformations.unavailableDate==null">Not
+					defined</td>
+
+				<td><button type="button" class="btn btn-default btn-sm"
+						ng-click="deleteComponent(item)">
+						<span class="glyphicon glyphicon-remove"></span> Delete
+					</button></td>
 			</tr>
 		</tbody>
 	</table>

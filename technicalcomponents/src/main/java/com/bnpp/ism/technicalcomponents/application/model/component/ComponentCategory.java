@@ -40,7 +40,7 @@ public class ComponentCategory {
 	@ManyToOne
 	ComponentCategory parent;
 	
-	@OneToMany
+	@OneToMany(mappedBy="category", cascade=CascadeType.ALL)
 	private List<TechnicalComponent> technicalComponents;
 
 	
@@ -91,10 +91,12 @@ public class ComponentCategory {
 			this.technicalComponents = new ArrayList<TechnicalComponent>();
 		}
 		getTechnicalComponents().add(component);
+		component.setCategory(this);
 	}
 
 	public void removeTechnicalComponent(TechnicalComponent component) {
 		getTechnicalComponents().remove(component);
+		component.setCategory(null);
 	}
 
 	public void addComponentCategory(ComponentCategory category) {

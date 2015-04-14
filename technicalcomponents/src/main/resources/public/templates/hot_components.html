@@ -1,0 +1,25 @@
+<table class="table table-striped" ng-show="hotComponents!=null && hotComponents.length>0">
+	<thead>
+		<tr>
+			<th>Local Name</th>
+			<th>Vendor name</th>
+			<th>Available date</th>
+			<th>Deprecated date</th>
+			<th>Unavailable date</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="item in hotComponents">
+			<td><img height="64" width="64" ng-show="item.image != null"
+				ng-src="/service/file/{{item.image.id}}" />{{item.localInformations.name}}</td>
+			<td>{{item.localInformations.name }}</td>
+			<td>{{item.localInformations.availableDate}}</td>
+			<td ng-show="item.localInformations.unavailableDate!=null">{{item.localInformations.unavailableDate}}</td>
+			<td ng-show="item.localInformations.unavailableDate==null">Not
+				defined</td>
+			<td ng-show="item.localInformations.unavailableDate!=null">{{item.localInformations.unavailableDate}}</td>
+			<td ng-show="item.localInformations.unavailableDate==null">Not
+				defined</td>
+		</tr>
+	</tbody>
+</table>
