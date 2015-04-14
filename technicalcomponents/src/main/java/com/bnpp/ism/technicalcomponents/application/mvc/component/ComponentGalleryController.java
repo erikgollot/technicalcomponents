@@ -1,7 +1,6 @@
 package com.bnpp.ism.technicalcomponents.application.mvc.component;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.dozer.Mapper;
@@ -14,12 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCatalog;
 import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFile;
 import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFileVersion;
-import com.bnpp.ism.technicalcomponents.application.model.view.component.ComponentCatalogView;
 import com.bnpp.ism.technicalcomponents.application.model.view.component.ImageGallery;
-import com.bnpp.ism.technicalcomponents.application.model.view.storage.SimpleStoredFileVersionView;
 import com.bnpp.ism.technicalcomponents.application.service.component.ComponentGalleryManager;
 import com.bnpp.ism.technicalcomponents.application.service.storage.DefaultStorageSetManager;
 import com.bnpp.ism.technicalcomponents.application.service.storage.StorageException;
@@ -30,6 +26,7 @@ public class ComponentGalleryController {
 	DefaultStorageSetManager storageManager;
 	@Autowired
 	ComponentGalleryManager galleryManager;
+	
 	@Autowired
 	Mapper dozerBeanMapper;
 
@@ -67,10 +64,17 @@ public class ComponentGalleryController {
 	public @ResponseBody
 	void removeImage(@PathVariable("id") Long idOfVersion) {
 		if (idOfVersion != null) {
-			galleryManager.removeImage(idOfVersion);
+			try {
+				StoredFileVersion version = galleryManager.removeFirstInDatabase(idOfVersion);
+				storageManager.removePhysicalVersions(version.getFile());				
+			} catch (RuntimeException ex) {
+				StorageException ex2 = new StorageException();
+				ex2.setMessage("Cannot remove image, image is used by a component");
+				throw ex2;
+			}
 		}
 	}
-	
+
 	@RequestMapping(value = "/componentGallery/all", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
 	List<ImageGallery> all() {

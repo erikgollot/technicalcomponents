@@ -5,13 +5,14 @@ import java.util.List;
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCatalog;
 import com.bnpp.ism.technicalcomponents.application.model.component.TechnicalComponent;
 import com.bnpp.ism.technicalcomponents.application.model.view.component.ComponentCatalogView;
+import com.bnpp.ism.technicalcomponents.application.model.view.component.ComponentCategoryView;
 import com.bnpp.ism.technicalcomponents.application.model.view.component.TechnicalComponentView;
 
 public interface ComponentCatalogService {
 	ComponentCatalog createCatalog(String name, String description);
 
 	Iterable<TechnicalComponent> getAllComponents();
-	
+
 	List<TechnicalComponentView> getComponentsOfCategory(Long categoryId);
 
 	Iterable<ComponentCatalogView> catalogs();
@@ -27,6 +28,10 @@ public interface ComponentCatalogService {
 
 	List<TechnicalComponentView> searchTechnicalComponentsWithStatus(
 			String status);
-	
+
 	void deleteComponent(Long componentId);
+
+	ComponentCategoryView addCategory(String name, Long parentCategoryId);
+
+	void deleteCategory(Long categoryId);
 }

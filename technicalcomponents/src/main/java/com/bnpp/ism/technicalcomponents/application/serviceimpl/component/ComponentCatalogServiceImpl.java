@@ -18,8 +18,10 @@ import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCat
 import com.bnpp.ism.technicalcomponents.application.model.component.TechnicalComponent;
 import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFileVersion;
 import com.bnpp.ism.technicalcomponents.application.model.view.component.ComponentCatalogView;
+import com.bnpp.ism.technicalcomponents.application.model.view.component.ComponentCategoryView;
 import com.bnpp.ism.technicalcomponents.application.model.view.component.TechnicalComponentView;
 import com.bnpp.ism.technicalcomponents.application.service.component.ComponentCatalogService;
+import com.bnpp.ism.technicalcomponents.application.service.component.ComponentException;
 
 @Service
 public class ComponentCatalogServiceImpl implements ComponentCatalogService {
@@ -197,15 +199,63 @@ public class ComponentCatalogServiceImpl implements ComponentCatalogService {
 	@Transactional
 	@Override
 	public void deleteComponent(Long componentId) {
-		if (componentId!=null) {
-			TechnicalComponent component = technicalComponentDao.findOne(componentId);
-			if (component!=null) {
+		if (componentId != null) {
+			TechnicalComponent component = technicalComponentDao
+					.findOne(componentId);
+			if (component != null) {
 				ComponentCategory parent = component.getCategory();
 				parent.removeTechnicalComponent(component);
 				technicalComponentDao.delete(component);
 				componentCategoryDao.save(parent);
-				
+
 			}
 		}
+	}
+
+	@Transactional
+	@Override
+	public ComponentCategoryView addCategory(String name, Long parentCategoryId) {
+		ComponentCategory parent = componentCategoryDao
+				.findOne(parentCategoryId);
+		if (parent != null) {
+			checkCanAddCategory(parent, name);
+			ComponentCategory sub = new ComponentCategory();
+			sub.setName(name);
+			parent.addComponentCategory(sub);
+			componentCategoryDao.save(sub);
+			componentCategoryDao.save(parent);
+			return dozerBeanMapper.map(sub, ComponentCategoryView.class);
+		}
+		ComponentException ex = new ComponentException();
+		ex.setMessage("Category id=" + parentCategoryId
+				+ " no longer exists, cannot add sub category [" + name+"]");
+		throw ex;
+	}
+
+	private void checkCanAddCategory(ComponentCategory parent, String name) {
+		if (parent.getCategories() != null) {
+			for (ComponentCategory child : parent.getCategories()) {
+				if (name.equals(child.getName())) {
+					ComponentException ex = new ComponentException();
+					ex.setMessage("Cannot create existing category : [" + name
+							+ "] into [" + parent.getName()+"]");
+					throw ex;
+				}
+			}
+		}
+	}
+
+	@Transactional
+	@Override
+	public void deleteCategory(Long categoryId) {
+		ComponentCategory cat = componentCategoryDao
+				.findOne(categoryId);
+		if (cat != null) {
+			if (cat.getParent()!=null) {
+				cat.getParent().removeComponentCategory(cat);
+				componentCategoryDao.delete(cat);
+			}
+		}
+		
 	}
 }
