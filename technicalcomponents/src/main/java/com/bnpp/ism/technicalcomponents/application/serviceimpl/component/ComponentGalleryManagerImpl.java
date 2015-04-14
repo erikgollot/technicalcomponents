@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bnpp.ism.technicalcomponents.application.dao.component.ComponentGalleryDao;
@@ -17,6 +18,7 @@ import com.bnpp.ism.technicalcomponents.application.model.storage.StoredFileVers
 import com.bnpp.ism.technicalcomponents.application.model.view.component.ImageGallery;
 import com.bnpp.ism.technicalcomponents.application.service.component.ComponentGalleryManager;
 import com.bnpp.ism.technicalcomponents.application.service.storage.DefaultStorageSetManager;
+import com.bnpp.ism.technicalcomponents.application.service.storage.StorageException;
 
 @Service
 public class ComponentGalleryManagerImpl implements ComponentGalleryManager {
@@ -39,20 +41,26 @@ public class ComponentGalleryManagerImpl implements ComponentGalleryManager {
 		}
 	}
 
+	
+	@Override
+	public void removeImageFile(StoredFileVersion image) {
+		storageManager.removeFile(image.getFile());
+	}
+
 	@Transactional
 	@Override
-	public void removeImage(Long imageVersionId) {
+	public StoredFileVersion removeFirstInDatabase(Long imageVersionId) {
 		ComponentGallery gallery = getGallery();
 		if (gallery != null) {
 			StoredFileVersion image = fileVersionDao.findOne(imageVersionId);
 			if (gallery != null && image != null) {
 				gallery.removeImage(image.getFile());
 				galleryDao.save(gallery);
-				// Delete image
-				storageManager.removeFile(image.getFile());
-
+				storageManager.removeFileOnlyInDatabase(image.getFile());
+				return image;
 			}
 		}
+		return null;
 	}
 
 	@Transactional

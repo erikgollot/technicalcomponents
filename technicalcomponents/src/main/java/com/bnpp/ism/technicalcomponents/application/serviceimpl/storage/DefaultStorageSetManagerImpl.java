@@ -47,15 +47,27 @@ public class DefaultStorageSetManagerImpl implements DefaultStorageSetManager {
 	public void removeFile(StoredFile image) {
 		// remove each version
 		if (image.getVersions() != null) {
-			for (StoredFileVersion version : image.getVersions()) {
-				removeVersion(version);
-			}
+			removePhysicalVersions(image);
+			image.getVersions().clear();
+			fileDao.delete(image);
+		}
+	}
+	
+	public void removeFileOnlyInDatabase(StoredFile image) {
+		// remove each version
+		if (image.getVersions() != null) {			
 			image.getVersions().clear();
 			fileDao.delete(image);
 		}
 	}
 
-	private void removeVersion(StoredFileVersion version) {
+	public void removePhysicalVersions(StoredFile image) {
+		for (StoredFileVersion version : image.getVersions()) {
+			removePhysicalVersion(version);
+		}
+	}
+
+	private void removePhysicalVersion(StoredFileVersion version) {
 		fileVersionDao.delete(version);
 		FileUtils.deleteQuietly(new File(version.getFullName()));
 	}

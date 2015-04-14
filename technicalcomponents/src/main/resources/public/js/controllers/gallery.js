@@ -6,9 +6,9 @@ galleryControllers.controller('galleryController', function($scope, $http,
 
 	$scope.isGalleryAvailable = false;
 	$http.get("/componentGallery/canStoreImage").success(function(response) {
-		$scope.isGalleryAvailable = response;		
+		$scope.isGalleryAvailable = response;
 	});
-	
+
 	$scope.$watch('files', function() {
 		$scope.upload($scope.files);
 	});
@@ -44,7 +44,14 @@ galleryControllers.controller('galleryController', function($scope, $http,
 							$http.post("/componentGallery/removeImage/" + id)
 									.success(function(response) {
 										$scope.refreshGallery();
-									});
+									}).error(
+											function(data, status, headers,
+													config) {
+												BootstrapDialog.show({
+													title : 'Error',
+													message : data.message
+												});
+											});
 							dialog.close();
 						}
 					} ]

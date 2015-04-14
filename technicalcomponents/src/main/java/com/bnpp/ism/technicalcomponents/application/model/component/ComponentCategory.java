@@ -104,10 +104,12 @@ public class ComponentCategory {
 			this.categories = new ArrayList<ComponentCategory>();
 		}
 		getCategories().add(category);
+		category.setParent(this);
 	}
 
 	public void removeComponentCategory(ComponentCategory category) {
 		getCategories().remove(category);
+		category.setParent(null);
 	}
 
 	public ComponentCategory getParent() {

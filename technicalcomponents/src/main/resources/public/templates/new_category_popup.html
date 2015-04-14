@@ -1,0 +1,45 @@
+<div class="modal fade " id="addCategoryDialog" tabindex="-1"
+	role="dialog" aria-labelledby="Name" aria-hidden="true"
+	data-focus-on="input:first">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Category definition</h4>
+			</div>
+
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row">
+						<form id="newCategroyForm" method="post" class="form-horizontal">
+							<div class="col-md-12">
+
+								<div class="form-group form-group-sm">
+									<label class="col-xs-2 control-label">Name</label>
+									<div class="col-xs-10">
+										<input type="text" class="form-control" name="newCategoryName"
+											data-ng-model="newCategoryName" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="modal-footer">
+										<button type="submit" class="btn btn-primary"
+											data-dismiss="modal"
+											ng-click="createOrUpdateCategory(newCategoryName)">Save</button>
+										<button type="button" class="btn btn-default"
+											data-dismiss="modal">Cancel</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

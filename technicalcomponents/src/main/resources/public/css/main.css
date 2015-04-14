@@ -181,3 +181,8 @@ footer {
 	height:90px;
 	overflow-y: scroll;
 }
+
+.nav_select_image_gallery {
+	max-height:300px;
+	overflow-y: scroll;
+}

@@ -10,6 +10,9 @@ import com.bnpp.ism.technicalcomponents.application.model.view.storage.StorageVi
 public interface DefaultStorageSetManager {
 
 	void removeFile(StoredFile image);
+	void removeFileOnlyInDatabase(StoredFile image);
+
+	 void removePhysicalVersions(StoredFile image);
 
 	StoredFile store(String name, byte[] content);
 

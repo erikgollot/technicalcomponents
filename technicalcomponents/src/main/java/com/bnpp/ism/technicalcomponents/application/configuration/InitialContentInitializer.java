@@ -98,69 +98,74 @@ public class InitialContentInitializer {
 			database.setDescription("Open components");
 			database.setParent(open);
 			open.addComponentCategory(database);
-			
+
+			SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
 			// Add default components
 			// ***********************************************
-			TechnicalComponent c1 = new TechnicalComponent();
-			ComponentVersionInfo vendorInfo = new ComponentVersionInfo();
-			vendorInfo.setName("SpringBoot");
-			vendorInfo.setVersion("1.3.0");
-			
-			SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
-			try {
-				vendorInfo.setAvailableDate(format.parse(
-						"01/01/2015"));
-				vendorInfo.setDescription("SpringBoot library from Genius");
-			} catch (ParseException e) {				
-				e.printStackTrace();
+			ComponentVersionInfo vendorInfo;
+			ComponentVersionInfo localInfo;
+			for (int i = 1; i <= 10; i++) {
+				addOpenComponent(open, format, i);
 			}
-			c1.setVendorInformations(vendorInfo);
-			
-			ComponentVersionInfo localInfo = new ComponentVersionInfo();
-			localInfo.setName("SpringBoot");
-			localInfo.setVersion("1.3.0");
-			try {
-				localInfo.setAvailableDate(format.parse(
-						"01/04/2015"));
-				localInfo.setDescription("SpringBoot packaged by BNPP");
-			} catch (ParseException e) {				
-				e.printStackTrace();
-			}
-			c1.setLocalInformations(localInfo);			
-			open.addTechnicalComponent(c1);
-			
-			
+
 			TechnicalComponent c2 = new TechnicalComponent();
 			vendorInfo = new ComponentVersionInfo();
 			vendorInfo.setName("Oracle");
 			vendorInfo.setVersion("10i");
-			
-		
+
 			try {
-				vendorInfo.setAvailableDate(format.parse(
-						"01/01/2014"));
+				vendorInfo.setAvailableDate(format.parse("01/01/2014"));
 				vendorInfo.setDescription("Oracle Database RAC");
-			} catch (ParseException e) {				
+			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 			c2.setVendorInformations(vendorInfo);
-			
+
 			localInfo = new ComponentVersionInfo();
 			localInfo.setName("Oracle");
 			localInfo.setVersion("10i");
 			try {
-				localInfo.setAvailableDate(format.parse(
-						"27/04/2014"));
-				localInfo.setDescription("Oracle Database RAC packaged by BNPP");
-			} catch (ParseException e) {				
+				localInfo.setAvailableDate(format.parse("27/04/2014"));
+				localInfo
+						.setDescription("Oracle Database RAC packaged by BNPP");
+			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			c2.setLocalInformations(localInfo);			
+			c2.setLocalInformations(localInfo);
 			database.addTechnicalComponent(c2);
 
-			//componentDao.save(c1);
+			// componentDao.save(c1);
 			catalog.save(cat);
-			
+
 		}
+	}
+
+	private SimpleDateFormat addOpenComponent(ComponentCategory open,
+			SimpleDateFormat format, int i) {
+		TechnicalComponent c1 = new TechnicalComponent();
+		ComponentVersionInfo vendorInfo = new ComponentVersionInfo();
+		vendorInfo.setName("SpringBoot vendor_" + i);
+		vendorInfo.setVersion("1.3.0");
+
+		try {
+			vendorInfo.setAvailableDate(format.parse("01/01/2015"));
+			vendorInfo.setDescription("SpringBoot library from Genius");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		c1.setVendorInformations(vendorInfo);
+
+		ComponentVersionInfo localInfo = new ComponentVersionInfo();
+		localInfo.setName("SpringBoot local_" + i);
+		localInfo.setVersion("1.3.0");
+		try {
+			localInfo.setAvailableDate(format.parse("01/04/2015"));
+			localInfo.setDescription("SpringBoot packaged by BNPP");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		c1.setLocalInformations(localInfo);
+		open.addTechnicalComponent(c1);
+		return format;
 	}
 }

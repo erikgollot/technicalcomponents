@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCatalog;
+import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCategory;
 import com.bnpp.ism.technicalcomponents.application.model.component.TechnicalComponent;
 import com.bnpp.ism.technicalcomponents.application.model.view.component.ComponentCatalogView;
+import com.bnpp.ism.technicalcomponents.application.model.view.component.ComponentCategoryView;
 import com.bnpp.ism.technicalcomponents.application.model.view.component.TechnicalComponentView;
 import com.bnpp.ism.technicalcomponents.application.service.component.ComponentCatalogService;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -113,4 +115,16 @@ public class ComponentCatalogController {
 		service.deleteComponent(idComponent);
 	}
 
+	@RequestMapping(value = "/service/addCategory/{idParent}", method = RequestMethod.POST, headers = "Accept=application/json")
+	public @ResponseBody
+	ComponentCategoryView addCategory(@RequestBody String newCategoryName,
+			@PathVariable("idParent") Long idParent) {
+		return service.addCategory(newCategoryName, idParent);		
+	}
+	
+	@RequestMapping(value = "/service/deleteCategory/{idCategory}", method = RequestMethod.POST, headers = "Accept=application/json")
+	public @ResponseBody
+	void deleteCategory(@PathVariable("idCategory") Long idCategory) {
+		service.deleteCategory(idCategory);
+	}
 }
