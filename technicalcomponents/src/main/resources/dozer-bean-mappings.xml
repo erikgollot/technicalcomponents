@@ -11,9 +11,9 @@
 
 
 	<mapping>
-		<class-a>com.bnpp.ism.technicalcomponents.application.model.storage.StoredFileVersion
+		<class-a>com.bnpp.ism.entity.storage.StoredFileVersion
 		</class-a>
-		<class-b>com.bnpp.ism.technicalcomponents.application.model.view.storage.SimpleStoredFileVersionView
+		<class-b>com.bnpp.ism.api.exchangedata.storage.SimpleStoredFileVersionView
 		</class-b>
 		<field>
 			<a>file.name</a>
