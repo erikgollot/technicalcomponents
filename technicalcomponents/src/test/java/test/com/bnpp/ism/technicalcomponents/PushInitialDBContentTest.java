@@ -10,9 +10,9 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.bnpp.ism.technicalcomponents.application.Application;
-import com.bnpp.ism.technicalcomponents.application.dao.component.ComponentCatalogDao;
-import com.bnpp.ism.technicalcomponents.application.model.component.ComponentCatalog;
+import com.bnpp.ism.Application;
+import com.bnpp.ism.dao.component.ComponentCatalogDao;
+import com.bnpp.ism.entity.component.ComponentCatalog;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 // 1
