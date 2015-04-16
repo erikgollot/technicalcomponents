@@ -16,19 +16,18 @@ storageControllers.controller('storageController', function($scope, $http,
 
 	$scope.loadStorages();
 
-	
-	$scope.openEditStorageDialog = function(storage) {	
+	$scope.openEditStorageDialog = function(storage) {
 		$scope.editedStorage = storage;
 		$('#storageEditDialog').modal('show');
 	}
-	
-	$scope.saveEditedStorage = function(storage) {		
+
+	$scope.saveEditedStorage = function(storage) {
 		$('#storageEditDialog').modal('hide');
 	}
-	
-	$scope.createNewStorage= function(newStorage) {
+
+	$scope.createNewStorage = function(newStorage) {
 		var lastIndex = 0;
-		if ($scope.storages !=null && $scope.storages.length > 0) {
+		if ($scope.storages != null && $scope.storages.length > 0) {
 			lastIndex = $scope.storages.length;
 		}
 		lastIndex++;
@@ -37,39 +36,61 @@ storageControllers.controller('storageController', function($scope, $http,
 			$scope.storages = new Array();
 		}
 		// Now try to store the new storage
-		$http.post(
-				"/service/createNewStore/",newStorage)
-				.success(function(response) {
-					console.log("storage created");
-					BootstrapDialog.show({
-						title : 'Information',
-						message : 'Storage created for ' + newStorage.rootDir
-					});
-					$scope.storages.push(response);
-				})
-				.error(function(data, status, headers, config) {
+		// $http.post(
+		// "/service/createNewStore/",newStorage)
+		// .success(function(response) {
+		// console.log("storage created");
+		// BootstrapDialog.show({
+		// title : 'Information',
+		// message : 'Storage created for ' + newStorage.rootDir
+		// });
+		// $scope.storages.push(response);
+		// })
+		// .error(function(data, status, headers, config) {
+		// BootstrapDialog.show({
+		// title : 'Error',
+		// message : 'Cannot create storage for ' +
+		// newStorage.rootDir+'\n\n'+'Reason : '+data.message
+		// });
+		// });
+
+		$http({
+			url : '/service/createNewStore/',
+			method : 'POST',
+			params : {
+				store : newStorage
+			}
+		}).success(function(response) {
+			console.log("storage created");
+			BootstrapDialog.show({
+				title : 'Information',
+				message : 'Storage created for ' + newStorage.rootDir
+			});
+			$scope.storages.push(response);
+		}).error(
+				function(data, status, headers, config) {
 					BootstrapDialog.show({
 						title : 'Error',
-						message : 'Cannot create storage for ' + newStorage.rootDir+'\n\n'+'Reason : '+data.message
+						message : 'Cannot create storage for '
+								+ newStorage.rootDir + '\n\n' + 'Reason : '
+								+ data.message
 					});
 				});
 	}
-	
+
 	$scope.deleteStorage = function(storage) {
-		$http.post(
-				"/service/deleteStorage/"+storage.id)
-				.success(function(response) {					
+		$http.post("/service/deleteStorage/" + storage.id).success(
+				function(response) {
 					BootstrapDialog.show({
 						title : 'Information',
 						message : 'Storage deleted ' + storage.rootDir
 					});
 					$scope.storages.pop(storage);
-				})
-				.error(function(data, status, headers, config) {
-					BootstrapDialog.show({
-						title : 'Error',
-						message : 'Cannot delete storage '+storage.rootDir
-					});
-				});
+				}).error(function(data, status, headers, config) {
+			BootstrapDialog.show({
+				title : 'Error',
+				message : 'Cannot delete storage ' + storage.rootDir
+			});
+		});
 	}
 });

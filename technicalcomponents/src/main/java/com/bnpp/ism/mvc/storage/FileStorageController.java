@@ -65,7 +65,7 @@ public class FileStorageController {
 
 	@RequestMapping(value = "/service/createNewStore", method = RequestMethod.POST, headers = "Accept=application/json")
 	public @ResponseBody
-	StorageView createNewStore(@RequestBody StorageView s) {
+	StorageView createNewStore(@RequestParam("store") StorageView s) {
 		return storageManager.createNewStorage(s);
 	}
 

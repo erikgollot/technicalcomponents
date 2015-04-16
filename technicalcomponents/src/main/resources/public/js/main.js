@@ -12,6 +12,7 @@ var app = angular.module('technicalComponents', [
   'uploadControllers',
   'galleryControllers',
   'storageControllers',
+  'kpisControllers',
   'applicationsControllers'
 ]);
 
@@ -26,6 +27,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     .when("/catalog", {templateUrl: "partials/catalog.html", controller: "techMainController"})
     .when("/gallery", {templateUrl: "partials/gallery.html", controller: "galleryController"})  
     .when("/storage", {templateUrl: "partials/storage.html", controller: "storageController"})
+    .when("/kpis", {templateUrl: "partials/kpis.html", controller: "kpisController"})
     .when("/applications", {templateUrl: "partials/applications.html", controller: "applicationsController"})
     .otherwise("/404", {templateUrl: "partials/404.html", controller: "PageCtrl"});
 }]);
