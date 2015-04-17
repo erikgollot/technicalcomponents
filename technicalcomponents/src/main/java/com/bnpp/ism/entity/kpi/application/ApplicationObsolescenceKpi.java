@@ -35,7 +35,13 @@ public class ApplicationObsolescenceKpi extends AbstractKpi implements KpiEnum,
 	public void setName(String name) {
 		super.setName(MY_NAME);
 	}
-
+	
+	@Override
+	public String getName() {
+		return MY_NAME;
+	}
+	
+	
 	@Override
 	public KpiEnumLiteral getLiteralWithValue(float value) {
 		if (1.0f == value) {
@@ -57,4 +63,6 @@ public class ApplicationObsolescenceKpi extends AbstractKpi implements KpiEnum,
 	public KpiKindEnum getKind() {
 		return KpiKindEnum.COMPUTED_APPLICATION;
 	}
+
+	
 }

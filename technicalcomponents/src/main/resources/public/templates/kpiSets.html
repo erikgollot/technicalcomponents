@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+	<div class="panel-body">
+		<form class="form-inline">
+			<div class="form-group">
+				<label for="exampleInputName2">Configuration Name</label> <input
+					type="text" class="form-control" id="configurationName" ng-model="configurationName"
+					placeholder="Enter Configuration name">
+			</div>
+			<button type="submit" ng-disabled="!configurationName" class="btn btn-default" ng-click="createNewConfiguration(configurationName)">Create New</button>
+		</form>
+	</div>
+</div>
+
+<table class="table table-striped">
+	<tbody>
+		<tr ng-repeat="config in configurations | orderBy:'name':reverse">
+			<td>{{config.name}}</td>
+			<td>
+				<p ng-bind-html="displaySafeHtml(config.description)"></p>
+			</td>
+			</button>
+		</tr>
+	</tbody>
+</table>

@@ -3,7 +3,9 @@ package com.bnpp.ism.api.exchangedata.kpi.metadata;
 import java.util.List;
 
 import com.bnpp.ism.entity.kpi.metadata.KpiKindEnum;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public class ManualEnumKpiView extends AbstractKpiView {
 
 	List<KpiEnumLiteralView> literals;

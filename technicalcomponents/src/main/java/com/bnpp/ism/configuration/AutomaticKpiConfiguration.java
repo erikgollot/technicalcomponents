@@ -12,6 +12,7 @@ import com.bnpp.ism.entity.kpi.application.ApplicationObsolescenceKpi;
 import com.bnpp.ism.entity.kpi.metadata.AbstractKpi;
 import com.bnpp.ism.entity.kpi.metadata.KpiEnumLiteral;
 import com.bnpp.ism.entity.kpi.metadata.ManualEnumKpi;
+import com.bnpp.ism.entity.kpi.metadata.ManualNumericKpi;
 
 @Configuration
 public class AutomaticKpiConfiguration {
@@ -32,13 +33,25 @@ public class AutomaticKpiConfiguration {
 
 	private void initManualDefaults() {
 		applicationDocumentationKpi();
+		endUserSatisfactionnKpi();
+	}
+
+	private void endUserSatisfactionnKpi() {
+		ManualNumericKpi endusersatisfaction = new ManualNumericKpi();
+		endusersatisfaction.setName("Application end-user satisfaction");
+		endusersatisfaction.setDescription("Used to asses the end-user satisfaction index.<br>Value is an integer from 0 : <b>very bad</b> to 5 : <b>excellent</b>");
+		endusersatisfaction.setInt(true);
+		endusersatisfaction.setMinValue(0.0f);
+		endusersatisfaction.setMaxValue(5.0f);
+		
+		abstractKpiDao.save(endusersatisfaction);
 	}
 
 	private void applicationDocumentationKpi() {
 		ManualEnumKpi documentation_quality = new ManualEnumKpi();
 		documentation_quality.setName("Application documentation quality");
 		documentation_quality
-				.setDescription("Used to assess the conformity of the application's documentation to standards.<br>Values are :<br><ul> <li>BAD (1)</li><li>NEED IMPROVEMENTS (3)</li><li>CORRECT (5)</li></ul>");
+				.setDescription("Used to assess the conformity of the application's documentation to standards.<br>Values are :<br><ul> <li><b>BAD</b> (1)</li><li><b>NEED IMPROVEMENTS</b> (3)</li><li><b>CORRECT</b> (5)</li></ul>");
 		KpiEnumLiteral bad_documentation = new KpiEnumLiteral();
 		bad_documentation.setName("BAD");
 		bad_documentation.setRank(1);
@@ -59,6 +72,7 @@ public class AutomaticKpiConfiguration {
 
 	private void initComputed() {
 		ApplicationObsolescenceKpi o = new ApplicationObsolescenceKpi();
+		o.setDescription("Application obsolescence computed from status of all associated technical components.<br>Values are:<br><ul><li><b>AVAILABLE</b> : all components are in their AVAILABILTY period</li><li><b>WARNING</b> : at least one component is in its WARNING period (it' time to upgrade to a newer version)</li><li><b>HOT</b> : at least one component is in its HOT period (you do not have too must time to think to upgrade to a newer version)</li></ul>");
 		applicationObsolescenceKpiDao.save(o);
 	}
 }

@@ -23,7 +23,27 @@
 			<a>file.id</a>
 			<b>parentFileId</b>
 		</field>
+	</mapping>
 
+	<!-- Manual KPI -->
+	<mapping>
+		<class-a>com.bnpp.ism.entity.kpi.metadata.ManualNumericKpi
+		</class-a>
+		<class-b>com.bnpp.ism.api.exchangedata.kpi.metadata.ManualNumericKpiView
+		</class-b>
+	</mapping>
+	<mapping>
+		<class-a>com.bnpp.ism.entity.kpi.metadata.ManualEnumKpi
+		</class-a>
+		<class-b>com.bnpp.ism.api.exchangedata.kpi.metadata.ManualEnumKpiView
+		</class-b>
+	</mapping>
+	<!-- Automatic KPI -->
+	<mapping>
+		<class-a>com.bnpp.ism.entity.kpi.application.ApplicationObsolescenceKpi
+		</class-a>
+		<class-b>com.bnpp.ism.api.exchangedata.kpi.application.ApplicationObsolescenceKpiView
+		</class-b>
 	</mapping>
 
 </mappings>

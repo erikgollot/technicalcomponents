@@ -1,20 +1,74 @@
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-3">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>Key Performance Indicators</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="kpi in kpis">
-						<td>{{kpi.name}}</td>
-					</button>					
-					</tr>
-				</tbody>
-			</table>
+<br>
+<div class="col-sm-12" role="tabpanel" id="myTab">
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a href="#allKpis"
+			aria-controls="warning" role="tab" data-toggle="tab">Available
+				KPIs</a></li>
+		<li role="presentation"><a href="#kpiSets" aria-controls="hot"
+			role="tab" data-toggle="tab">KPI Configurations</a></li>
+			<li role="presentation"><a href="#createNewKpi" aria-controls="hot"
+			role="tab" data-toggle="tab">New KPI creation</a></li>
+	</ul>
 
-		</div>		
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane active" id="allKpis">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-6">
+						<h3>Key Performance Indicators (Manual)</h3>
+						<table class="table table-striped">
+							<tbody>
+								<tr
+									ng-repeat="kpi in kpis | filter:{kind:'MANUAL'} | orderBy:'name':reverse">
+									<td>{{kpi.name}}</td>
+									<td>
+										<p ng-bind-html="displaySafeHtml(kpi.description)"></p>
+									</td>
+									</button>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+					<div class="col-md-6">
+						<h3>Key Performance Indicators (Automatic)</h3>
+						<table class="table table-striped">
+
+							<tbody>
+								<tr
+									ng-repeat="kpi in kpis | filter:{kind:'COMPUTED_APPLICATION'} | orderBy:'name':reverse">
+									<td>{{kpi.name}}</td>
+									<td>
+										<p ng-bind-html="displaySafeHtml(kpi.description)"></p>
+									</td>
+									</button>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div role="tabpanel" class="tab-pane active" id="kpiSets">
+			<div ng-include src="'templates/kpiSets.html'"></div>
+		</div>
+		<div role="tabpanel" class="tab-pane active" id="createNewKpi">
+			<div ng-include src="'templates/createNewKpi.html'"></div>
+		</div>
 	</div>
+	<!-- all Kpis -->
+
 </div>
+
+<script>
+	$('#myTab a').click(function(e) {
+		e.preventDefault()
+		$(this).tab('show')
+	})
+</script>
+
+
+
+
