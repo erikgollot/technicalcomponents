@@ -9,6 +9,7 @@ public class KpiConfigurationView {
 	Long version;
 
 	String name;
+	String description;
 
 	List<KpiUsageView> usages;
 
@@ -42,5 +43,13 @@ public class KpiConfigurationView {
 
 	public void setVersion(Long version) {
 		this.version = version;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

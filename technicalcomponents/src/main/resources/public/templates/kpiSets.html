@@ -2,23 +2,106 @@
 	<div class="panel-body">
 		<form class="form-inline">
 			<div class="form-group">
-				<label for="exampleInputName2">Configuration Name</label> <input
-					type="text" class="form-control" id="configurationName" ng-model="configurationName"
-					placeholder="Enter Configuration name">
+				<label for="exampleInputName2">Name</label> <input type="text"
+					class="form-control" id="configurationName"
+					ng-model="configurationName" placeholder="Enter Configuration name">
 			</div>
-			<button type="submit" ng-disabled="!configurationName" class="btn btn-default" ng-click="createNewConfiguration(configurationName)">Create New</button>
+			<div class="form-group">
+				<label for="exampleInputName2">Description</label>
+				<textarea class="form-control" id="configurationDescription"
+					ng-model="configurationDescription"
+					placeholder="Enter Configuration description"></textarea>
+			</div>
+			<button type="submit" ng-disabled="!configurationName"
+				class="btn btn-default"
+				ng-click="createNewConfiguration(configurationName,configurationDescription)">Create
+				New</button>
 		</form>
 	</div>
 </div>
 
 <table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+			<th></th>
+		</tr>
+	</thead>
 	<tbody>
 		<tr ng-repeat="config in configurations | orderBy:'name':reverse">
 			<td>{{config.name}}</td>
 			<td>
 				<p ng-bind-html="displaySafeHtml(config.description)"></p>
 			</td>
-			</button>
+			<td><button type="button" class="btn btn-default btn-sm"
+					ng-click="defineConfigurationDetails(config)">
+					<span class="glyphicon glyphicon-pencil"></span>&nbsp;Define
+					details
+				</button></td>
 		</tr>
 	</tbody>
 </table>
+
+<div class="panel panel-default"
+	ng-hide="currentEditedConfiguration == null">
+	<div class="panel-heading">Current edited configuration
+			{{currentEditedConfiguration.name}}</div>
+	<div class="row">
+		<div class="panel-body">
+			<form class="form-inline">
+				<div class="form-group">
+					<label for="exampleInputName2">Name</label> <input type="text"
+						class="form-control" id="configurationName"
+						ng-model="currentEditedConfiguration.name"
+						placeholder="Enter Configuration name">
+				</div>
+				<div class="form-group">
+					<label for="exampleInputName2">Description</label>
+					<textarea class="form-control" id="configurationDescription"
+						ng-model="currentEditedConfiguration.description"
+						placeholder="Enter Configuration description"></textarea>
+				</div>
+				<button type="submit" ng-disabled="!currentEditedConfiguration.name"
+				class="btn btn-default"
+				ng-click="updateConfiguration(currentEditedConfiguration)">Update</button>
+			</form>
+
+		</div>
+	</div>
+	<!-- row 1 -->
+	<div class="row">
+		<div class="col-md-6">
+		<h3>Included Manual KPI(s)</h3>
+			<table class="table table-striped">
+				<tbody>
+					<tr
+						ng-repeat="usage in kpiUsages | filter:{kind:'MANUAL'} | orderBy:'kpi_name':reverse">
+						<td><input class="checkbox" type="checkbox" ng-model="usage.isSelected"></td>
+						<td>{{usage.kpi_name}}</td>
+						<td>
+							<p ng-bind-html="displaySafeHtml(usage.kpi_description)"></p>
+						</td>
+						</button>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-6">
+		<h3>Included Automatic KPI(s)</h3>
+		<table class="table table-striped">
+				<tbody>
+					<tr
+						ng-repeat="usage in kpiUsages | filter:{kind:'COMPUTED_APPLICATION'} | orderBy:'kpi_name':reverse">
+						<td><input class="checkbox" type="checkbox" ng-model="usage.isSelected"></td>
+						<td>{{usage.kpi_name}}</td>
+						<td>
+							<p ng-bind-html="displaySafeHtml(usage.kpi_description)"></p>
+						</td>
+						</button>
+					</tr>
+				</tbody>
+			</table></div>
+	</div>
+	<!-- row 2 -->
+</div>

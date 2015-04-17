@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bnpp.ism.dao.kpi.application.AbstractKpiDao;
 import com.bnpp.ism.dao.kpi.application.ApplicationObsolescenceKpiDao;
+import com.bnpp.ism.dao.kpi.metadata.AbstractKpiDao;
 import com.bnpp.ism.entity.kpi.application.ApplicationObsolescenceKpi;
 import com.bnpp.ism.entity.kpi.metadata.AbstractKpi;
 import com.bnpp.ism.entity.kpi.metadata.KpiEnumLiteral;

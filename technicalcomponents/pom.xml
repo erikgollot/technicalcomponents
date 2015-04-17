@@ -6,7 +6,9 @@
 	<groupId>com.bnpp.ism</groupId>
 	<artifactId>technicalcomponents</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
+	<properties>
+		<jackson.version>2.5.0</jackson.version>
+	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -73,6 +75,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-integration</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-gemfire</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

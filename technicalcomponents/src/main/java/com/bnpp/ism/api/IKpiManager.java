@@ -8,5 +8,9 @@ import com.bnpp.ism.api.exchangedata.kpi.metadata.KpiConfigurationView;
 public interface IKpiManager {
 	List<AbstractKpiView> loadAllKpiDefinitions();
 
-	KpiConfigurationView createNewConfiguration(String name);
+	KpiConfigurationView createNewConfiguration(String name,String description);
+	
+	List<KpiConfigurationView> getAllConfigurations();
+	
+	KpiConfigurationView updateConfiguration(KpiConfigurationView config);
 }

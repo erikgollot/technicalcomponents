@@ -1,4 +1,4 @@
-package com.bnpp.ism.dao.kpi.application;
+package com.bnpp.ism.dao.kpi.metadata;
 
 import org.springframework.data.repository.CrudRepository;
 

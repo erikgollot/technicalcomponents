@@ -3,6 +3,7 @@ package com.bnpp.ism.mvc.kpi;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,12 +25,24 @@ public class KpiController {
 	List<AbstractKpiView> loadAllKpiDefinitions() {
 		return manager.loadAllKpiDefinitions();
 	}
+	
+	@RequestMapping(value = "/service/kpiconfigurations", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody
+	List<KpiConfigurationView> loadAllKpiConfigurations() {
+		return manager.getAllConfigurations();
+	}
 
 	@RequestMapping(value = "/service/newKpiConfiguration", method = RequestMethod.POST, headers = "Accept=application/json")
 	public @ResponseBody
 	KpiConfigurationView createNewKpiConfiguration(
-			@RequestParam("name") String name) {
-		return manager.createNewConfiguration(name);
+			@RequestParam("name") String name,@RequestParam("description") String description) {
+		return manager.createNewConfiguration(name,description);
 	}
 
+	@RequestMapping(value = "/service/updateKpiConfiguration", method = RequestMethod.POST, headers = "Accept=application/json")
+	public @ResponseBody
+	KpiConfigurationView updateConfiguration(@RequestBody KpiConfigurationView config) {
+		return manager.updateConfiguration(config);
+	}
+	
 }

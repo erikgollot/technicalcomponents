@@ -1,10 +1,16 @@
 package com.bnpp.ism.api.exchangedata.kpi.metadata;
 
+import com.bnpp.ism.api.exchangedata.kpi.application.ApplicationObsolescenceKpiView;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
+@JsonSubTypes({
+		@com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = ManualEnumKpiView.class,name="a"),
+		@com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = ManualNumericKpiView.class,name="b"),
+		@com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = ApplicationObsolescenceKpiView.class,name="c") })
 public abstract class AbstractKpiView {
-
+	
 	Long id;
 
 	Long version;

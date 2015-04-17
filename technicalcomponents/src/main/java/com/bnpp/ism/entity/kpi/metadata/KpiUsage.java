@@ -15,8 +15,7 @@ public class KpiUsage {
 	Long id;
 	@Version
 	Long version;
-	@Column
-	int rank;
+	
 	@ManyToOne
 	AbstractKpi kpi;
 	@Column
@@ -31,14 +30,7 @@ public class KpiUsage {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public int getRank() {
-		return rank;
-	}
-
-	public void setRank(int rank) {
-		this.rank = rank;
-	}
+	
 
 	public AbstractKpi getKpi() {
 		return kpi;
