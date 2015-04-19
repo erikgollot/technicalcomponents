@@ -15,6 +15,7 @@ import com.bnpp.ism.api.exchangedata.kpi.metadata.KpiConfigurationView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.KpiUsageView;
 import com.bnpp.ism.dao.kpi.metadata.AbstractKpiDao;
 import com.bnpp.ism.dao.kpi.metadata.KpiConfigurationDao;
+import com.bnpp.ism.dao.kpi.metadata.KpiUsageDao;
 import com.bnpp.ism.entity.kpi.metadata.AbstractKpi;
 import com.bnpp.ism.entity.kpi.metadata.KpiConfiguration;
 import com.bnpp.ism.entity.kpi.metadata.KpiUsage;
@@ -23,6 +24,8 @@ import com.bnpp.ism.entity.kpi.metadata.KpiUsage;
 public class KpiManager implements IKpiManager {
 	@Autowired
 	AbstractKpiDao kpiDao;
+	@Autowired
+	KpiUsageDao kpiUsageDao;
 	@Autowired
 	KpiConfigurationDao kpiConfigurationDao;
 
@@ -85,8 +88,32 @@ public class KpiManager implements IKpiManager {
 			entity.setName(config.getName());
 			entity.setDescription(config.getDescription());
 			if (config.getUsages() != null) {
+
+				// First remove existing usages that are not used anymore
+				List<KpiUsage> toRemove = new ArrayList<KpiUsage>();
+				if (entity.getUsages() != null) {
+					for (KpiUsage existing : entity.getUsages()) {
+						boolean found = false;
+						for (KpiUsageView usage : config.getUsages()) {
+							if (existing.getId().equals(usage.getId())) {
+								found = true;
+							}
+						}
+						if (!found) {
+							toRemove.add(existing);
+						}
+					}
+					entity.getUsages().removeAll(toRemove);
+				}
 				for (KpiUsageView usage : config.getUsages()) {
 					updateOrCreateUsage(entity, usage);
+				}
+			} else {
+				// Remove all
+				if (entity.getUsages() != null) {
+					entity.getUsages().clear();
+					// usages will deleted automatically because of removeOrphan
+					// in KpiConfiguration
 				}
 			}
 			kpiConfigurationDao.save(entity);

@@ -6,67 +6,74 @@
 <!--[if IE 8]>
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js"> <!--<![endif]-->
+<html class="no-js">
+<!--<![endif]-->
 <head>
 
-    <!-- Meta-Information -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="description" content="BNP Paribas">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Meta-Information -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="BNP Paribas">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Vendor: Bootstrap Stylesheets http://getbootstrap.com -->
-    <link rel="stylesheet" href="vendors/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="vendors/bootstrap/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="vendors/bootstrap/css/bootstrap-dialog.min.css">
-    <link rel="stylesheet" href="vendors/font-awesome/css/font-awesome.min.css" >
- 
-	
-	<link rel="stylesheet" href="vendors/angular/angular-ui-tree.min.css">
-	<link rel="stylesheet" href="vendors/angular/abn_tree.css">
-	 
-    <!-- Our Website CSS Styles -->
-    <link rel="stylesheet" href="css/main.css">
+<!-- Vendor: Bootstrap Stylesheets http://getbootstrap.com -->
+<link rel="stylesheet" href="vendors/bootstrap/css/bootstrap.css">
+<link rel="stylesheet"
+	href="vendors/bootstrap/css/bootstrap-theme.min.css">
+<link rel="stylesheet"
+	href="vendors/bootstrap/css/bootstrap-dialog.min.css">
+<link rel="stylesheet"
+	href="vendors/font-awesome/css/font-awesome.min.css">
+
+
+<link rel="stylesheet" href="vendors/angular/angular-ui-tree.min.css">
+<link rel="stylesheet" href="vendors/angular/abn_tree.css">
+
+<link rel="stylesheet" href="vendors/angular-xeditable/css/xeditable.css">
+
+<!-- Our Website CSS Styles -->
+<link rel="stylesheet" href="css/main.css">
 
 </head>
 <body ng-app="technicalComponents">
-<!--[if lt IE 7]>
+	<!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<!-- Our Website Content Goes Here -->
-<div ng-include='"templates/header.html"'></div>
-<div ng-view></div>
-<div ng-include='"templates/footer.html"'></div>
+	<!-- Our Website Content Goes Here -->
+	<div ng-include='"templates/header.html"'></div>
+	<div ng-view></div>
+	<div ng-include='"templates/footer.html"'></div>
 
-<!-- Vendor: Javascripts -->
-<script src="vendors/date/date.min.js"></script>
-<script src="vendors/jquery/jquery.min.js"></script>
-<script src="vendors/bootstrap/js/bootstrap.min.js"></script>
-<script src="vendors/bootstrap/js/bootstrap-dialog.min.js"></script>
+	<!-- Vendor: Javascripts -->
+	<script src="vendors/date/date.min.js"></script>
+	<script src="vendors/jquery/jquery.min.js"></script>
+	<script src="vendors/bootstrap/js/bootstrap.min.js"></script>
+	<script src="vendors/bootstrap/js/bootstrap-dialog.min.js"></script>
 
+	<!-- Vendor: Angular, followed by our custom Javascripts -->
+	<script src="vendors/angular/angular.min.js"></script>
 
-<!-- Vendor: Angular, followed by our custom Javascripts -->
-<script src="vendors/angular/angular.min.js"></script>
+	<script src="vendors/angular/angular-route.min.js"></script>
+	<script src="vendors/angular/angular-file-upload-shim.min.js"></script>
+	<script src="vendors/angular/angular-file-upload.min.js"></script>
+	<script src="vendors/angular/angular-ui-tree.min.js"></script>
+	<script src="vendors/angular/angular-modal-service.min.js"></script>
+	<script src="vendors/angular/abn_tree_directive.js"></script>
 
-<script src="vendors/angular/angular-route.min.js"></script>
-<script src="vendors/angular/angular-file-upload-shim.min.js"></script> 
-<script src="vendors/angular/angular-file-upload.min.js"></script>
-<script src="vendors/angular/angular-ui-tree.min.js"></script>
-<script src="vendors/angular/angular-modal-service.min.js"></script>
-<script src="vendors/angular/abn_tree_directive.js"></script>
+	<script src="vendors/angular-xeditable/js/xeditable.min.js"></script>
 
-<script src="vendors/bootstrap/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
- 
-<!-- Our Website Javascripts -->
-<script src="js/main.js"></script>
-<script src="js/controllers/catalog.js"></script>
-<script src="js/controllers/upload.js"></script>
-<script src="js/controllers/gallery.js"></script>
-<script src="js/controllers/storage.js"></script>
-<script src="js/controllers/applications.js"></script>
-<script src="js/controllers/kpis.js"></script>
+	<script src="vendors/bootstrap/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
+
+	<!-- Our Website Javascripts -->
+	<script src="js/main.js"></script>
+	<script src="js/controllers/catalog.js"></script>
+	<script src="js/controllers/upload.js"></script>
+	<script src="js/controllers/gallery.js"></script>
+	<script src="js/controllers/storage.js"></script>
+	<script src="js/controllers/applications.js"></script>
+	<script src="js/controllers/kpis.js"></script>
 
 </body>
 </html>

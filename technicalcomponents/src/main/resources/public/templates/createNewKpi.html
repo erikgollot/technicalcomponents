@@ -1,0 +1,130 @@
+<div>
+	<form class="form-inline" role="form" name="newKpiForm" novalidate>
+		<div class="form-group">
+			<label for="name">Name :</label> <input class="form-control"
+				type="text" name="name" id="name" ng-model="newKpi.name"
+				ng-minlength="2" required>
+		</div>
+		<div class="form-group">
+			<label for="description">Description :</label> <input
+				class="form-control" type="text" name="description" id="description"
+				ng-model="newKpi.description" ng-minlength="2" required>
+		</div>
+
+
+		<div class="form-group">
+			<label for="type">Type of values :</label> <select id="type"
+				class="form-control" ng-model="newKpi.type" required>
+				<option value="Numeric">Numeric</option>
+				<option value="Enum">Enum</option>
+			</select>
+		</div>
+		<div class="checkbox">
+			<label><input type="checkbox" name="active" id="active"
+				ng-model="newKpi.active">Active</label>
+		</div>
+	</form>
+</div>
+<hr>
+<div ng-show="newKpi.type == 'Numeric'">
+	<h3>Specific properties for Numeric Key Performance Indicator</h3>
+	<form class="form-inline" role="form" name="newKpiNumericForm"
+		novalidate>
+		<div class="form-group">
+			<label for="min">Min value :</label> <input class="form-control"
+				type="text" name="min" id="min" ng-model="newKpi.minValue">
+		</div>
+		<div class="form-group">
+			<label for="max">Max value :</label> <input class="form-control"
+				type="text" name="max" id="max" ng-model="newKpi.maxValue">
+		</div>
+		<div class="checkbox">
+			<label><input type="checkbox" name="isInt" id="isInt"
+				ng-model="newKpi.isInt">is Integer</label>
+		</div>
+		<button class="btn btn-primary" ng-disabled="newKpiForm.$invalid"
+			ng-click="createNewKpi(newKpi)">Create New</button>
+		<div ng-show="newKpiForm.$invalid">All required informations are
+			not set</div>
+	</form>
+</div>
+<div ng-show="newKpi.type == 'Enum'">Enum</div>
+
+<a href="#" editable-text="user.name">{{ user.name || "empty" }}</a>
+
+
+<div class="row">
+	<div class="col-md-6">
+		<h3>Numeric Key Performance Indicators</h3>
+
+		<table class="table table-bordered table-hover table-condensed">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Active</th>
+					<th>Is Integer ?</th>
+					<th>Min value</th>
+					<th>Max value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="kpi in numericKpis">
+					<td>
+						<!-- editable username (text with validation) --> <span
+						editable-text="kpi.name" e-name="name" e-required> {{
+							kpi.name || 'empty' }} </span>
+					</td>
+					<td>
+						<!-- editable username (text with validation) --> <span
+						editable-textarea="kpi.description" e-name="description"
+						e-required> {{ kpi.description || 'empty' }} </span>
+					</td>
+					<td><a href="#" editable-checkbox="kpi.isActive"
+						e-title="Is Active ?"> {{ kpi.isActive && "Active" || "Not
+							Active" }} </a></td>
+					<td><a href="#" editable-checkbox="kpi.isInteger"
+						e-title="Is Integer?"> {{ kpi.isInteger && "Integer" || "Pure
+							float" }} </a></td>
+					<td><a href="#" editable-number="kpi.minValue">{{
+							kpi.minValue || 'empty' }}</a></td>
+					<td><a href="#" editable-number="kpi.maxValue">{{
+							kpi.maxValue || 'empty' }}</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<button class="btn btn-default" ng-click="addNewEmptyKpi()">Add
+			row</button>
+	</div>
+	<div class="col-md-6">
+	<h3>Enumeration Key Performance Indicators</h3>
+		<div class="col-md-6">
+			
+			<table class="table table-bordered table-hover table-condensed">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Active</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="kpi in numericKpis">
+						<td>
+							<!-- editable username (text with validation) --> <span
+							editable-text="kpi.name" e-name="name" e-required> {{
+								kpi.name || 'empty' }} </span>
+						</td>
+						<td>
+							<!-- editable username (text with validation) --> <span
+							editable-textarea="kpi.description" e-name="description"
+							e-required> {{ kpi.description || 'empty' }} </span>
+						</td>
+						<td><a href="#" editable-checkbox="kpi.isActive"
+							e-title="Is Active ?"> {{ kpi.isActive && "Active" || "Not
+								Active" }} </a></td>
+					</tr>
+		</div>
+		<div class="col-md-6"></div>
+	</div>
+</div>

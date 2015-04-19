@@ -3,6 +3,7 @@ package com.bnpp.ism.configuration;
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -24,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ControllerAdvice(basePackages = "com.bnpp.ism.mvc")
 public class BindingControllerAdvice {
+	@Autowired
+	ObjectMapper jacksonMapper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -31,7 +34,6 @@ public class BindingControllerAdvice {
 		binder.registerCustomEditor(StorageView.class,
 				new PropertyEditorSupport() {
 					Object value;
-					ObjectMapper mapper = new ObjectMapper();
 
 					@Override
 					public Object getValue() {
@@ -42,7 +44,8 @@ public class BindingControllerAdvice {
 					public void setAsText(String text)
 							throws IllegalArgumentException {
 						try {
-							value = mapper.readValue(text, StorageView.class);
+							value = jacksonMapper.readValue(text,
+									StorageView.class);
 						} catch (IOException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert string " + text
@@ -55,7 +58,7 @@ public class BindingControllerAdvice {
 					@Override
 					public String getAsText() {
 						try {
-							return mapper.writeValueAsString(value);
+							return jacksonMapper.writeValueAsString(value);
 						} catch (JsonProcessingException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert object of type "
@@ -70,7 +73,6 @@ public class BindingControllerAdvice {
 		binder.registerCustomEditor(StoredFileVersionView.class,
 				new PropertyEditorSupport() {
 					Object value;
-					ObjectMapper mapper = new ObjectMapper();
 
 					@Override
 					public Object getValue() {
@@ -81,7 +83,7 @@ public class BindingControllerAdvice {
 					public void setAsText(String text)
 							throws IllegalArgumentException {
 						try {
-							value = mapper.readValue(text,
+							value = jacksonMapper.readValue(text,
 									StoredFileVersionView.class);
 						} catch (IOException e) {
 							MappingException ex = new MappingException();
@@ -95,7 +97,7 @@ public class BindingControllerAdvice {
 					@Override
 					public String getAsText() {
 						try {
-							return mapper.writeValueAsString(value);
+							return jacksonMapper.writeValueAsString(value);
 						} catch (JsonProcessingException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert object of type "
@@ -108,7 +110,6 @@ public class BindingControllerAdvice {
 		binder.registerCustomEditor(SimpleStoredFileVersionView.class,
 				new PropertyEditorSupport() {
 					Object value;
-					ObjectMapper mapper = new ObjectMapper();
 
 					@Override
 					public Object getValue() {
@@ -119,7 +120,7 @@ public class BindingControllerAdvice {
 					public void setAsText(String text)
 							throws IllegalArgumentException {
 						try {
-							value = mapper.readValue(text,
+							value = jacksonMapper.readValue(text,
 									SimpleStoredFileVersionView.class);
 						} catch (IOException e) {
 							MappingException ex = new MappingException();
@@ -135,7 +136,7 @@ public class BindingControllerAdvice {
 					@Override
 					public String getAsText() {
 						try {
-							return mapper.writeValueAsString(value);
+							return jacksonMapper.writeValueAsString(value);
 						} catch (JsonProcessingException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert object of type "
@@ -150,7 +151,6 @@ public class BindingControllerAdvice {
 		binder.registerCustomEditor(ComponentCatalogView.class,
 				new PropertyEditorSupport() {
 					Object value;
-					ObjectMapper mapper = new ObjectMapper();
 
 					@Override
 					public Object getValue() {
@@ -161,7 +161,7 @@ public class BindingControllerAdvice {
 					public void setAsText(String text)
 							throws IllegalArgumentException {
 						try {
-							value = mapper.readValue(text,
+							value = jacksonMapper.readValue(text,
 									ComponentCatalogView.class);
 						} catch (IOException e) {
 							MappingException ex = new MappingException();
@@ -175,7 +175,7 @@ public class BindingControllerAdvice {
 					@Override
 					public String getAsText() {
 						try {
-							return mapper.writeValueAsString(value);
+							return jacksonMapper.writeValueAsString(value);
 						} catch (JsonProcessingException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert object of type "
@@ -188,7 +188,6 @@ public class BindingControllerAdvice {
 		binder.registerCustomEditor(ComponentCategoryView.class,
 				new PropertyEditorSupport() {
 					Object value;
-					ObjectMapper mapper = new ObjectMapper();
 
 					@Override
 					public Object getValue() {
@@ -199,7 +198,7 @@ public class BindingControllerAdvice {
 					public void setAsText(String text)
 							throws IllegalArgumentException {
 						try {
-							value = mapper.readValue(text,
+							value = jacksonMapper.readValue(text,
 									ComponentCategoryView.class);
 						} catch (IOException e) {
 							MappingException ex = new MappingException();
@@ -213,7 +212,7 @@ public class BindingControllerAdvice {
 					@Override
 					public String getAsText() {
 						try {
-							return mapper.writeValueAsString(value);
+							return jacksonMapper.writeValueAsString(value);
 						} catch (JsonProcessingException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert object of type "
@@ -226,7 +225,6 @@ public class BindingControllerAdvice {
 		binder.registerCustomEditor(ComponentVersionInfoView.class,
 				new PropertyEditorSupport() {
 					Object value;
-					ObjectMapper mapper = new ObjectMapper();
 
 					@Override
 					public Object getValue() {
@@ -237,7 +235,7 @@ public class BindingControllerAdvice {
 					public void setAsText(String text)
 							throws IllegalArgumentException {
 						try {
-							value = mapper.readValue(text,
+							value = jacksonMapper.readValue(text,
 									ComponentVersionInfoView.class);
 						} catch (IOException e) {
 							MappingException ex = new MappingException();
@@ -251,7 +249,7 @@ public class BindingControllerAdvice {
 					@Override
 					public String getAsText() {
 						try {
-							return mapper.writeValueAsString(value);
+							return jacksonMapper.writeValueAsString(value);
 						} catch (JsonProcessingException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert object of type "
@@ -264,7 +262,6 @@ public class BindingControllerAdvice {
 		binder.registerCustomEditor(ImageGallery.class,
 				new PropertyEditorSupport() {
 					Object value;
-					ObjectMapper mapper = new ObjectMapper();
 
 					@Override
 					public Object getValue() {
@@ -275,7 +272,8 @@ public class BindingControllerAdvice {
 					public void setAsText(String text)
 							throws IllegalArgumentException {
 						try {
-							value = mapper.readValue(text, ImageGallery.class);
+							value = jacksonMapper.readValue(text,
+									ImageGallery.class);
 						} catch (IOException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert string " + text
@@ -288,7 +286,7 @@ public class BindingControllerAdvice {
 					@Override
 					public String getAsText() {
 						try {
-							return mapper.writeValueAsString(value);
+							return jacksonMapper.writeValueAsString(value);
 						} catch (JsonProcessingException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert object of type "
@@ -301,7 +299,6 @@ public class BindingControllerAdvice {
 		binder.registerCustomEditor(ObsolescenceStrategyView.class,
 				new PropertyEditorSupport() {
 					Object value;
-					ObjectMapper mapper = new ObjectMapper();
 
 					@Override
 					public Object getValue() {
@@ -312,7 +309,7 @@ public class BindingControllerAdvice {
 					public void setAsText(String text)
 							throws IllegalArgumentException {
 						try {
-							value = mapper.readValue(text,
+							value = jacksonMapper.readValue(text,
 									ObsolescenceStrategyView.class);
 						} catch (IOException e) {
 							MappingException ex = new MappingException();
@@ -326,7 +323,7 @@ public class BindingControllerAdvice {
 					@Override
 					public String getAsText() {
 						try {
-							return mapper.writeValueAsString(value);
+							return jacksonMapper.writeValueAsString(value);
 						} catch (JsonProcessingException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert object of type "
@@ -339,7 +336,6 @@ public class BindingControllerAdvice {
 		binder.registerCustomEditor(TechnicalComponentView.class,
 				new PropertyEditorSupport() {
 					Object value;
-					ObjectMapper mapper = new ObjectMapper();
 
 					@Override
 					public Object getValue() {
@@ -350,7 +346,7 @@ public class BindingControllerAdvice {
 					public void setAsText(String text)
 							throws IllegalArgumentException {
 						try {
-							value = mapper.readValue(text,
+							value = jacksonMapper.readValue(text,
 									TechnicalComponentView.class);
 						} catch (IOException e) {
 							MappingException ex = new MappingException();
@@ -364,7 +360,7 @@ public class BindingControllerAdvice {
 					@Override
 					public String getAsText() {
 						try {
-							return mapper.writeValueAsString(value);
+							return jacksonMapper.writeValueAsString(value);
 						} catch (JsonProcessingException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert object of type "
@@ -379,7 +375,6 @@ public class BindingControllerAdvice {
 		binder.registerCustomEditor(ApplicationVersionView.class,
 				new PropertyEditorSupport() {
 					Object value;
-					ObjectMapper mapper = new ObjectMapper();
 
 					@Override
 					public Object getValue() {
@@ -390,7 +385,7 @@ public class BindingControllerAdvice {
 					public void setAsText(String text)
 							throws IllegalArgumentException {
 						try {
-							value = mapper.readValue(text,
+							value = jacksonMapper.readValue(text,
 									ApplicationVersionView.class);
 						} catch (IOException e) {
 							MappingException ex = new MappingException();
@@ -404,7 +399,7 @@ public class BindingControllerAdvice {
 					@Override
 					public String getAsText() {
 						try {
-							return mapper.writeValueAsString(value);
+							return jacksonMapper.writeValueAsString(value);
 						} catch (JsonProcessingException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert object of type "
@@ -417,7 +412,6 @@ public class BindingControllerAdvice {
 		binder.registerCustomEditor(BuiltOnView.class,
 				new PropertyEditorSupport() {
 					Object value;
-					ObjectMapper mapper = new ObjectMapper();
 
 					@Override
 					public Object getValue() {
@@ -428,7 +422,8 @@ public class BindingControllerAdvice {
 					public void setAsText(String text)
 							throws IllegalArgumentException {
 						try {
-							value = mapper.readValue(text, BuiltOnView.class);
+							value = jacksonMapper.readValue(text,
+									BuiltOnView.class);
 						} catch (IOException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert string " + text
@@ -441,7 +436,7 @@ public class BindingControllerAdvice {
 					@Override
 					public String getAsText() {
 						try {
-							return mapper.writeValueAsString(value);
+							return jacksonMapper.writeValueAsString(value);
 						} catch (JsonProcessingException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert object of type "
@@ -454,7 +449,6 @@ public class BindingControllerAdvice {
 		binder.registerCustomEditor(CanRunOnView.class,
 				new PropertyEditorSupport() {
 					Object value;
-					ObjectMapper mapper = new ObjectMapper();
 
 					@Override
 					public Object getValue() {
@@ -465,7 +459,8 @@ public class BindingControllerAdvice {
 					public void setAsText(String text)
 							throws IllegalArgumentException {
 						try {
-							value = mapper.readValue(text, CanRunOnView.class);
+							value = jacksonMapper.readValue(text,
+									CanRunOnView.class);
 						} catch (IOException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert string " + text
@@ -478,7 +473,7 @@ public class BindingControllerAdvice {
 					@Override
 					public String getAsText() {
 						try {
-							return mapper.writeValueAsString(value);
+							return jacksonMapper.writeValueAsString(value);
 						} catch (JsonProcessingException e) {
 							MappingException ex = new MappingException();
 							ex.setMessage("Cannot convert object of type "

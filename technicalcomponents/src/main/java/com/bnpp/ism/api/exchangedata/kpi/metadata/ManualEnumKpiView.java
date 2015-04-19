@@ -3,11 +3,9 @@ package com.bnpp.ism.api.exchangedata.kpi.metadata;
 import java.util.List;
 
 import com.bnpp.ism.entity.kpi.metadata.KpiKindEnum;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public class ManualEnumKpiView extends AbstractKpiView {
-	
+	String clazz = "com.bnpp.ism.api.exchangedata.kpi.metadata.ManualEnumKpiView";
 	List<KpiEnumLiteralView> literals;
 	KpiKindEnum kind;
 
@@ -34,5 +32,13 @@ public class ManualEnumKpiView extends AbstractKpiView {
 
 	public void setKind(KpiKindEnum kind) {
 		this.kind = kind;
+	}
+
+	public String getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(String clazz) {
+		this.clazz = clazz;
 	}
 }

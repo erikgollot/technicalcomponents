@@ -28,7 +28,7 @@ public class KpiConfiguration {
 	@Basic(fetch = FetchType.LAZY)
 	String description;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "configuration", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "configuration", cascade = CascadeType.ALL, orphanRemoval=true)
 	List<KpiUsage> usages;
 
 	public Long getId() {
