@@ -1,12 +1,12 @@
 package com.bnpp.ism.entity.kpi.value;
 
-import com.bnpp.ism.entity.kpi.metadata.Kpi;
+import com.bnpp.ism.entity.kpi.metadata.AbstractKpi;
 
 public class KpiValue {
 	Long id;
 	Long version;
 	float value;
-	Kpi kpi;
+	AbstractKpi kpi;
 
 	public float getValue() {
 		return value;
@@ -14,14 +14,6 @@ public class KpiValue {
 
 	public void setValue(float value) {
 		this.value = value;
-	}
-
-	public Kpi getKpi() {
-		return kpi;
-	}
-
-	public void setKpi(Kpi kpi) {
-		this.kpi = kpi;
 	}
 
 	public Long getId() {
@@ -38,5 +30,13 @@ public class KpiValue {
 
 	public void setVersion(Long version) {
 		this.version = version;
+	}
+
+	public AbstractKpi getKpi() {
+		return kpi;
+	}
+
+	public void setKpi(AbstractKpi kpi) {
+		this.kpi = kpi;
 	}
 }

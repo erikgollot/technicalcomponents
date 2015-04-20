@@ -9,6 +9,7 @@ import com.bnpp.ism.entity.kpi.metadata.ApplicationComputedKpi;
 import com.bnpp.ism.entity.kpi.metadata.KpiEnum;
 import com.bnpp.ism.entity.kpi.metadata.KpiEnumLiteral;
 import com.bnpp.ism.entity.kpi.metadata.KpiKindEnum;
+import com.bnpp.ism.entity.kpi.metadata.UnitEnum;
 
 @Entity
 @DiscriminatorValue("ApplicationObsolescenceKpi")
@@ -31,17 +32,15 @@ public class ApplicationObsolescenceKpi extends AbstractKpi implements KpiEnum,
 		return value;
 	}
 
-	
 	public void setName(String name) {
 		super.setName(MY_NAME);
 	}
-	
+
 	@Override
 	public String getName() {
 		return MY_NAME;
 	}
-	
-	
+
 	@Override
 	public KpiEnumLiteral getLiteralWithValue(float value) {
 		if (1.0f == value) {
@@ -61,8 +60,16 @@ public class ApplicationObsolescenceKpi extends AbstractKpi implements KpiEnum,
 
 	@Override
 	public KpiKindEnum getKind() {
-		return KpiKindEnum.COMPUTED_APPLICATION;
+		return KpiKindEnum.COMPUTED_APPLICATION_VERSION;
 	}
 
-	
+	@Override
+	public void setUnit(String unit) {
+	}
+
+	@Override
+	public String getUnit() {
+		return UnitEnum.NONE.toString();
+	}
+
 }

@@ -1,7 +1,5 @@
 package com.bnpp.ism.entity.kpi.metadata;
 
-import java.io.Serializable;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -19,7 +17,7 @@ import javax.persistence.Version;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "BASE_KPI_TYPE", discriminatorType = DiscriminatorType.STRING)
-public abstract class AbstractKpi implements Kpi {	
+public abstract class AbstractKpi implements Kpi {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
@@ -40,6 +38,16 @@ public abstract class AbstractKpi implements Kpi {
 	@Basic(fetch = FetchType.LAZY)
 	String description;
 
+	// From Unit table
+	@Column(columnDefinition = "VARCHAR(50)")
+	String unit;
+
+	@Column(columnDefinition = "VARCHAR(50)")
+	String category;
+
+	@Column
+	boolean isActive = true;
+	
 	public String getName() {
 		return name;
 	}
@@ -62,6 +70,30 @@ public abstract class AbstractKpi implements Kpi {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 }

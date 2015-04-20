@@ -42,14 +42,7 @@ public class ManualNumericKpiView extends AbstractKpiView {
 	public void setInt(boolean isInt) {
 		this.isInt = isInt;
 	}
-
-	public KpiKindEnum getKind() {
-		return KpiKindEnum.MANUAL;
-	}
-
-	public void setKind(KpiKindEnum kind) {
-		this.kind = kind;
-	}
+	
 
 	public String getClazz() {
 		return clazz;
@@ -57,6 +50,14 @@ public class ManualNumericKpiView extends AbstractKpiView {
 
 	public void setClazz(String clazz) {
 		this.clazz = clazz;
+	}
+
+	public KpiKindEnum getKind() {
+		return kind;
+	}
+
+	public void setKind(KpiKindEnum kind) {
+		this.kind = kind;
 	}
 
 }

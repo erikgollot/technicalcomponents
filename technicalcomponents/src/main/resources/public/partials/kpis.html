@@ -3,11 +3,9 @@
 	<ul class="nav nav-tabs" role="tablist">
 		<li role="presentation" class="active"><a href="#allKpis"
 			aria-controls="warning" role="tab" data-toggle="tab">Available
-				KPIs</a></li>
-		<li role="presentation"><a href="#kpiSets" aria-controls="hot"
-			role="tab" data-toggle="tab">KPI Configurations</a></li>
+				KPIs</a></li>		
 			<li role="presentation"><a href="#createNewKpi" aria-controls="hot"
-			role="tab" data-toggle="tab">New KPI creation</a></li>
+			role="tab" data-toggle="tab">Key Performance Indicators Edition</a></li>
 	</ul>
 
 	<!-- Tab panes -->
@@ -20,7 +18,7 @@
 						<table class="table table-striped">
 							<tbody>
 								<tr
-									ng-repeat="kpi in kpis | filter:{kind:'MANUAL'} | orderBy:'name':reverse">
+									ng-repeat="kpi in kpis | manual_kpi_filter | orderBy:'name':reverse">
 									<td>{{kpi.name}}</td>
 									<td>
 										<p ng-bind-html="displaySafeHtml(kpi.description)"></p>
@@ -37,7 +35,7 @@
 
 							<tbody>
 								<tr
-									ng-repeat="kpi in kpis | filter:{kind:'COMPUTED_APPLICATION'} | orderBy:'name':reverse">
+									ng-repeat="kpi in kpis | computed_kpi_filter | orderBy:'name':reverse">
 									<td>{{kpi.name}}</td>
 									<td>
 										<p ng-bind-html="displaySafeHtml(kpi.description)"></p>
@@ -50,10 +48,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div role="tabpanel" class="tab-pane" id="kpiSets">
-			<div ng-include src="'templates/kpiSets.html'"></div>
-		</div>
+		</div>		
 		<div role="tabpanel" class="tab-pane" id="createNewKpi">
 			<div ng-include src="'templates/createNewKpi.html'"></div>
 		</div>

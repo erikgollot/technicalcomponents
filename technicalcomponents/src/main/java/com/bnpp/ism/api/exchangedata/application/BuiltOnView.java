@@ -50,7 +50,7 @@ public class BuiltOnView implements Serializable {
 	public void addComponent(TechnicalComponentView c) {
 		if (getComponents() == null) {
 			this.components = new ArrayList<TechnicalComponentView>();
-		}
+		}		
 		getComponents().add(c);
 	}
 

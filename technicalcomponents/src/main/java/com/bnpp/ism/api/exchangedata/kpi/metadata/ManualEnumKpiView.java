@@ -24,15 +24,7 @@ public class ManualEnumKpiView extends AbstractKpiView {
 			}
 		}
 		return enumLiteral;
-	}
-
-	public KpiKindEnum getKind() {
-		return KpiKindEnum.MANUAL;
-	}
-
-	public void setKind(KpiKindEnum kind) {
-		this.kind = kind;
-	}
+	}	
 
 	public String getClazz() {
 		return clazz;
@@ -40,5 +32,17 @@ public class ManualEnumKpiView extends AbstractKpiView {
 
 	public void setClazz(String clazz) {
 		this.clazz = clazz;
+	}
+
+	public KpiKindEnum getKind() {
+		return kind;
+	}
+
+	public void setKind(KpiKindEnum kind) {
+		this.kind = kind;
+	}
+
+	public void setLiterals(List<KpiEnumLiteralView> literals) {
+		this.literals = literals;
 	}
 }

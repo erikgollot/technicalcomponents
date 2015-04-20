@@ -47,6 +47,8 @@ public class ComponentCatalog {
 		if (this.getCategories() == null) {
 			this.categories = new ArrayList<ComponentCategory>();
 		}
+		// force loading, hibernate bug
+		getCategories().size();
 		getCategories().add(category);
 	}
 

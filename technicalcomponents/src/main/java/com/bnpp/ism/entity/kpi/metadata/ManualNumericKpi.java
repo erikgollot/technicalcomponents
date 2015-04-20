@@ -53,6 +53,6 @@ public class ManualNumericKpi extends AbstractKpi {
 
 	@Override
 	public KpiKindEnum getKind() {
-		return KpiKindEnum.MANUAL;
+		return KpiKindEnum.MANUAL_NUMERIC;
 	}
 }

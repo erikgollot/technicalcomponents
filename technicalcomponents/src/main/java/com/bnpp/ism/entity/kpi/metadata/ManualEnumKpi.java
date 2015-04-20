@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 @DiscriminatorValue("ManualEnumKpi")
 public class ManualEnumKpi extends AbstractKpi implements KpiEnum {
 	
-	@OneToMany(mappedBy = "enumKpi", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "enumKpi", cascade = CascadeType.ALL,orphanRemoval=true)
 	List<KpiEnumLiteral> literals;
 
 	public List<KpiEnumLiteral> getLiterals() {
@@ -49,12 +49,15 @@ public class ManualEnumKpi extends AbstractKpi implements KpiEnum {
 		if (getLiterals() == null) {
 			literals = new ArrayList<KpiEnumLiteral>();
 		}
+		// force loading, hibernate bug
+		getLiterals().size();
 		getLiterals().add(l);
 		l.setEnumKpi(this);
 	}
 
 	public void removeLiteral(KpiEnumLiteral l) {
 		getLiterals().remove(l);
+		l.setEnumKpi(null);
 	}
 
 	public float adjustValue(float value) {
@@ -79,6 +82,6 @@ public class ManualEnumKpi extends AbstractKpi implements KpiEnum {
 
 	@Override
 	public KpiKindEnum getKind() {
-		return KpiKindEnum.MANUAL;
+		return KpiKindEnum.MANUAL_ENUM;
 	}
 }

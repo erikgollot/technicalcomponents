@@ -33,16 +33,16 @@ public class AutomaticKpiConfiguration {
 
 	private void initManualDefaults() {
 		applicationDocumentationKpi();
-		endUserSatisfactionnKpi();
+		endUserSatisfactionKpi();
 	}
 
-	private void endUserSatisfactionnKpi() {
+	private void endUserSatisfactionKpi() {
 		ManualNumericKpi endusersatisfaction = new ManualNumericKpi();
 		endusersatisfaction.setName("Application end-user satisfaction");
 		endusersatisfaction.setDescription("Used to asses the end-user satisfaction index.<br>Value is an integer from 0 : <b>very bad</b> to 5 : <b>excellent</b>");
 		endusersatisfaction.setInt(true);
 		endusersatisfaction.setMinValue(0.0f);
-		endusersatisfaction.setMaxValue(5.0f);
+		endusersatisfaction.setMaxValue(5.0f);	
 		
 		abstractKpiDao.save(endusersatisfaction);
 	}

@@ -49,14 +49,14 @@ public class InitialContentInitializer {
 		initGalleryCatalog();
 
 		initDefaultStorage();
-		
+
 		initSomeApplications();
 	}
 
 	private void initSomeApplications() {
-		for (int i=0;i<10;i++) {
-			ApplicationVersion app =new ApplicationVersion();
-			app.setName("Application "+i);
+		for (int i = 0; i < 10; i++) {
+			ApplicationVersion app = new ApplicationVersion();
+			app.setName("Application " + i);
 			appDao.save(app);
 		}
 	}

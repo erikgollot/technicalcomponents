@@ -28,6 +28,8 @@ public class BuiltOn {
 		if (getComponents() == null) {
 			this.components = new ArrayList<TechnicalComponent>();
 		}
+		// force loading, hibernate bug
+		getComponents().size();
 		getComponents().add(c);
 	}
 

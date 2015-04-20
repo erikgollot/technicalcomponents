@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "clazz")
 public abstract class AbstractKpiView {
- 
+
 	Long id;
 
 	Long version;
+	String unit;
 
 	public Long getVersion() {
 		return version;
@@ -20,6 +21,10 @@ public abstract class AbstractKpiView {
 	String name;
 
 	String description;
+
+	String category;
+
+	boolean isActive;
 
 	public String getName() {
 		return name;
@@ -45,4 +50,31 @@ public abstract class AbstractKpiView {
 		this.id = id;
 	}
 
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 }
