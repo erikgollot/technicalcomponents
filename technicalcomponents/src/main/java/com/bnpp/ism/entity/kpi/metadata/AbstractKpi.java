@@ -17,12 +17,15 @@ import javax.persistence.Version;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "BASE_KPI_TYPE", discriminatorType = DiscriminatorType.STRING)
-public abstract class AbstractKpi implements Kpi {
+public abstract class AbstractKpi implements Kpi, Comparable<AbstractKpi> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	@Version
 	Long version;
+
+	@Column(columnDefinition = "VARCHAR(32)")
+	KpiKindEnum kind;
 
 	public Long getVersion() {
 		return version;
@@ -47,7 +50,7 @@ public abstract class AbstractKpi implements Kpi {
 
 	@Column
 	boolean isActive = true;
-	
+
 	public String getName() {
 		return name;
 	}
@@ -94,6 +97,19 @@ public abstract class AbstractKpi implements Kpi {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public KpiKindEnum getKind() {
+		return kind;
+	}
+
+	public void setKind(KpiKindEnum kind) {
+		this.kind = kind;
+	}
+
+	@Override
+	public int compareTo(AbstractKpi o) {
+		return getId().compareTo(o.getId());
 	}
 
 }

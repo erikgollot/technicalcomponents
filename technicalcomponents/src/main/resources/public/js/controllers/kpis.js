@@ -47,173 +47,12 @@ kpisControllers
 												$scope.kpiUsages.push(usage);
 											}
 										}
-									});
-
-					$http.get("/service/kpiconfigurations").success(
-							function(response) {
-								$scope.configurations = response;
-							});
+									});					
 
 					$scope.displaySafeHtml = function(html) {
 						return $sce.trustAsHtml(html);
 					}
-					$scope.addNewOrUpdateConfigurationInList = function(conf) {
-						if ($scope.configurations == null) {
-							$scope.configurations = [];
-						}
-						// Search if it's an existing one
-						found = false;
-						for (i = 0; i < $scope.configurations.length; i++) {
-							if ($scope.configurations[i].id == conf.id) {
-								$scope.configurations
-										.pop($scope.configurations[i]);
-								$scope.configurations.push(conf);
-								found = true;
-								break;
-							}
-						}
-						// It' a new one, just add it
-						if (!found) {
-							$scope.configurations.push(conf);
-						}
-					}
-					$scope.createNewConfiguration = function(configurationName,
-							configurationDescription) {
-						$http({
-							url : '/service/newKpiConfiguration/',
-							method : 'POST',
-							params : {
-								name : configurationName,
-								description : configurationDescription
-							}
-						})
-								.success(
-										function(response) {
-
-											BootstrapDialog
-													.show({
-														title : 'Information',
-														message : 'New configuration created : '
-																+ configurationName
-													});
-											$scope
-													.addNewOrUpdateConfigurationInList(response);
-										})
-								.error(
-										function(data, status, headers, config) {
-											BootstrapDialog
-													.show({
-														title : 'Error',
-														message : 'Cannot create configuration '
-																+ configurationName
-																+ '\n\n'
-																+ 'Reason : '
-																+ data.message
-													});
-										});
-					}
-
-					$scope.defineConfigurationDetails = function(config) {
-						$scope.currentEditedConfiguration = angular
-								.copy(config);
-						$scope.resetKpiSelection(config);
-						$scope.resetUsageIds(config);
-					}
-
-					$scope.resetKpiSelection = function(config) {
-						if ($scope.kpiUsages != null) {
-							for (i = 0; i < $scope.kpiUsages.length; i++) {
-								$scope.kpiUsages[i].isSelected = false;
-								$scope.kpiUsages[i].usageId = null;
-							}
-							if (config.usages != null) {
-								for (j = 0; j < config.usages.length; j++) {
-									$scope.resetOneKpiSelection(
-											config.usages[j].id,
-											config.usages[j].kpi.id);
-								}
-							}
-						}
-					}
-					$scope.resetOneKpiSelection = function(usageId,
-							kpiIdToSelect) {
-						for (i = 0; i < $scope.kpiUsages.length; i++) {
-							if ($scope.kpiUsages[i].kpiId == kpiIdToSelect) {
-								$scope.kpiUsages[i].isSelected = true;
-								$scope.kpiUsages[i].usageId = usageId;
-								return;
-							}
-						}
-					}
-
-					$scope.resetUsageIds = function(config) {
-						if (config.usages != null) {
-							for (i = 0; i < config.usages.length; i++) {
-								$scope.setUsageId(config.usages[i].usageId,
-										config.usages[i].kpi.id);
-							}
-						}
-					}
-					$scope.setUsageId = function(usageId, kpiId) {
-						if ($scope.kpiUsages != null) {
-							for (i = 0; i < $scope.kpiUsages.length; i++) {
-								if ($scope.kpiUsages[i].kpiId == kpiId) {
-									$scope.kpiUsages[i].usageId = usageId;
-								}
-							}
-						}
-					}
-
-					$scope.updateConfiguration = function(config) {
-						// Copy selected Kpis
-						config.usages = [];
-						if ($scope.kpiUsages != null) {
-							for (i = 0; i < $scope.kpiUsages.length; i++) {
-								if ($scope.kpiUsages[i].isSelected) {
-									var usage = new Object();
-									usage.usageId = $scope.kpiUsages[i].usageId;
-									usage.kpi = new Object();
-									usage.kpi.id = $scope.kpiUsages[i].kpiId;
-									usage.kpi.name = $scope.kpiUsages[i].kpi_name;
-									usage.kpi.kind = $scope.kpiUsages[i].kind;
-									usage.kpi.clazz = $scope.kpiUsages[i].kpi_clazz;
-									usage.kpi.description = $scope.kpiUsages[i].kpi_description;
-									config.usages.push(usage);
-								}
-							}
-						}
-						$http
-								.post('/service/updateKpiConfiguration/',
-										config)
-								.success(
-										function(response) {
-
-											BootstrapDialog
-													.show({
-														title : 'Information',
-														message : 'Configuration updated : '
-																+ config.name
-													});
-
-											$scope
-													.addNewOrUpdateConfigurationInList(response);
-											$scope
-													.defineConfigurationDetails(response);
-
-										})
-								.error(
-										function(data, status, headers, config) {
-											BootstrapDialog
-													.show({
-														title : 'Error',
-														message : 'Cannot update configuration '
-																+ config.name
-																+ '\n\n'
-																+ 'Reason : '
-																+ data.message
-													});
-										});
-					}
+									
 
 					$scope.createNewKpi = function(newKpi) {
 						console.log(newKpi);
@@ -227,7 +66,7 @@ kpisControllers
 						akpi = {
 							isActive : false,
 							isInt : false,
-							kind : "MANUAL_NUMERIC",
+							kind : "MANUAL_APPLICATION_NUMERIC",
 							clazz : "com.bnpp.ism.api.exchangedata.kpi.metadata.ManualNumericKpiView"
 						};
 						$scope.kpis.push(akpi);
@@ -236,7 +75,7 @@ kpisControllers
 					$scope.addNewEmptyEnumKpi = function() {
 						akpi = {
 							isActive : false,
-							kind : "MANUAL_ENUM",
+							kind : "MANUAL_APPLICATION_ENUM",
 							clazz : "com.bnpp.ism.api.exchangedata.kpi.metadata.ManualEnumKpiView"
 						};
 						$scope.kpis.push(akpi);
@@ -253,7 +92,7 @@ kpisControllers
 							id : kpi.id,
 							kind : kpi.kind
 						});
-						if (kpi.kind == "MANUAL_NUMERIC") {
+						if (kpi.kind == "MANUAL_APPLICATION_NUMERIC") {
 							if (kpi.id == null) {
 								url = '/service/createNumericKpi';
 							} else {
@@ -298,7 +137,7 @@ kpisControllers
 											});
 
 						} else {
-							// MANUAL_ENUM
+							// MANUAL_APPLICATION_ENUM
 							if (kpi.id == null) {
 								url = '/service/createEnumKpi';
 							} else {
@@ -347,7 +186,7 @@ kpisControllers
 						// kpi is filtered so need to recalculate index
 						var filtered = [];
 						angular.forEach($scope.kpis, function(kpi) {
-							if (kpi.kind == "MANUAL_NUMERIC") {
+							if (kpi.kind == "MANUAL_APPLICATION_NUMERIC") {
 								filtered.push(kpi);
 							}
 						});
@@ -368,7 +207,7 @@ kpisControllers
 						// kpi is filtered so need to recalculate index
 						var filtered = [];
 						angular.forEach($scope.kpis, function(kpi) {
-							if (kpi.kind == "MANUAL_ENUM") {
+							if (kpi.kind == "MANUAL_APPLICATION_ENUM") {
 								filtered.push(kpi);
 							}
 						});
@@ -534,11 +373,11 @@ kpisControllers
 				}); // End controller
 
 // Specific filters
-kpisControllers.filter('manual_kpi_filter', function() {
+kpisControllers.filter('manual_application_kpi_filter', function() {
 	return function(kpis) {
 		var filtered = [];
 		angular.forEach(kpis, function(kpi) {
-			if (kpi.kind == "MANUAL_ENUM" || kpi.kind == "MANUAL_NUMERIC") {
+			if (kpi.kind == "MANUAL_APPLICATION_ENUM" || kpi.kind == "MANUAL_APPLICATION_NUMERIC") {
 				filtered.push(kpi);
 			}
 		});
@@ -546,11 +385,11 @@ kpisControllers.filter('manual_kpi_filter', function() {
 	};
 });
 
-kpisControllers.filter('computed_kpi_filter', function() {
+kpisControllers.filter('computed_application_kpi_filter', function() {
 	return function(kpis) {
 		var filtered = [];
 		angular.forEach(kpis, function(kpi) {
-			if (kpi.kind.indexOf("COMPUTED_") == 0) {
+			if (kpi.kind.indexOf("COMPUTED_APPLICATION") == 0) {
 				filtered.push(kpi);
 			}
 		});

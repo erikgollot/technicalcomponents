@@ -1,0 +1,148 @@
+<button type="button" class="btn btn-default"
+	ng-click="loadExistingSnapshots()"
+	ng-hide="selectedApplication == null">Load snapshots</button>
+<button type="button" class="btn btn-default"
+	ng-click="takeNewSnapshot()" ng-hide="selectedApplication == null">Take
+	new snapshot</button>
+<hr>
+<div class="panel panel-default" ng-show="hasSnapshot">
+	<div class="panel-heading">Snapshots</div>
+	<div class="panel-body">
+		<table class="table table-striped table-hover table-condensed">
+			<thead>
+				<tr>
+					<th>For Date</th>
+					<th>Frozen</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="snapshot in currentSnapshots">
+					<td>
+						<!-- editable username (text with validation) --> <span
+						editable-date="snapshot.forDate" e-name="forDate" e-form="rowform"
+						e-required> {{ snapshot.forDate | date:"dd-MM-yyyy" ||
+							'empty' }}</span>
+					</td>
+					<td>
+						<!-- editable username (text with validation) --> <span
+						editable-text="snapshot.frozen" e-name="frozen" e-form="rowform"
+						e-required> {{ snapshot.frozen || 'empty' }}</span>
+					</td>
+
+					<td style="white-space: nowrap">
+						<!-- form -->
+						<form editable-form name="rowform"
+							onbeforesave="saveSnapshot($data, snapshot)"
+							ng-show="rowform.$visible" class="form-buttons form-inline"
+							shown="inserted == snapshot">
+							<button type="submit" ng-disabled="rowform.$waiting"
+								class="btn btn-primary btn-xs">save</button>
+							<button type="button" class="btn btn-xs"
+								ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"
+								class="btn btn-default">cancel</button>
+						</form>
+						<div class="buttons" ng-show="!rowform.$visible">
+							<button class="btn btn-primary btn-xs" ng-click="rowform.$show()">edit</button>
+							<button class="btn btn-danger btn-xs"
+								ng-click="removeSnapshot($index)">del</button>
+							<button class="btn btn-default btn-xs"
+								ng-click="showSnapshotMeasurements(snapshot)">Details</button>
+						</div>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<hr>
+<!-- Current edited measurement -->
+<div class="panel panel-default" ng-show="currentSnapshot!=null">
+	<div class="panel-heading">Measurements for
+		{{currentSnapshot.forDate}}</div>
+	<div class="panel-body">
+		<div class="container-fluid">
+			<div class="col-md-3">
+				<div class="container-fluid">
+					<!-- List of automatic Kpis -->
+					<div class="row">
+						<button class="btn btn-default btn-xs"
+							ng-click="computeAutomaticKpi(currentSnapshot)">Compute
+							Automatic KPis</button>
+					</div>
+					<div class="row">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Value</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="val in currentSnapshot.computedKpis">
+									<td>{{val.kpi.name}}</td>
+									<td>{{val.value}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-9">
+				<div class="container-fluid">
+					<div class="row">
+						<button class="btn btn-default btn-xs"
+							ng-click="createNewMeasurement(currentSnapshot)">New
+							measurement</</button>
+					</div>
+					<div class="row">
+						<table class="table table-striped table-hover table-condensed">
+							<thead>
+								<tr>
+									<th>Who</th>
+									<th
+										ng-repeat="kpi in manualMeasurementsOfSnapshot(currentSnapshot)">{{kpi.name}}</th>
+									<th>Edit</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									ng-repeat="measurement in currentSnapshot.manualMeasurements">
+									<td>{{measurement.who.name}}</td>
+									<!-- prendre les values du measurements et pas les kpis car on pointe sur la même donnée dans chaque colonne -->
+									<td
+										ng-repeat="val in measurement.values">									
+										<!-- editable value (text with validation) --> <span
+										editable-text="val.value" e-name="value"
+										e-form="rowMeasurementform">{{ val.value ||
+											'empty' }}</span>
+									</td>
+									<!-- Edition button (form) -->
+									<td style="white-space: nowrap">
+										<!-- form -->
+										<form editable-form name="rowMeasurementform" onbeforesave=""
+											ng-show="rowMeasurementform.$visible"
+											class="form-buttons form-inline" shown="inserted == snapshot">
+											<button type="submit"
+												ng-disabled="rowMeasurementform.$waiting"
+												class="btn btn-primary btn-xs">save</button>
+											<button type="button" class="btn btn-xs"
+												ng-disabled="rowMeasurementform.$waiting"
+												ng-click="rowMeasurementform.$cancel()"
+												class="btn btn-default">cancel</button>
+										</form>
+										<div class="buttons" ng-show="!rowMeasurementform.$visible">
+											<button class="btn btn-primary btn-xs"
+												ng-click="rowMeasurementform.$show()">edit</button>
+											<button class="btn btn-danger btn-xs" ng-click="">del</button>											
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

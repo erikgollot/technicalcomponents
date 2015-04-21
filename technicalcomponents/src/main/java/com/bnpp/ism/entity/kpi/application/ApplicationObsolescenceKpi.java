@@ -13,8 +13,7 @@ import com.bnpp.ism.entity.kpi.metadata.UnitEnum;
 
 @Entity
 @DiscriminatorValue("ApplicationObsolescenceKpi")
-public class ApplicationObsolescenceKpi extends AbstractKpi implements KpiEnum,
-		ApplicationComputedKpi {
+public class ApplicationObsolescenceKpi extends ApplicationComputedKpi implements KpiEnum {
 	public static final String MY_NAME = "Application Obscolescence";
 
 	@Override
@@ -54,8 +53,7 @@ public class ApplicationObsolescenceKpi extends AbstractKpi implements KpiEnum,
 
 	@Override
 	public float compute(Object context) {
-		// TODO Auto-generated method stub
-		return 0;
+		return compute((ApplicationVersion) context);
 	}
 
 	@Override
@@ -70,6 +68,28 @@ public class ApplicationObsolescenceKpi extends AbstractKpi implements KpiEnum,
 	@Override
 	public String getUnit() {
 		return UnitEnum.NONE.toString();
+	}
+
+	@Override
+	public void setKind(KpiKindEnum kind) {
+		// FORCE KpiKindEnum.COMPUTED_APPLICATION_VERSION
+		super.setKind(KpiKindEnum.COMPUTED_APPLICATION_VERSION);
+	}
+
+	@Override
+	public boolean canCompute(Object context) {
+		return canCompute((ApplicationVersion)context);
+	}
+
+	@Override
+	public boolean canCompute(ApplicationVersion applicationVersion) {
+		if (applicationVersion.getBuiltOn() != null
+				&& applicationVersion.getBuiltOn().getComponents() != null
+				&& applicationVersion.getBuiltOn().getComponents().size() > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

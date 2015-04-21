@@ -11,6 +11,7 @@ import com.bnpp.ism.dao.kpi.metadata.AbstractKpiDao;
 import com.bnpp.ism.entity.kpi.application.ApplicationObsolescenceKpi;
 import com.bnpp.ism.entity.kpi.metadata.AbstractKpi;
 import com.bnpp.ism.entity.kpi.metadata.KpiEnumLiteral;
+import com.bnpp.ism.entity.kpi.metadata.KpiKindEnum;
 import com.bnpp.ism.entity.kpi.metadata.ManualEnumKpi;
 import com.bnpp.ism.entity.kpi.metadata.ManualNumericKpi;
 
@@ -43,12 +44,14 @@ public class AutomaticKpiConfiguration {
 		endusersatisfaction.setInt(true);
 		endusersatisfaction.setMinValue(0.0f);
 		endusersatisfaction.setMaxValue(5.0f);	
+		endusersatisfaction.setKind(KpiKindEnum.MANUAL_APPLICATION_NUMERIC);
 		
 		abstractKpiDao.save(endusersatisfaction);
 	}
 
 	private void applicationDocumentationKpi() {
 		ManualEnumKpi documentation_quality = new ManualEnumKpi();
+		documentation_quality.setKind(KpiKindEnum.MANUAL_APPLICATION_ENUM);
 		documentation_quality.setName("Application documentation quality");
 		documentation_quality
 				.setDescription("Used to assess the conformity of the application's documentation to standards.<br>Values are :<br><ul> <li><b>BAD</b> (1)</li><li><b>NEED IMPROVEMENTS</b> (3)</li><li><b>CORRECT</b> (5)</li></ul>");

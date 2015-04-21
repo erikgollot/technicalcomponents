@@ -1,0 +1,27 @@
+<div class="col-sm-12" role="tabpanel" id="myTab">
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a
+			href="#technicalComponentTab" aria-controls="warning" role="tab"
+			data-toggle="tab">Technical Components</a></li>
+		<li role="presentation"><a href="#kpiSnapshots"
+			aria-controls="hot" role="tab" data-toggle="tab">KPI snapshots</a></li>
+	</ul>
+</div>
+<div class="tab-content">
+	<div role="tabpanel" class="tab-pane active" id="technicalComponentTab">
+		<div ng-include
+			src="'templates/application_version_define_technical_components.html'"></div>
+	</div>
+	<div role="tabpanel" class="tab-pane" id="kpiSnapshots">
+	<div ng-include
+			src="'templates/application_version_kpi_snapshots.html'"></div>
+	</div>
+</div>
+
+
+<script>
+	$('#myTab a').click(function(e) {
+		e.preventDefault()
+		$(this).tab('show')
+	})
+</script>

@@ -15,6 +15,7 @@ import com.bnpp.ism.dao.component.ComponentCategoryDao;
 import com.bnpp.ism.dao.component.ComponentGalleryDao;
 import com.bnpp.ism.dao.component.TechnicalComponentDao;
 import com.bnpp.ism.dao.storage.DefaultStorageSetDao;
+import com.bnpp.ism.dao.user.UserDao;
 import com.bnpp.ism.entity.application.ApplicationVersion;
 import com.bnpp.ism.entity.component.ComponentCatalog;
 import com.bnpp.ism.entity.component.ComponentCategory;
@@ -23,6 +24,7 @@ import com.bnpp.ism.entity.component.ComponentVersionInfo;
 import com.bnpp.ism.entity.component.TechnicalComponent;
 import com.bnpp.ism.entity.storage.DefaultStorageSet;
 import com.bnpp.ism.entity.storage.Storage;
+import com.bnpp.ism.entity.user.User;
 
 @Service
 public class InitialContentInitializer {
@@ -38,10 +40,14 @@ public class InitialContentInitializer {
 	DefaultStorageSetDao storageDao;
 	@Autowired
 	ApplicationVersionDao appDao;
+	@Autowired
+	UserDao userDao;
 
 	@PostConstruct
 	@Transactional
 	void initDB() {
+		// Init default Erik User TODO remove for production
+		initUsers();
 		// Default component catalog
 		initDefaultCatalog();
 
@@ -51,6 +57,13 @@ public class InitialContentInitializer {
 		initDefaultStorage();
 
 		initSomeApplications();
+	}
+
+	private void initUsers() {
+		User erik = new User();
+		erik.setName("Erik");
+		userDao.save(erik);
+
 	}
 
 	private void initSomeApplications() {

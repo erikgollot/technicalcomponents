@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.bnpp.ism.api.IKpiManager;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.AbstractKpiView;
-import com.bnpp.ism.api.exchangedata.kpi.metadata.KpiConfigurationView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.KpiEnumLiteralView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.KpiUsageView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.ManualEnumKpiView;
@@ -52,89 +51,6 @@ public class KpiManager implements IKpiManager {
 			}
 		}
 		return (kpis.size() > 0 ? kpis : null);
-	}
-
-	@Transactional
-	@Override
-	public KpiConfigurationView createNewConfiguration(String name,
-			String description) {
-		Iterable<KpiConfiguration> all = kpiConfigurationDao.findAll();
-		if (all != null) {
-			for (KpiConfiguration c : all) {
-				if (name.endsWith(c.getName())) {
-					throw new RuntimeException("Name " + name
-							+ " already exists");
-
-				}
-			}
-		}
-		KpiConfiguration newConf = new KpiConfiguration();
-		newConf.setName(name);
-		newConf.setDescription(description);
-		kpiConfigurationDao.save(newConf);
-
-		return dozerBeanMapper.map(newConf, KpiConfigurationView.class);
-	}
-
-	@Transactional
-	@Override
-	public List<KpiConfigurationView> getAllConfigurations() {
-		Iterable<KpiConfiguration> all = kpiConfigurationDao.findAll();
-		List<KpiConfigurationView> allView = new ArrayList<KpiConfigurationView>();
-		if (all != null) {
-			for (KpiConfiguration c : all) {
-				allView.add(dozerBeanMapper.map(c, KpiConfigurationView.class));
-			}
-		}
-		return allView;
-
-	}
-
-	@Transactional
-	@Override
-	public KpiConfigurationView updateConfiguration(KpiConfigurationView config) {
-		KpiConfiguration entity = kpiConfigurationDao.findOne(config.getId());
-		if (entity != null) {
-			entity.setName(config.getName());
-			entity.setDescription(config.getDescription());
-			if (config.getUsages() != null) {
-
-				// First remove existing usages that are not used anymore
-				List<KpiUsage> toRemove = new ArrayList<KpiUsage>();
-				if (entity.getUsages() != null) {
-					for (KpiUsage existing : entity.getUsages()) {
-						boolean found = false;
-						for (KpiUsageView usage : config.getUsages()) {
-							if (existing.getId().equals(usage.getId())) {
-								found = true;
-							}
-						}
-						if (!found) {
-							toRemove.add(existing);
-						}
-					}
-					entity.getUsages().removeAll(toRemove);
-				}
-				for (KpiUsageView usage : config.getUsages()) {
-					updateOrCreateUsage(entity, usage);
-				}
-			} else {
-				// Remove all
-				if (entity.getUsages() != null) {
-					entity.getUsages().clear();
-					// usages will deleted automatically because of removeOrphan
-					// in KpiConfiguration
-				}
-			}
-			kpiConfigurationDao.save(entity);
-			return dozerBeanMapper.map(entity, KpiConfigurationView.class);
-
-		} else {
-			throw new RuntimeException(
-					"Cannot update configuration, configuration "
-							+ config.getName() + " not found");
-		}
-
 	}
 
 	private void updateOrCreateUsage(KpiConfiguration entity, KpiUsageView usage) {
@@ -187,7 +103,7 @@ public class KpiManager implements IKpiManager {
 		KpiEnumLiteral entity = kpiEnumLiteralDao.findOne(literalId);
 		if (entity != null) {
 			ManualEnumKpi en = ((ManualEnumKpi) entity.getEnumKpi());
-			en.removeLiteral(entity);			
+			en.removeLiteral(entity);
 			kpiDao.save(en);
 		}
 	}

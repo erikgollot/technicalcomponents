@@ -50,9 +50,5 @@ public class ManualNumericKpi extends AbstractKpi {
 		// Nothing todo for numeric value
 		return value;
 	}
-
-	@Override
-	public KpiKindEnum getKind() {
-		return KpiKindEnum.MANUAL_NUMERIC;
-	}
+	
 }

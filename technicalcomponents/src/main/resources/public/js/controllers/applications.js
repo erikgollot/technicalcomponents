@@ -1,7 +1,14 @@
-var applicationsControllers = angular.module('applicationsControllers', []);
+var applicationsControllers = angular.module('applicationsControllers', [
+		'ui.bootstrap', 'xeditable' ]);
+
+applicationsControllers.run(function(editableOptions) {
+	editableOptions.theme = 'bs3';
+});
 
 applicationsControllers.controller('applicationsController', function($scope,
 		$http) {
+
+	// Chargement de toutes les applications....à revoir lors de l'integration
 	$scope.loadApps = function() {
 		$http.get("/service/applications").success(function(response) {
 			$scope.applications = response;
@@ -78,7 +85,7 @@ applicationsControllers.controller('applicationsController', function($scope,
 	// This is the save that will really set the builtOn list of the application
 	$scope.addToBuiltOn = function(application) {
 		if ($scope.fullSelection != null && $scope.fullSelection.length > 0) {
-			for (i = 0; i < $scope.fullSelection.length; i++) {				
+			for (i = 0; i < $scope.fullSelection.length; i++) {
 				if (application.builtOn == null) {
 					application.builtOn = new Object();
 				}
@@ -118,7 +125,7 @@ applicationsControllers.controller('applicationsController', function($scope,
 
 	$scope.addToCanRunOn = function(application) {
 		if ($scope.fullSelection != null && $scope.fullSelection.length > 0) {
-			for (i = 0; i < $scope.fullSelection.length; i++) {				
+			for (i = 0; i < $scope.fullSelection.length; i++) {
 				if (application.canRunOn == null) {
 					application.canRunOn = new Object();
 				}
@@ -178,17 +185,122 @@ applicationsControllers.controller('applicationsController', function($scope,
 
 	$scope.saveComponentsOfApplication = function(application) {
 		console.log(application);
-		$http.post("/service/application/setTechnicalComponents",application).success(function(response) {
-			BootstrapDialog.show({
-				title : 'Information',
-				message : "Components saved"
-			});
-		}).error(function(data, status, headers, config) {
-			BootstrapDialog.show({
-				title : 'Error',
-				message : data.message
-			});
-		});
+		$http.post("/service/application/setTechnicalComponents", application)
+				.success(function(response) {
+					BootstrapDialog.show({
+						title : 'Information',
+						message : "Components saved"
+					});
+				}).error(function(data, status, headers, config) {
+					BootstrapDialog.show({
+						title : 'Error',
+						message : data.message
+					});
+				});
+	}
+
+	// Snapshot functions
+	$scope.hasSnapshot = false;
+	$scope.takeNewSnapshot = function() {
+		$http.get("/service/createSnapshot/" + $scope.selectedApplication.id)
+				.success(function(response) {
+					if (response != null) {
+						if ($scope.currentSnapshots == null) {
+							$scope.currentSnapshots = [];
+						}
+						$scope.currentSnapshots.push(response);
+					}
+					$scope.hasSnapshot = true;
+				}).error(function(data, status, headers, config) {
+					BootstrapDialog.show({
+						title : 'Error',
+						message : data.message
+					});
+				});
+	}
+	$scope.loadExistingSnapshots = function() {
+		$scope.hasSnapshot = false;
+		$http.get("/service/getSnapshots/" + $scope.selectedApplication.id)
+				.success(function(response) {
+					$scope.currentSnapshots = response;
+					$scope.hasSnapshot = true;
+				}).error(function(data, status, headers, config) {
+					BootstrapDialog.show({
+						title : 'Error',
+						message : data.message
+					});
+				});
+	}
+
+	$scope.showSnapshotMeasurements = function(snapshot) {
+		$scope.currentSnapshot = snapshot;
+	}
+
+	$scope.createNewMeasurement = function(snapshot) {
+		// Create a new measurement for current logged user...if this
+		// measurement does not already exist
+
+		if (snapshot.kpis != null) {
+			// TODO check if not already exist
+
+			var measurement = {};
+			measurement.creationDate = Date.now();
+			measurement.comments = "<to modifiy>";
+			measurement.who = {
+				id : 1,
+				version : 0,
+				name : "Erik"
+			}
+			measurement.values = new Array();
+			for (i = 0; i < snapshot.kpis.length; i++) {
+				var kpi = snapshot.kpis[i];
+				if (kpi.kind != null
+						&& kpi.kind.indexOf("MANUAL_APPLICATION_") == 0) {
+					var value = {};
+					value.kpi = snapshot.kpis[i];
+					measurement.values.push(value);
+				}
+			}
+			if (snapshot.manualMeasurements == null) {
+				snapshot.manualMeasurements = new Array();
+			}
+			snapshot.manualMeasurements.push(measurement);
+		}
+	}
+
+	$scope.manualMeasurementsOfSnapshot = function(snapshot) {
+		if (snapshot != null && snapshot.kpis != null) {
+			var kpis = new Array();
+			for (i = 0; i < snapshot.kpis.length; i++) {
+				var kpi = snapshot.kpis[i];
+				if (kpi.kind != null
+						&& kpi.kind.indexOf("MANUAL_APPLICATION_") == 0) {
+					kpis.push(kpi);
+				}
+			}
+			return kpis;
+		}
+	}
+
+	$scope.computeAutomaticKpi = function(snapshot) {
+		// TODO server call
+		// For Test
+		if (snapshot != null && snapshot.kpis != null) {
+			snapshot.computedKpis = new Array();
+			for (i = 0; i < snapshot.kpis.length; i++) {
+				var kpi = snapshot.kpis[i];
+				if (kpi.kind != null
+						&& kpi.kind.indexOf("COMPUTED_APPLICATION_") == 0) {
+					// On simule
+					var val = new Object();
+					val.value = 1.25;
+					val.kpi = {
+							name : kpi.name
+					}
+					snapshot.computedKpis.push(val);					
+				}
+			}
+		}
 	}
 
 	// Init

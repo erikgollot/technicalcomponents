@@ -18,7 +18,7 @@
 						<table class="table table-striped">
 							<tbody>
 								<tr
-									ng-repeat="kpi in kpis | manual_kpi_filter | orderBy:'name':reverse">
+									ng-repeat="kpi in kpis | manual_application_kpi_filter | orderBy:'name':reverse">
 									<td>{{kpi.name}}</td>
 									<td>
 										<p ng-bind-html="displaySafeHtml(kpi.description)"></p>
@@ -35,7 +35,7 @@
 
 							<tbody>
 								<tr
-									ng-repeat="kpi in kpis | computed_kpi_filter | orderBy:'name':reverse">
+									ng-repeat="kpi in kpis | computed_application_kpi_filter | orderBy:'name':reverse">
 									<td>{{kpi.name}}</td>
 									<td>
 										<p ng-bind-html="displaySafeHtml(kpi.description)"></p>

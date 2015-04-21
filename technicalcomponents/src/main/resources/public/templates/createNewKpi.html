@@ -16,7 +16,7 @@
 			</thead>
 			<tbody>
 				<!-- Numeric KPIs -->
-				<tr ng-repeat="kpi in kpis | filter:{kind:'MANUAL_NUMERIC'}">
+				<tr ng-repeat="kpi in kpis | filter:{kind:'MANUAL_APPLICATION_NUMERIC'}">
 					<td>
 						<!-- editable username (text with validation) --> <span
 						editable-text="kpi.name" e-name="name" e-form="rowform" e-required>
@@ -92,7 +92,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="kpi in kpis | filter:{kind:'MANUAL_ENUM'}">
+				<tr ng-repeat="kpi in kpis | filter:{kind:'MANUAL_APPLICATION_ENUM'}">
 					<td>
 						<!-- editable username (text with validation) --> <span
 						editable-text="kpi.name" e-name="name" e-form="rowEnumform"

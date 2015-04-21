@@ -1,5 +1,6 @@
 <div class="container-fluid" ng-controller="applicationsController">
-	<div class="row" id="searchSection" ng-hide="selectedApplication == null">
+	<div class="row" id="searchSection"
+		ng-hide="selectedApplication == null">
 		<div class="col-md-12">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Search components for application
@@ -61,8 +62,9 @@
 			<div class="row">
 				<div class="col-md-6">
 					<button type="button" class="btn btn-primary btn-sm"
-						ng-click="saveComponentsOfApplication(selectedApplication)">Save components associations</button>
-						<hr>
+						ng-click="saveComponentsOfApplication(selectedApplication)">Save
+						components associations</button>
+					<hr>
 				</div>
 			</div>
 			<div class="row">
@@ -71,8 +73,9 @@
 						<div class="panel-heading">Build On Components</div>
 						<div class="panel-body nav_search_components">
 							<button type="button" class="btn btn-primary btn-sm"
-								ng-disabled="!hasSelection()" ng-click="addToBuiltOn(selectedApplication)">Add
-								to build on</button>
+								ng-disabled="!hasSelection()"
+								ng-click="addToBuiltOn(selectedApplication)">Add to
+								build on</button>
 							<button type="button" class="btn btn-primary btn-sm"
 								ng-disabled="!hasSelectionInBuiltOn(selectedApplication)"
 								ng-click="removeFromBuiltOn(selectedApplication)">Remove
@@ -97,8 +100,9 @@
 						<div class="panel-heading">Can Run On Components</div>
 						<div class="panel-body nav_search_components">
 							<button type="button" class="btn btn-primary btn-sm"
-								ng-disabled="!hasSelection()" ng-click="addToCanRunOn(selectedApplication)">Add
-								to build on</button>
+								ng-disabled="!hasSelection()"
+								ng-click="addToCanRunOn(selectedApplication)">Add to
+								build on</button>
 							<button type="button" class="btn btn-primary btn-sm"
 								ng-disabled="!hasSelectionInCanRunOn(selectedApplication)"
 								ng-click="removeFromCanRunOn(selectedApplication)">Remove
@@ -123,3 +127,11 @@
 	</div>
 	<!-- On blocks -->
 </div>
+
+
+<script>
+	$('#myTab a').click(function(e) {
+		e.preventDefault()
+		$(this).tab('show')
+	})
+</script>

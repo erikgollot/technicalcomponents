@@ -3,7 +3,7 @@ package com.bnpp.ism.api.exchangedata.kpi.metadata;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "clazz")
-public abstract class AbstractKpiView {
+public abstract class AbstractKpiView implements Comparable<AbstractKpiView> {
 
 	Long id;
 
@@ -76,5 +76,10 @@ public abstract class AbstractKpiView {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	@Override
+	public int compareTo(AbstractKpiView o) {
+		return getId().compareTo(o.getId());
 	}
 }

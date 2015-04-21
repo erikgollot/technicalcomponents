@@ -80,8 +80,5 @@ public class ManualEnumKpi extends AbstractKpi implements KpiEnum {
 		return enCurrent.getValue();
 	}
 
-	@Override
-	public KpiKindEnum getKind() {
-		return KpiKindEnum.MANUAL_ENUM;
-	}
+	
 }

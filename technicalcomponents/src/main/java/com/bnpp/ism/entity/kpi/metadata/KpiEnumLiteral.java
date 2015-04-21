@@ -23,7 +23,7 @@ public class KpiEnumLiteral {
 	float value;
 
 	@ManyToOne
-	AbstractKpi enumKpi;
+	ManualEnumKpi enumKpi;
 	
 	public int getRank() {
 		return rank;
@@ -65,12 +65,13 @@ public class KpiEnumLiteral {
 		this.version = version;
 	}
 
-	public AbstractKpi getEnumKpi() {
+	public ManualEnumKpi getEnumKpi() {
 		return enumKpi;
 	}
 
-	public void setEnumKpi(AbstractKpi enumKpi) {
+	public void setEnumKpi(ManualEnumKpi enumKpi) {
 		this.enumKpi = enumKpi;
 	}
+	
 
 }

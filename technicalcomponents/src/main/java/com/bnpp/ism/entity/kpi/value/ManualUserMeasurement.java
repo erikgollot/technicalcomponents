@@ -4,15 +4,41 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Version;
+
 import com.bnpp.ism.entity.user.User;
 
+@Entity
 public class ManualUserMeasurement {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
+	@Version
 	Long version;
+	
+	@ManyToOne	
 	User who;
-	Date when;
+	
+	@Column
+	Date creationDate;
+	@Column(length = 1000)
 	String comments;
+	@OneToMany
 	List<KpiValue> values;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	ApplicationVersionKpiSnapshot snapshot;
 
 	public User getWho() {
 		return who;
@@ -22,13 +48,7 @@ public class ManualUserMeasurement {
 		this.who = who;
 	}
 
-	public Date getWhen() {
-		return when;
-	}
-
-	public void setWhen(Date when) {
-		this.when = when;
-	}
+	
 
 	public String getComments() {
 		return comments;
@@ -71,5 +91,21 @@ public class ManualUserMeasurement {
 
 	public void setVersion(Long version) {
 		this.version = version;
+	}
+
+	public ApplicationVersionKpiSnapshot getSnapshot() {
+		return snapshot;
+	}
+
+	public void setSnapshot(ApplicationVersionKpiSnapshot snapshot) {
+		this.snapshot = snapshot;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 }
