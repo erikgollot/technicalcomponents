@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
 import com.bnpp.ism.entity.storage.StoredFileVersion;
@@ -43,7 +42,7 @@ public class TechnicalComponent {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private ComponentCategory category;
 
-	@OneToOne
+	@ManyToOne
 	private StoredFileVersion image;
 
 	@Embedded

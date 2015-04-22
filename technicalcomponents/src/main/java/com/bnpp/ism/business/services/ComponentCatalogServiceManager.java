@@ -136,6 +136,7 @@ public class ComponentCatalogServiceManager implements IComponentCatalogManager 
 		StoredFileVersion image = loaded.getImage();
 		// Copy from view
 		dozerBeanMapper.map(toUpdate, loaded);
+		
 		// Restore image
 		loaded.setImage(image);
 
@@ -271,15 +272,15 @@ public class ComponentCatalogServiceManager implements IComponentCatalogManager 
 		HashMap<String, TechnicalComponentView> components = loadCachedComponents();
 		if (components != null) {
 			List<TechnicalComponentView> found = new ArrayList<TechnicalComponentView>();
-			
+
 			// Regexp on user interface are simplified.
 			// wildcards used are just * and ?
-			// * means many characters so :  '.*' in java
+			// * means many characters so : '.*' in java
 			// ? means only one character so : '.' in java
-			// So, we first transform the provided regexp			
+			// So, we first transform the provided regexp
 			String reg = regexp;
 			reg = reg.replaceAll("\\?", ".").replaceAll("\\*", ".*");
-			
+
 			final Pattern pattern = Pattern.compile(reg,
 					Pattern.CASE_INSENSITIVE);
 			for (String key : components.keySet()) {
@@ -309,8 +310,6 @@ public class ComponentCatalogServiceManager implements IComponentCatalogManager 
 			return null;
 		}
 	}
-
-	
 
 	@Override
 	@CacheEvict(value = SEARCH_COMPONENTS_FROM_FULL_PATHNAME_CACHE)

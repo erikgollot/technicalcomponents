@@ -84,11 +84,14 @@ techMain
 					// Handlers
 					$scope.loadComponentsOfSelectedCategory = function(
 							category_id) {
-						$http.get(
-								"/service/componentsOfCategory/" + category_id)
-								.success(function(response) {
-									$scope.allComponentOfSelectedCategory = response;
-								});
+						$http
+								.get(
+										"/service/componentsOfCategory/"
+												+ category_id)
+								.success(
+										function(response) {
+											$scope.allComponentOfSelectedCategory = response;
+										});
 					}
 
 					$scope.on_select_category = function(category) {
@@ -105,12 +108,12 @@ techMain
 
 					// Create new component on dialog save button click
 					$scope.createOrUpdateComponent = function(theComp) {
-						newComp = angular.copy(theComp);
-						if (newComp.image == null) {
-							newComp.image = new Object();
-						}
+						var newComp = angular.copy(theComp);
+
 						if ($scope.image.id != null) {
-							newComp.image.id = $scope.image.id;
+							newComp.image = angular.copy($scope.image);
+							// newComp.image.id = $scope.image.id;
+
 						}
 						// Need to transform date in the right format. Even if
 						// display format is
@@ -151,8 +154,36 @@ techMain
 											newComp)
 									.success(
 											function(response) {
-												$scope
-														.loadComponentsOfSelectedCategory($scope.selectedCategoryNode.category_id);
+												if (newComp.image != null) {
+													$http
+															.post(
+																	"/service/setImageComponent/"
+																			+ response.id
+																			+ "/"
+																			+ newComp.image.id)
+															.success(
+																	function(
+																			response2) {
+																		$scope
+																				.loadComponentsOfSelectedCategory($scope.selectedCategoryNode.category_id);
+																	})
+															.error(
+																	function(
+																			data,
+																			status,
+																			headers,
+																			config) {
+																		BootstrapDialog
+																				.show({
+																					title : 'Error',
+																					message : data.message
+																				});
+																	});
+
+												} else {
+													$scope
+															.loadComponentsOfSelectedCategory($scope.selectedCategoryNode.category_id);
+												}
 											}).error(
 											function(data, status, headers,
 													config) {
@@ -167,8 +198,36 @@ techMain
 									.post("/service/updateComponent", newComp)
 									.success(
 											function(response) {
-												$scope
-														.loadComponentsOfSelectedCategory($scope.selectedCategoryNode.category_id);
+												if (newComp.image != null) {
+													$http
+															.post(
+																	"/service/setImageComponent/"
+																			+ newComp.id
+																			+ "/"
+																			+ newComp.image.id)
+															.success(
+																	function(
+																			response2) {
+																		$scope
+																				.loadComponentsOfSelectedCategory($scope.selectedCategoryNode.category_id);
+																	})
+															.error(
+																	function(
+																			data,
+																			status,
+																			headers,
+																			config) {
+																		BootstrapDialog
+																				.show({
+																					title : 'Error',
+																					message : data.message
+																				});
+																	});
+
+												} else {
+													$scope
+															.loadComponentsOfSelectedCategory($scope.selectedCategoryNode.category_id);
+												}
 											}).error(
 											function(data, status, headers,
 													config) {
@@ -309,40 +368,50 @@ techMain
 					}
 
 					$scope.deleteComponent = function(component) {
-						BootstrapDialog.show({
-							size : BootstrapDialog.SIZE_NORMAL,
-							title : 'Confirm',
-							message : 'Please confirm the suppresion of the [<b>'+component.localInformations.name+'</b>] component',
-							buttons : [
-									{
-										label : 'Close',
-										action : function(dialog) {
-											dialog.close();
-										}
-									},
-									{
-										label : 'Delete',
-										action : function(dialog) {
-											$http
-											.post(
-													"/service/deleteComponent/"
-															+ component.id)
-											.success(
-													function(response) {
-														$scope
-																.loadComponentsOfSelectedCategory($scope.selectedCategoryNode.category_id);
-													})
-											.error(function(data, status, headers, config) {
-												BootstrapDialog.show({
-													title : 'Error',
-													message : data.message
-												});
-											});
-											dialog.close();
-										}
-									} ]
-						});
-						
+						BootstrapDialog
+								.show({
+									size : BootstrapDialog.SIZE_NORMAL,
+									title : 'Confirm',
+									message : 'Please confirm the suppresion of the [<b>'
+											+ component.localInformations.name
+											+ '</b>] component',
+									buttons : [
+											{
+												label : 'Close',
+												action : function(dialog) {
+													dialog.close();
+												}
+											},
+											{
+												label : 'Delete',
+												action : function(dialog) {
+													$http
+															.post(
+																	"/service/deleteComponent/"
+																			+ component.id)
+															.success(
+																	function(
+																			response) {
+																		$scope
+																				.loadComponentsOfSelectedCategory($scope.selectedCategoryNode.category_id);
+																	})
+															.error(
+																	function(
+																			data,
+																			status,
+																			headers,
+																			config) {
+																		BootstrapDialog
+																				.show({
+																					title : 'Error',
+																					message : data.message
+																				});
+																	});
+													dialog.close();
+												}
+											} ]
+								});
+
 					}
 
 					$scope.createOrUpdateCategory = function(catName) {
@@ -401,52 +470,66 @@ techMain
 					}
 
 					$scope.deleteCategory = function() {
-						BootstrapDialog.show({
-							size : BootstrapDialog.SIZE_NORMAL,
-							title : 'Confirm',
-							message : 'Please confirm suppresion of the [<b>'+$scope.selectedCategoryNode.label+'</b>] category\n It will delete also all contained components',
-							buttons : [
-									{
-										label : 'Close',
-										action : function(dialog) {
-											dialog.close();
-										}
-									},
-									{
-										label : 'Delete',
-										action : function(dialog) {
-											$http
-											.post(
-													"/service/deleteCategory/"
-															+ $scope.selectedCategoryNode.category_id)
-											.success(
-													function(response) {
-														var parentNode = $scope
-																.searchParent($scope.selectedCategoryNode);
-														if (parentNode != null) {
-															parentNode.children
-																	.pop($scope.selectedCategoryNode);
-															if (parent.children.length>0) {
-																parent.isLeafCategory = true;
-															}
-														} else {
-															// Node was at top level
-															$scope.component_catalog
-																	.pop($scope.selectedCategoryNode);
-														}
-														$scope.selectedCategoryNode = null;
-														$scope.allComponentOfSelectedCategory = null;
-													})
-											.error(function(data, status, headers, config) {
-												BootstrapDialog.show({
-													title : 'Error',
-													message : data.message
-												});
-											});
-											dialog.close();
-										}
-									} ]
-						});						
+						BootstrapDialog
+								.show({
+									size : BootstrapDialog.SIZE_NORMAL,
+									title : 'Confirm',
+									message : 'Please confirm suppresion of the [<b>'
+											+ $scope.selectedCategoryNode.label
+											+ '</b>] category\n It will delete also all contained components',
+									buttons : [
+											{
+												label : 'Close',
+												action : function(dialog) {
+													dialog.close();
+												}
+											},
+											{
+												label : 'Delete',
+												action : function(dialog) {
+													$http
+															.post(
+																	"/service/deleteCategory/"
+																			+ $scope.selectedCategoryNode.category_id)
+															.success(
+																	function(
+																			response) {
+																		var parentNode = $scope
+																				.searchParent($scope.selectedCategoryNode);
+																		if (parentNode != null) {
+																			parentNode.children
+																					.pop($scope.selectedCategoryNode);
+																			if (parent.children.length > 0) {
+																				parent.isLeafCategory = true;
+																			}
+																		} else {
+																			// Node
+																			// was
+																			// at
+																			// top
+																			// level
+																			$scope.component_catalog
+																					.pop($scope.selectedCategoryNode);
+																		}
+																		$scope.selectedCategoryNode = null;
+																		$scope.allComponentOfSelectedCategory = null;
+																	})
+															.error(
+																	function(
+																			data,
+																			status,
+																			headers,
+																			config) {
+																		BootstrapDialog
+																				.show({
+																					title : 'Error',
+																					message : data.message
+																				});
+																	});
+													dialog.close();
+												}
+											} ]
+								});
 					}
 
 					// Initial loading
