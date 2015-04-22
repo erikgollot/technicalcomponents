@@ -53,18 +53,21 @@
 	<script src="vendors/bootstrap/js/bootstrap.min.js"></script>
 	<script src="vendors/bootstrap/js/bootstrap-dialog.min.js"></script>
 
-	<!-- Vendor: Angular, followed by our custom Javascripts -->
-	<script src="vendors/angular/angular.min.js"></script>
 
-	<script src="vendors/angular/angular-route.min.js"></script>
+	<!-- Vendor: Angular, followed by our custom Javascripts -->
+	<script src="vendors/angular/angular.js"></script>
+	<!-- <script src="vendors/angular/angular.min.js"></script> -->
+	<script src="vendors/angular/angular-route.js"></script>
+	<!-- <script src="vendors/angular/angular-route.min.js"></script>-->
 	<script src="vendors/angular/angular-file-upload-shim.min.js"></script>
 	<script src="vendors/angular/angular-file-upload.min.js"></script>
 	<script src="vendors/angular/angular-ui-tree.min.js"></script>
 	<script src="vendors/angular/angular-modal-service.min.js"></script>
-	<script src="vendors/angular/abn_tree_directive.js"></script>
-	<script src="vendors/angular-xeditable/js/xeditable.min.js"></script>
-	<script src="vendors/bootstrap/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
 
+	<!-- Need to be after angular -->
+	<script src="vendors/angular/abn_tree_directive.js"></script>
+	<script src="vendors/bootstrap/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
+	<script src="vendors/angular-xeditable/js/xeditable.min.js"></script>
 
 	<!-- Our Website Javascripts -->
 	<script src="js/main.js"></script>
@@ -74,6 +77,7 @@
 	<script src="js/controllers/storage.js"></script>
 	<script src="js/controllers/applications.js"></script>
 	<script src="js/controllers/kpis.js"></script>
+	<script src="js/controllers/tests.js"></script>
 
 </body>
 </html>

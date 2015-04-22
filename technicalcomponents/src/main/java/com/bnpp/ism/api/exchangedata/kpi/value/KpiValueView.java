@@ -8,7 +8,7 @@ public class KpiValueView {
 
 	Long version;
 
-	float value;
+	float value;	
 
 	AbstractKpiView kpi;
 

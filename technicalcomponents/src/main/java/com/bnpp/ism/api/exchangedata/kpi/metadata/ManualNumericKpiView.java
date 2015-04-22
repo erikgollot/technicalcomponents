@@ -9,7 +9,7 @@ public class ManualNumericKpiView extends AbstractKpiView {
 	Float maxValue;
 
 	boolean isInt = false;
-	KpiKindEnum kind;
+	
 
 	public Long getId() {
 		return id;
@@ -52,12 +52,6 @@ public class ManualNumericKpiView extends AbstractKpiView {
 		this.clazz = clazz;
 	}
 
-	public KpiKindEnum getKind() {
-		return kind;
-	}
-
-	public void setKind(KpiKindEnum kind) {
-		this.kind = kind;
-	}
+	
 
 }

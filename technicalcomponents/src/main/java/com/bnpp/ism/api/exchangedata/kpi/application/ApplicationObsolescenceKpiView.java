@@ -5,9 +5,7 @@ import com.bnpp.ism.entity.kpi.metadata.KpiKindEnum;
 
 public class ApplicationObsolescenceKpiView extends AbstractKpiView {
 	String clazz = "com.bnpp.ism.api.exchangedata.kpi.application.ApplicationObsolescenceKpiView";
-	public KpiKindEnum getKind() {
-		return KpiKindEnum.COMPUTED_APPLICATION_VERSION;
-	}
+	
 	public String getClazz() {
 		return clazz;
 	}

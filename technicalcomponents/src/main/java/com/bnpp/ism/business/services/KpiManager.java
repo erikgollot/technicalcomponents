@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.bnpp.ism.api.IKpiManager;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.AbstractKpiView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.KpiEnumLiteralView;
-import com.bnpp.ism.api.exchangedata.kpi.metadata.KpiUsageView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.ManualEnumKpiView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.ManualNumericKpiView;
 import com.bnpp.ism.dao.kpi.metadata.AbstractKpiDao;
@@ -20,9 +19,7 @@ import com.bnpp.ism.dao.kpi.metadata.KpiConfigurationDao;
 import com.bnpp.ism.dao.kpi.metadata.KpiEnumLiteralDao;
 import com.bnpp.ism.dao.kpi.metadata.KpiUsageDao;
 import com.bnpp.ism.entity.kpi.metadata.AbstractKpi;
-import com.bnpp.ism.entity.kpi.metadata.KpiConfiguration;
 import com.bnpp.ism.entity.kpi.metadata.KpiEnumLiteral;
-import com.bnpp.ism.entity.kpi.metadata.KpiUsage;
 import com.bnpp.ism.entity.kpi.metadata.ManualEnumKpi;
 import com.bnpp.ism.entity.kpi.metadata.ManualNumericKpi;
 
@@ -51,24 +48,6 @@ public class KpiManager implements IKpiManager {
 			}
 		}
 		return (kpis.size() > 0 ? kpis : null);
-	}
-
-	private void updateOrCreateUsage(KpiConfiguration entity, KpiUsageView usage) {
-		KpiUsage found = null;
-		if (entity.getUsages() != null) {
-			for (KpiUsage u : entity.getUsages()) {
-				if (u.getId().equals(usage.getId()))
-					found = u;
-				break;
-			}
-		}
-		if (found == null) {
-			found = new KpiUsage();
-			entity.addUsage(found);
-		}
-		found.setId(usage.getId());
-		found.setMandatory(usage.isMandatory());
-		found.setKpi(kpiDao.findOne(usage.getKpi().getId()));
 	}
 
 	@Transactional
@@ -163,4 +142,5 @@ public class KpiManager implements IKpiManager {
 		// TODO check
 		kpiDao.delete(kpiId);
 	}
+
 }

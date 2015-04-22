@@ -72,12 +72,11 @@ techMain
 					}
 
 					$scope.convertDate = function(aDate) {
-						var formatedDate = Date.parse(aDate, 'dd-mm-yyyy');
+						var formatedDate = Date.parse(aDate);
 						var formatedDateAsString = "";
-						formatedDateAsString = formatedDateAsString
-								+ formatedDate.getDate() + "-"
+						formatedDateAsString = formatedDate.getFullYear() + "-"
 								+ (formatedDate.getMonth() + 1) + "-"
-								+ formatedDate.getFullYear();
+								+ formatedDate.getDate();
 						return formatedDateAsString;
 					}
 

@@ -7,7 +7,7 @@ import com.bnpp.ism.entity.kpi.metadata.KpiKindEnum;
 public class ManualEnumKpiView extends AbstractKpiView {
 	String clazz = "com.bnpp.ism.api.exchangedata.kpi.metadata.ManualEnumKpiView";
 	List<KpiEnumLiteralView> literals;
-	KpiKindEnum kind;
+	
 
 	public List<KpiEnumLiteralView> getLiterals() {
 		return literals;
@@ -34,13 +34,6 @@ public class ManualEnumKpiView extends AbstractKpiView {
 		this.clazz = clazz;
 	}
 
-	public KpiKindEnum getKind() {
-		return kind;
-	}
-
-	public void setKind(KpiKindEnum kind) {
-		this.kind = kind;
-	}
 
 	public void setLiterals(List<KpiEnumLiteralView> literals) {
 		this.literals = literals;

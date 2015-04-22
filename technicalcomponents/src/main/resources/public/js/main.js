@@ -8,7 +8,7 @@
  */
 var app = angular.module('technicalComponents', [ 'ngRoute', 'techMain',
 		'uploadControllers', 'galleryControllers', 'storageControllers',
-		'kpisControllers', 'applicationsControllers' ]);
+		'kpisControllers', 'applicationsControllers' ,'testsControllers' ]);
 
 /**
  * Configure the Routes
@@ -36,6 +36,9 @@ app.config([ '$routeProvider', function($routeProvider) {
 	}).when("/applications", {
 		templateUrl : "partials/applications.html",
 		controller : "applicationsController"
+	}).when("/tests", {
+		templateUrl : "partials/tests.html",
+		controller : "testsController"
 	}).otherwise("/404", {
 		templateUrl : "partials/404.html",
 		controller : "PageCtrl"

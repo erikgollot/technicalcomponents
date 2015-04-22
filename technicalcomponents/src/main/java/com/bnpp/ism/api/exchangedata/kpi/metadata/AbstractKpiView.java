@@ -9,6 +9,7 @@ public abstract class AbstractKpiView implements Comparable<AbstractKpiView> {
 
 	Long version;
 	String unit;
+	String kind;
 
 	public Long getVersion() {
 		return version;
@@ -81,5 +82,13 @@ public abstract class AbstractKpiView implements Comparable<AbstractKpiView> {
 	@Override
 	public int compareTo(AbstractKpiView o) {
 		return getId().compareTo(o.getId());
+	}
+
+	public String getKind() {
+		return kind;
+	}
+
+	public void setKind(String kind) {
+		this.kind = kind;
 	}
 }

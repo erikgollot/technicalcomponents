@@ -4,17 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 import com.bnpp.ism.entity.user.User;
@@ -26,15 +24,15 @@ public class ManualUserMeasurement {
 	Long id;
 	@Version
 	Long version;
-	
-	@ManyToOne	
+
+	@ManyToOne
 	User who;
-	
+
 	@Column
 	Date creationDate;
 	@Column(length = 1000)
 	String comments;
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	List<KpiValue> values;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -47,8 +45,6 @@ public class ManualUserMeasurement {
 	public void setWho(User who) {
 		this.who = who;
 	}
-
-	
 
 	public String getComments() {
 		return comments;
