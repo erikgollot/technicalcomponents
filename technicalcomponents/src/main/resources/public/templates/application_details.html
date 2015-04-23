@@ -1,0 +1,22 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-2">
+			<button class="btn btn-primary btn-xs"
+				ng-click="buildKpiHistoryDashboard()">Load Dashboard</button>
+		</div>
+
+		<div class="col-md-10"
+			ng-show="dashboards[selectedApplication.id] != null">
+			<div class="row">
+				<h1>{{selectedApplication.name}} Key Performance Indicators
+					History</h1>
+				<hr>
+				<div
+					ng-repeat="gname in dashboards[selectedApplication.id].graphNames">
+					<h4>{{gname.name}}</h4>
+					<canvas id="{{gname.id}}" width="800" height="200"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

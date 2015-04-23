@@ -2,9 +2,7 @@ package com.bnpp.ism.mvc.application;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bnpp.ism.api.IApplicationManager;
 import com.bnpp.ism.api.IApplicationVersionKpiSnapshotManager;
+import com.bnpp.ism.api.exchangedata.application.ApplicationKpiDashboard;
 import com.bnpp.ism.api.exchangedata.application.ApplicationVersionView;
+import com.bnpp.ism.api.exchangedata.application.ApplicationView;
 import com.bnpp.ism.api.exchangedata.kpi.value.ApplicationVersionKpiSnapshotView;
 import com.bnpp.ism.api.exchangedata.kpi.value.ManualUserMeasurementView;
 
@@ -31,7 +31,7 @@ public class ApplicationController {
 
 	@RequestMapping(value = "/service/applications", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
-	List<ApplicationVersionView> getApplications() {
+	List<ApplicationView> getApplications() {
 		return appService.getApplications();
 
 	}
@@ -56,18 +56,16 @@ public class ApplicationController {
 			@RequestParam("frozen") boolean frozen,
 			@RequestParam("forDate") String forDate) {
 		// @DateTimeFormat(iso=ISO.DATE)
-		
+
 		try {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			Date date =format.parse(forDate); 
+			Date date = format.parse(forDate);
 			return snapshotService.updateSnapshot(snapshotId, frozen, date);
 		} catch (ParseException e) {
 			throw new RuntimeException(e.getMessage());
 		}
 
 	}
-
-	
 
 	@RequestMapping(value = "/service/getSnapshots/{applicationVersionId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
@@ -104,4 +102,11 @@ public class ApplicationController {
 
 	}
 
+	@RequestMapping(value = "/service/getApplicationDashboard/{applicationId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody
+	ApplicationKpiDashboard getApplicationDashboard(
+			@PathVariable("applicationId") Long applicationId) {
+		return snapshotService.getApplicationDashboard(applicationId);
+
+	}
 }

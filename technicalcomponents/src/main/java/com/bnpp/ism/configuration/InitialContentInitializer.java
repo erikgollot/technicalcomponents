@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bnpp.ism.dao.application.ApplicationDao;
 import com.bnpp.ism.dao.application.ApplicationVersionDao;
 import com.bnpp.ism.dao.component.ComponentCatalogDao;
 import com.bnpp.ism.dao.component.ComponentCategoryDao;
@@ -16,6 +17,7 @@ import com.bnpp.ism.dao.component.ComponentGalleryDao;
 import com.bnpp.ism.dao.component.TechnicalComponentDao;
 import com.bnpp.ism.dao.storage.DefaultStorageSetDao;
 import com.bnpp.ism.dao.user.UserDao;
+import com.bnpp.ism.entity.application.Application;
 import com.bnpp.ism.entity.application.ApplicationVersion;
 import com.bnpp.ism.entity.component.ComponentCatalog;
 import com.bnpp.ism.entity.component.ComponentCategory;
@@ -39,9 +41,11 @@ public class InitialContentInitializer {
 	@Autowired
 	DefaultStorageSetDao storageDao;
 	@Autowired
-	ApplicationVersionDao appDao;
+	ApplicationVersionDao appVersionDao;
 	@Autowired
 	UserDao userDao;
+	@Autowired
+	ApplicationDao appDao;
 
 	@PostConstruct
 	@Transactional
@@ -67,11 +71,14 @@ public class InitialContentInitializer {
 	}
 
 	private void initSomeApplications() {
+		Application application = new Application();
+		application.setName("ISM");
 		for (int i = 0; i < 10; i++) {
 			ApplicationVersion app = new ApplicationVersion();
-			app.setName("Application " + i);
-			appDao.save(app);
+			app.setName("1.1."+i);
+			application.addVersion(app);			
 		}
+		appDao.save(application);
 	}
 
 	private void initDefaultStorage() {

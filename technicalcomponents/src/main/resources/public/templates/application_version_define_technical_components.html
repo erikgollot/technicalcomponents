@@ -1,10 +1,9 @@
-<div class="container-fluid" ng-controller="applicationsController">
-	<div class="row" id="searchSection"
-		ng-hide="selectedApplication == null">
+<div class="container-fluid" ng-show="selectedApplicationVersion!=null">
+	<div class="row" id="searchSection">
 		<div class="col-md-12">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Search components for application
-					{{selectedApplication.name}}</div>
+					{{selectedApplicationVersion.name}}</div>
 				<div class="panel-body">
 					<form name="searchComponentForm" class="form-group form-group-sm">
 						<label class="col-md-2 control-label">Path expression</label>
@@ -14,7 +13,7 @@
 						</div>
 						<div class="col-md-4">
 							<button type="submit" class="btn btn-primary"
-								ng-click="searchComponentsFromFullPathName()">Search</button>
+								ng-click="searchComponentsFromFullPathName(searchComponentsFromFullPathNameExpression)">Search</button>
 						</div>
 					</form>
 				</div>
@@ -22,7 +21,7 @@
 		</div>
 	</div>
 
-	<div class="row" ng-hide="selectedApplication == null">
+	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Result</div>
@@ -57,12 +56,12 @@
 			</div>
 		</div>
 	</div>
-	<div class="row" name="OnBlocks" ng-hide="selectedApplication == null">
+	<div class="row" name="OnBlocks">
 		<div class="panel">
 			<div class="row">
 				<div class="col-md-6">
 					<button type="button" class="btn btn-primary btn-sm"
-						ng-click="saveComponentsOfApplication(selectedApplication)">Save
+						ng-click="saveComponentsOfApplication(selectedApplicationVersion)">Save
 						components associations</button>
 					<hr>
 				</div>
@@ -74,16 +73,16 @@
 						<div class="panel-body nav_search_components">
 							<button type="button" class="btn btn-primary btn-sm"
 								ng-disabled="!hasSelection()"
-								ng-click="addToBuiltOn(selectedApplication)">Add to
+								ng-click="addToBuiltOn(selectedApplicationVersion)">Add to
 								build on</button>
 							<button type="button" class="btn btn-primary btn-sm"
-								ng-disabled="!hasSelectionInBuiltOn(selectedApplication)"
-								ng-click="removeFromBuiltOn(selectedApplication)">Remove
+								ng-disabled="!hasSelectionInBuiltOn(selectedApplicationVersion)"
+								ng-click="removeFromBuiltOn(selectedApplicationVersion)">Remove
 								from build on</button>
 							<table class="table table-striped">
 								<tbody>
 									<tr
-										ng-repeat="comp in selectedApplication.builtOn.components | orderBy:predicate:reverse">
+										ng-repeat="comp in selectedApplicationVersion.builtOn.components | orderBy:predicate:reverse">
 										<td><input class="checkbox" type="checkbox"
 											ng-model="comp.selectedForAssociationWithApplication" /></td>
 										<td><img height="32" width="32"
@@ -101,16 +100,16 @@
 						<div class="panel-body nav_search_components">
 							<button type="button" class="btn btn-primary btn-sm"
 								ng-disabled="!hasSelection()"
-								ng-click="addToCanRunOn(selectedApplication)">Add to
+								ng-click="addToCanRunOn(selectedApplicationVersion)">Add to
 								build on</button>
 							<button type="button" class="btn btn-primary btn-sm"
-								ng-disabled="!hasSelectionInCanRunOn(selectedApplication)"
-								ng-click="removeFromCanRunOn(selectedApplication)">Remove
+								ng-disabled="!hasSelectionInCanRunOn(selectedApplicationVersion)"
+								ng-click="removeFromCanRunOn(selectedApplicationVersion)">Remove
 								from build on</button>
 							<table class="table table-striped">
 								<tbody>
 									<tr
-										ng-repeat="comp in selectedApplication.canRunOn.components | orderBy:predicate:reverse">
+										ng-repeat="comp in selectedApplicationVersion.canRunOn.components | orderBy:predicate:reverse">
 										<td><input class="checkbox" type="checkbox"
 											ng-model="comp.selectedForAssociationWithApplication" /></td>
 										<td><img height="32" width="32"

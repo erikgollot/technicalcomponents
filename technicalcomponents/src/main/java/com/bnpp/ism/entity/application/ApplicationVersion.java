@@ -6,9 +6,11 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
@@ -26,13 +28,16 @@ public class ApplicationVersion {
 	@Column
 	private String name;
 
+	@ManyToOne(fetch=FetchType.LAZY)
+	Application application;
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	private BuiltOn builtOn;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private CanRunOn canRunOn;
 
-	@OneToMany(mappedBy="applicationVersion",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "applicationVersion", cascade = CascadeType.ALL)
 	List<ApplicationVersionKpiSnapshot> kpiSnapshots;
 
 	public boolean isAvailablePeriod() {
@@ -120,7 +125,8 @@ public class ApplicationVersion {
 		getKpiSnapshots().add(s);
 		s.setApplicationVersion(this);
 	}
-	public void removeKpiSnapshot(ApplicationVersionKpiSnapshot s) {		
+
+	public void removeKpiSnapshot(ApplicationVersionKpiSnapshot s) {
 		getKpiSnapshots().remove(s);
 	}
 
@@ -130,5 +136,13 @@ public class ApplicationVersion {
 
 	public void setKpiSnapshots(List<ApplicationVersionKpiSnapshot> kpiSnapshots) {
 		this.kpiSnapshots = kpiSnapshots;
+	}
+
+	public Application getApplication() {
+		return application;
+	}
+
+	public void setApplication(Application application) {
+		this.application = application;
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+
 import com.bnpp.ism.api.IComponentCatalogManager;
 
 @ComponentScan

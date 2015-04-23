@@ -23,17 +23,9 @@ public class ApplicationVersionKpiSnapshotView {
 
 	List<ManualUserMeasurementView> manualMeasurements;
 	// Automatic computed kpis
-	List<KpiValueView> computedKpis;
+	List<KpiValueView> computedKpisValues;
 
 	List<AbstractKpiView> kpis;
-
-	public List<KpiValueView> getComputedKpis() {
-		return computedKpis;
-	}
-
-	public void setComputedKpis(List<KpiValueView> computedKpis) {
-		this.computedKpis = computedKpis;
-	}
 
 	public Long getId() {
 		return id;
@@ -83,5 +75,13 @@ public class ApplicationVersionKpiSnapshotView {
 
 	public void setForDate(String forDate) {
 		this.forDate = forDate;
+	}
+
+	public List<KpiValueView> getComputedKpisValues() {
+		return computedKpisValues;
+	}
+
+	public void setComputedKpisValues(List<KpiValueView> computedKpisValues) {
+		this.computedKpisValues = computedKpisValues;
 	}
 }

@@ -2,35 +2,13 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-3">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>Applications</th>
-
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="application in applications | orderBy:'name':false">
-
-						<td><a ng-click="setCurrentSelectedApplication(application)">{{application.name}}</a>&nbsp;<button ng-show="application.availablePeriod" type="button"
-						class="btn btn-success btn-xs">
-						<span class="glyphicon glyphicon-ok-sign"></span>
-					</button>
-					<button ng-show="application.warningPeriod" type="button"
-						class="btn btn-warning btn-xs">
-						<span class="glyphicon glyphicon-warning-sign "></span>
-					</button>
-					<button ng-show="application.hotPeriod" type="button"
-						class="btn btn-danger btn-xs">
-						<span class="glyphicon glyphicon-ban-circle"></span>
-					</button></td>
-					</tr>
-				</tbody>
-			</table>
-
+			<abn-tree tree-data="applicationsTree" on-select="setCurrentSelectedApplicationVersion(branch)"></abn-tree>
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-9" ng-show="selectedApplicationVersion != null">
 			<div ng-include src="'templates/application_version_details.html'"></div>
+		</div>
+		<div class="col-md-9" ng-show="selectedApplication != null">
+			<div ng-include src="'templates/application_details.html'"></div>
 		</div>
 	</div>
 </div>

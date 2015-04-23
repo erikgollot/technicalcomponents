@@ -19,7 +19,7 @@
 							<tbody>
 								<tr
 									ng-repeat="kpi in kpis | manual_application_kpi_filter | orderBy:'name':reverse">
-									<td>{{kpi.name}}</td>
+									<td>{{kpi.name}}<a ng-hide="kpi.isActive" class="glyphicon glyphicon-ban-circle"></a></td>
 									<td>
 										<p ng-bind-html="displaySafeHtml(kpi.description)"></p>
 									</td>
@@ -36,7 +36,7 @@
 							<tbody>
 								<tr
 									ng-repeat="kpi in kpis | computed_application_kpi_filter | orderBy:'name':reverse">
-									<td>{{kpi.name}}</td>
+									<td>{{kpi.name}}<a ng-hide="kpi.isActive" class="glyphicon glyphicon-ban-circle"></td>
 									<td>
 										<p ng-bind-html="displaySafeHtml(kpi.description)"></p>
 									</td>

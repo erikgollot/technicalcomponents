@@ -13,14 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bnpp.ism.api.IApplicationVersionKpiSnapshotManager;
+import com.bnpp.ism.api.exchangedata.application.ApplicationKpiDashboard;
 import com.bnpp.ism.api.exchangedata.kpi.value.ApplicationVersionKpiSnapshotView;
 import com.bnpp.ism.api.exchangedata.kpi.value.KpiValueView;
 import com.bnpp.ism.api.exchangedata.kpi.value.ManualUserMeasurementView;
+import com.bnpp.ism.dao.application.ApplicationDao;
 import com.bnpp.ism.dao.application.ApplicationVersionDao;
 import com.bnpp.ism.dao.kpi.metadata.AbstractKpiDao;
 import com.bnpp.ism.dao.kpi.value.ApplicationVersionKpiSnapshotDao;
 import com.bnpp.ism.dao.kpi.value.ManualUserMeasurementDao;
 import com.bnpp.ism.dao.user.UserDao;
+import com.bnpp.ism.entity.application.Application;
 import com.bnpp.ism.entity.application.ApplicationVersion;
 import com.bnpp.ism.entity.kpi.metadata.AbstractKpi;
 import com.bnpp.ism.entity.kpi.metadata.ApplicationComputedKpi;
@@ -41,6 +44,8 @@ public class ApplicationVersionKpiSnapshotManager implements
 	@Autowired
 	ManualUserMeasurementDao manualUserMeasurementDao;
 	@Autowired
+	ApplicationDao appDao;
+	@Autowired
 	UserDao userDao;
 
 	@Autowired
@@ -56,7 +61,7 @@ public class ApplicationVersionKpiSnapshotManager implements
 			ApplicationVersionKpiSnapshot snapshot = new ApplicationVersionKpiSnapshot();
 			snapshot.setForDate(new Date());
 			snapshot.setFrozen(false);
-			Set<AbstractKpi> kpis = getAuthorizedManualKpis(app);
+			Set<AbstractKpi> kpis = getAuthorizedManualKpisAndComputedKpis(app);
 			if (kpis != null) {
 				for (AbstractKpi kpi : kpis) {
 					snapshot.addKpi(kpi);
@@ -95,7 +100,7 @@ public class ApplicationVersionKpiSnapshotManager implements
 	// - If no : add manual KPI to the list
 	// - If yes : if the computed kpi 'canCompute' for this application version,
 	// do not put manual kpi in the list, otherwise put manual KPI in the list
-	private Set<AbstractKpi> getAuthorizedManualKpis(ApplicationVersion app) {
+	private Set<AbstractKpi> getAuthorizedManualKpisAndComputedKpis(ApplicationVersion app) {
 		Set<AbstractKpi> ret = new TreeSet<AbstractKpi>();
 		Iterable<AbstractKpi> kpis = kpiDao.findAll();
 		if (kpis != null && kpis.iterator().hasNext()) {
@@ -249,6 +254,29 @@ public class ApplicationVersionKpiSnapshotManager implements
 		snapshot.removeMeasurement(measurement);
 		manualUserMeasurementDao.delete(measurementId);
 		applicationVersionKpiSnapshotDao.save(snapshot);
+	}
+
+	@Transactional
+	@Override
+	public ApplicationKpiDashboard getApplicationDashboard(Long applicationId) {
+		Application app = appDao.findOne(applicationId);
+		if (app != null) {
+			if (app.getVersions()!=null) {
+				ApplicationKpiDashboard dashboard = DashboardHelper.create(app.getVersions());
+				return dashboard;						
+			}else {
+				return null;
+			}
+		} else {
+			throw new RuntimeException("Cannot load application : "
+					+ applicationId);
+		}
+	}
+
+	@Override
+	public List<KpiValueView> computeAutmaticApplicationKpis(Long snapshotId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

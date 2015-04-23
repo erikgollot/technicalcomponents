@@ -41,9 +41,9 @@ public class ApplicationVersionKpiSnapshot {
 	List<ManualUserMeasurement> manualMeasurements;
 	// Automatic computed kpis
 	@OneToMany(cascade = CascadeType.ALL)
-	List<KpiValue> computedKpis;
+	List<KpiValue> computedKpisValues;
 
-	// Kpis on which this snapshot is based on. Created during snapshot creation
+	// All Kpis on which this snapshot is based on. Created during snapshot creation
 	@ManyToMany
 	List<AbstractKpi> kpis;
 
@@ -69,24 +69,16 @@ public class ApplicationVersionKpiSnapshot {
 		getManualMeasurements().remove(m);
 	}
 
-	public void addComputedKpi(KpiValue val) {
-		if (getComputedKpis() == null) {
-			this.computedKpis = new ArrayList<KpiValue>();
+	public void addComputedKpiValue(KpiValue val) {
+		if (getComputedKpisValues() == null) {
+			this.computedKpisValues = new ArrayList<KpiValue>();
 		}
-		getComputedKpis().add(val);
+		getComputedKpisValues().add(val);
 	}
 
-	public void removeComputedKpi(KpiValue val) {
-		getComputedKpis().remove(val);
-	}
-
-	public List<KpiValue> getComputedKpis() {
-		return computedKpis;
-	}
-
-	public void setComputedKpis(List<KpiValue> computedKpis) {
-		this.computedKpis = computedKpis;
-	}
+	public void removeComputedKpiValue(KpiValue val) {
+		getComputedKpisValues().remove(val);
+	}	
 
 	public Long getId() {
 		return id;
@@ -143,5 +135,13 @@ public class ApplicationVersionKpiSnapshot {
 
 	public void setKpis(List<AbstractKpi> kpis) {
 		this.kpis = kpis;
+	}
+
+	public List<KpiValue> getComputedKpisValues() {
+		return computedKpisValues;
+	}
+
+	public void setComputedKpisValues(List<KpiValue> computedKpisValues) {
+		this.computedKpisValues = computedKpisValues;
 	}
 }
