@@ -20,6 +20,7 @@ import com.bnpp.ism.api.exchangedata.application.ApplicationKpiDashboard;
 import com.bnpp.ism.api.exchangedata.application.ApplicationVersionView;
 import com.bnpp.ism.api.exchangedata.application.ApplicationView;
 import com.bnpp.ism.api.exchangedata.kpi.value.ApplicationVersionKpiSnapshotView;
+import com.bnpp.ism.api.exchangedata.kpi.value.KpiValueView;
 import com.bnpp.ism.api.exchangedata.kpi.value.ManualUserMeasurementView;
 
 @RestController
@@ -99,6 +100,14 @@ public class ApplicationController {
 	public @ResponseBody
 	void deleteMeasurement(@PathVariable("measurementId") Long measurementId) {
 		snapshotService.deleteMeasurement(measurementId);
+
+	}
+
+	@RequestMapping(value = "/service/computeAutomaticApplicationKpis/{snapshotId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody
+	List<KpiValueView> computeAutomaticApplicationKpis(
+			@PathVariable("snapshotId") Long snapshotId) {
+		return snapshotService.computeAutomaticApplicationKpis(snapshotId);
 
 	}
 

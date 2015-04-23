@@ -17,7 +17,7 @@ public interface IApplicationVersionKpiSnapshotManager {
 	ApplicationVersionKpiSnapshotView updateSnapshot(Long snapshotId,
 			boolean frozen, Date forDate);
 
-	List<KpiValueView> computeAutmaticApplicationKpis(Long snapshotId);
+	List<KpiValueView> computeAutomaticApplicationKpis(Long snapshotId);
 
 	ManualUserMeasurementView createMeasurement(Long snapshotId, Long userId);
 

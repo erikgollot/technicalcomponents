@@ -8,7 +8,7 @@ applicationsControllers.run(function(editableOptions) {
 applicationsControllers
 		.controller(
 				'applicationsController',
-				function($scope, $http, $filter,$timeout) {
+				function($scope, $http, $filter, $timeout) {
 
 					// Chargement de toutes les applications....à revoir lors de
 					// l'integration
@@ -47,10 +47,10 @@ applicationsControllers
 					}
 
 					$scope.searchComponents = null;
-					$scope.searchComponentsFromFullPathNameExpression="";
-					$scope.searchComponentsFromFullPathName = function(searchComponentsFromFullPathNameExpression) {
-						console
-								.log(searchComponentsFromFullPathNameExpression);
+					$scope.searchComponentsFromFullPathNameExpression = "";
+					$scope.searchComponentsFromFullPathName = function(
+							searchComponentsFromFullPathNameExpression) {
+						console.log(searchComponentsFromFullPathNameExpression);
 						$http(
 								{
 									url : "/service/searchComponentsFromFullPathName",
@@ -550,23 +550,37 @@ applicationsControllers
 					$scope.computeAutomaticKpi = function(snapshot) {
 						// TODO server call
 						// For Test
-						if (snapshot != null && snapshot.kpis != null) {
-							snapshot.computedKpis = new Array();
-							for (i = 0; i < snapshot.kpis.length; i++) {
-								var kpi = snapshot.kpis[i];
-								if (kpi.kind != null
-										&& kpi.kind
-												.indexOf("COMPUTED_APPLICATION_") == 0) {
-									// On simule
-									var val = new Object();
-									val.value = 1.25;
-									val.kpi = {
-										name : kpi.name
-									}
-									snapshot.computedKpis.push(val);
-								}
-							}
-						}
+
+						$http
+								.get(
+										"/service/computeAutomaticApplicationKpis/"
+												+ snapshot.id)
+								.success(
+										function(kpis) {
+											if (kpis != null) {
+												snapshot.computedKpis = [];
+												for (i = 0; i < kpis.length; i++) {
+													snapshot.computedKpis
+															.push(kpis[i]);
+												}
+											} else {
+												// Should not happen
+												BootstrapDialog
+														.show({
+															title : 'Strange',
+															message : 'No automatic KPIs were computed'
+														});
+											}
+										})
+								.error(
+										function(data, status, headers, config) {
+											BootstrapDialog
+													.show({
+														title : 'Error',
+														message : 'Cannot compute automatic KPIs\nReason is : '
+																+ data.message
+													});
+										});
 					}
 					// Charts
 					$scope.refreshMeasurementsKiviaChart = function() {
@@ -706,13 +720,16 @@ applicationsControllers
 												$scope.dashboards[$scope.selectedApplication.id].graphNames = [];
 												for (k = 0; k < dashboard.kpiHistories.length; k++) {
 													var names = {
-														id : $scope.selectedApplication.id + "_hist_" + k,
+														id : $scope.selectedApplication.id
+																+ "_hist_" + k,
 														name : dashboard.kpiHistories[k].kpiName
 													}
 													$scope.dashboards[$scope.selectedApplication.id].graphNames
 															.push(names);
 												}
-												$timeout($scope.refreshKpiDashboard,1300);
+												$timeout(
+														$scope.refreshKpiDashboard,
+														1300);
 											}
 										})
 								.error(
@@ -760,6 +777,8 @@ applicationsControllers
 								// /Boolean - Whether grid lines are shown
 								// across the chart
 								scaleShowGridLines : true,
+								
+								scaleBeginAtZero: true,
 
 								// String - Colour of the grid lines
 								scaleGridLineColor : "rgba(0,0,0,.05)",

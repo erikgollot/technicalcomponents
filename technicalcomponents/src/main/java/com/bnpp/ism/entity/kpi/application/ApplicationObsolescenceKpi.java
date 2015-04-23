@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 import com.bnpp.ism.entity.application.ApplicationVersion;
 import com.bnpp.ism.entity.kpi.metadata.AbstractKpi;
-import com.bnpp.ism.entity.kpi.metadata.ApplicationComputedKpi;
+import com.bnpp.ism.entity.kpi.metadata.ApplicationVersionComputedKpi;
 import com.bnpp.ism.entity.kpi.metadata.KpiEnum;
 import com.bnpp.ism.entity.kpi.metadata.KpiEnumLiteral;
 import com.bnpp.ism.entity.kpi.metadata.KpiKindEnum;
@@ -13,7 +13,7 @@ import com.bnpp.ism.entity.kpi.metadata.UnitEnum;
 
 @Entity
 @DiscriminatorValue("ApplicationObsolescenceKpi")
-public class ApplicationObsolescenceKpi extends ApplicationComputedKpi implements KpiEnum {
+public class ApplicationObsolescenceKpi extends ApplicationVersionComputedKpi implements KpiEnum {
 	public static final String MY_NAME = "Application Obscolescence";
 
 	@Override

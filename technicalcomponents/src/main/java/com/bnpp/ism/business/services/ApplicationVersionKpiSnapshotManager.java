@@ -26,7 +26,7 @@ import com.bnpp.ism.dao.user.UserDao;
 import com.bnpp.ism.entity.application.Application;
 import com.bnpp.ism.entity.application.ApplicationVersion;
 import com.bnpp.ism.entity.kpi.metadata.AbstractKpi;
-import com.bnpp.ism.entity.kpi.metadata.ApplicationComputedKpi;
+import com.bnpp.ism.entity.kpi.metadata.ApplicationVersionComputedKpi;
 import com.bnpp.ism.entity.kpi.metadata.KpiKindEnum;
 import com.bnpp.ism.entity.kpi.value.ApplicationVersionKpiSnapshot;
 import com.bnpp.ism.entity.kpi.value.KpiValue;
@@ -100,15 +100,17 @@ public class ApplicationVersionKpiSnapshotManager implements
 	// - If no : add manual KPI to the list
 	// - If yes : if the computed kpi 'canCompute' for this application version,
 	// do not put manual kpi in the list, otherwise put manual KPI in the list
-	private Set<AbstractKpi> getAuthorizedManualKpisAndComputedKpis(ApplicationVersion app) {
+	private Set<AbstractKpi> getAuthorizedManualKpisAndComputedKpis(
+			ApplicationVersion app) {
 		Set<AbstractKpi> ret = new TreeSet<AbstractKpi>();
 		Iterable<AbstractKpi> kpis = kpiDao.findAll();
 		if (kpis != null && kpis.iterator().hasNext()) {
-			List<ApplicationComputedKpi> computed = new ArrayList<ApplicationComputedKpi>();
+			List<ApplicationVersionComputedKpi> computed = new ArrayList<ApplicationVersionComputedKpi>();
 			// Extract all application computed
 			for (AbstractKpi kpi : kpis) {
-				if (kpi instanceof ApplicationComputedKpi && kpi.isActive()) {
-					computed.add((ApplicationComputedKpi) kpi);
+				if (kpi instanceof ApplicationVersionComputedKpi
+						&& kpi.isActive()) {
+					computed.add((ApplicationVersionComputedKpi) kpi);
 				}
 			}
 			// Take manuals for application version
@@ -122,7 +124,7 @@ public class ApplicationVersionKpiSnapshotManager implements
 				}
 			}
 			// Now add application version computed not already added
-			for (ApplicationComputedKpi kpi : computed) {
+			for (ApplicationVersionComputedKpi kpi : computed) {
 				if (kpi.canCompute(app)) {
 					ret.add(kpi);
 				}
@@ -132,9 +134,9 @@ public class ApplicationVersionKpiSnapshotManager implements
 	}
 
 	private boolean existActiveComputedWithSameName(AbstractKpi kpi,
-			List<ApplicationComputedKpi> computed,
+			List<ApplicationVersionComputedKpi> computed,
 			ApplicationVersion applicationVersion) {
-		for (ApplicationComputedKpi c : computed) {
+		for (ApplicationVersionComputedKpi c : computed) {
 			if (kpi.getName().equals(c.getName())
 					&& c.canCompute(applicationVersion)) {
 				return true;
@@ -261,10 +263,11 @@ public class ApplicationVersionKpiSnapshotManager implements
 	public ApplicationKpiDashboard getApplicationDashboard(Long applicationId) {
 		Application app = appDao.findOne(applicationId);
 		if (app != null) {
-			if (app.getVersions()!=null) {
-				ApplicationKpiDashboard dashboard = DashboardHelper.create(app.getVersions());
-				return dashboard;						
-			}else {
+			if (app.getVersions() != null) {
+				ApplicationKpiDashboard dashboard = DashboardHelper.create(app
+						.getVersions());
+				return dashboard;
+			} else {
 				return null;
 			}
 		} else {
@@ -273,10 +276,35 @@ public class ApplicationVersionKpiSnapshotManager implements
 		}
 	}
 
+	@Transactional
 	@Override
-	public List<KpiValueView> computeAutmaticApplicationKpis(Long snapshotId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<KpiValueView> computeAutomaticApplicationKpis(Long snapshotId) {
+		ApplicationVersionKpiSnapshot snapshot = applicationVersionKpiSnapshotDao
+				.findOne(snapshotId);
+		List<KpiValueView> ret = new ArrayList<KpiValueView>();
+		if (snapshot != null) {
+			if (snapshot.getKpis() != null) {
+				for (AbstractKpi kpi : snapshot.getKpis()) {
+					if (kpi instanceof ApplicationVersionComputedKpi) {
+						// canCompute is true if kpi is here
+						ApplicationVersionComputedKpi computedKpi = (ApplicationVersionComputedKpi) kpi;
+						KpiValue val = new KpiValue();
+						val.setKpi(kpi);
+						val.setValue(computedKpi.compute(snapshot
+								.getApplicationVersion()));
+						snapshot.addComputedKpiValue(val);
+					}
+				}
+			}
+			applicationVersionKpiSnapshotDao.save(snapshot);
+
+		}
+		if (snapshot.getComputedKpisValues() != null) {
+			for (KpiValue val : snapshot.getComputedKpisValues()) {
+				ret.add(dozerBeanMapper.map(val, KpiValueView.class));
+			}
+		}
+		return (ret.size() == 0 ? null : ret);
 	}
 
 }
