@@ -1,133 +1,240 @@
-<div class="container-fluid" ng-show="selectedApplicationVersion!=null">
-	<div class="row" id="searchSection">
-		<div class="col-md-12">
-			<div class="panel panel-primary">
-				<div class="panel-heading">Search components in catalog for application
-					{{selectedApplicationVersion.name}}</div>
-				<div class="panel-body">
-					<form name="searchComponentForm" class="form-group form-group-sm">
-						<label class="col-md-2 control-label">Path expression</label>
-						<div class="col-md-4">
-							<input type="text" class="form-control" name="expression"
-								ng-model="searchComponentsFromFullPathNameExpression" />
-						</div>
-						<div class="col-md-4">
+<div class="row"><div class="col-md-12">&nbsp;</div></div>
+<div class="row"> 
+<div class="col-md-12">
+<button type="button" class="btn btn-default btn-sm"
+					ng-click="saveComponentsOfApplication(selectedApplicationVersion)"><a class="glyphicon glyphicon-save"></a>&nbsp;Save
+					components</button>
+</div>
+<div class="row"><div class="col-md-12"><hr></div></div>
+</div>
+<div class="row"> 
+<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Build On Components</div>
+					<div class="panel-body nav_search_components">
+						<button type="button" class="btn btn-primary btn-sm"
+							ng-disabled="!hasSelection()"
+							ng-click="addToBuiltOn(selectedApplicationVersion)">Add
+							to build on</button>
+						<button type="button" class="btn btn-primary btn-sm"
+							ng-disabled="!hasSelectionInBuiltOn(selectedApplicationVersion)"
+							ng-click="removeFromBuiltOn(selectedApplicationVersion)">Remove
+							from build on</button>
+						<table class="table table-striped">
+							<tbody>
+								<tr
+									ng-repeat="comp in selectedApplicationVersion.builtOn.components | orderBy:predicate:reverse">
+									<td><input class="checkbox" type="checkbox"
+										ng-model="comp.selectedForAssociationWithApplication" /></td>
+									<td><img height="32" width="32"
+										ng-show="comp.image != null"
+										ng-src="/service/file/{{comp.image.id}}" />{{comp.localInformations.name}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Can Run On Components</div>
+					<div class="panel-body nav_search_components">
+						<button type="button" class="btn btn-primary btn-sm"
+							ng-disabled="!hasSelection()"
+							ng-click="addToCanRunOn(selectedApplicationVersion)">Add
+							to build on</button>
+						<button type="button" class="btn btn-primary btn-sm"
+							ng-disabled="!hasSelectionInCanRunOn(selectedApplicationVersion)"
+							ng-click="removeFromCanRunOn(selectedApplicationVersion)">Remove
+							from build on</button>
+						<table class="table table-striped">
+							<tbody>
+								<tr
+									ng-repeat="comp in selectedApplicationVersion.canRunOn.components | orderBy:predicate:reverse">
+									<td><input class="checkbox" type="checkbox"
+										ng-model="comp.selectedForAssociationWithApplication" /></td>
+									<td><img height="32" width="32"
+										ng-show="comp.image != null"
+										ng-src="/service/file/{{comp.image.id}}" />{{comp.localInformations.name}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+</div>
+<div class="row" id="searchSection"
+	ng-show="selectedApplicationVersion!=null">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">Search components in catalog for
+				application {{selectedApplicationVersion.name}}</div>
+			<div class="panel-body nav_search_result">
+				<form name="searchComponentForm" class="form-group form-group-sm">
+					<label class="col-md-2 control-label">Path expression</label>
+					<div class="col-md-4">
+						<input type="text" class="form-control" name="expression"
+							ng-model="searchComponentsFromFullPathNameExpression" />
+					</div>
+					<div class="col-md-4">
+						<button type="submit" class="btn btn-primary"
+							ng-click="searchComponentsFromFullPathName(searchComponentsFromFullPathNameExpression)">Search</button>
 							<button type="submit" class="btn btn-primary"
-								ng-click="searchComponentsFromFullPathName(searchComponentsFromFullPathNameExpression)">Search</button>
-						</div>
-					</form>
-				</div>
+							ng-click="resetFullSelection()">Reset Selection</button>
+					</div>
+				</form>
+				<!-- Result beginning -->
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th></th>
+							<th><a href=""
+								ng-click="predicate = '-localInformations.name'; reverse=!reverse">Name</a></th>
+							<th><a href=""
+								ng-click="predicate = 'fullPathname'; reverse=!reverse">Full
+									Pathname</a></th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							ng-repeat="comp in searchComponents | orderBy:predicate:reverse">
+							<td><input class="checkbox" type="checkbox"
+								ng-model="comp.selectedForAssociationWithApplication"
+								ng-change="updateFullSelection()" /></td>
+							<td><img height="32" width="32" ng-show="comp.image != null"
+								ng-src="/service/file/{{comp.image.id}}" />{{comp.localInformations.name}}</td>
+							<td>{{comp.fullPathname}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- Result end -->
 			</div>
 		</div>
 	</div>
+</div>
 
-	<div class="row">
-		<div class="col-md-12">
-			<div class="panel panel-primary">
-				<div class="panel-heading">Result</div>
-				<div class="panel-body nav_search_components">
-					[ <a href="" ng-click="predicate=''">Standard display</a> ]
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th></th>
-								<th><a href=""
-									ng-click="predicate = '-localInformations.name'; reverse=!reverse">Name</a></th>
-								<th><a href=""
-									ng-click="predicate = 'fullPathname'; reverse=!reverse">Full
-										Pathname</a></th>
-
-							</tr>
-						</thead>
-						<tbody>
-							<tr
-								ng-repeat="comp in searchComponents | orderBy:predicate:reverse">
-								<td><input class="checkbox" type="checkbox"
-									ng-model="comp.selectedForAssociationWithApplication"
-									ng-change="updateFullSelection()" /></td>
-								<td><img height="32" width="32"
-									ng-show="comp.image != null"
-									ng-src="/service/file/{{comp.image.id}}" />{{comp.localInformations.name}}</td>
-								<td>{{comp.fullPathname}}</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+<!-- 
+<div class="row" name="OnBlocks">
+	<div class="panel">
+		<div class="row">
+			<div class="col-md-6">
+				<button type="button" class="btn btn-primary btn-sm"
+					ng-click="saveComponentsOfApplication(selectedApplicationVersion)">Save
+					components associations</button>
+				<hr>
 			</div>
 		</div>
-	</div>
-	<div class="row" name="OnBlocks">
-		<div class="panel">
-			<div class="row">
-				<div class="col-md-6">
-					<button type="button" class="btn btn-primary btn-sm"
-						ng-click="saveComponentsOfApplication(selectedApplicationVersion)">Save
-						components associations</button>
-					<hr>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-6">
-					<div class="panel panel-primary">
-						<div class="panel-heading">Build On Components</div>
-						<div class="panel-body nav_search_components">
-							<button type="button" class="btn btn-primary btn-sm"
-								ng-disabled="!hasSelection()"
-								ng-click="addToBuiltOn(selectedApplicationVersion)">Add to
-								build on</button>
-							<button type="button" class="btn btn-primary btn-sm"
-								ng-disabled="!hasSelectionInBuiltOn(selectedApplicationVersion)"
-								ng-click="removeFromBuiltOn(selectedApplicationVersion)">Remove
-								from build on</button>
-							<table class="table table-striped">
-								<tbody>
-									<tr
-										ng-repeat="comp in selectedApplicationVersion.builtOn.components | orderBy:predicate:reverse">
-										<td><input class="checkbox" type="checkbox"
-											ng-model="comp.selectedForAssociationWithApplication" /></td>
-										<td><img height="32" width="32"
-											ng-show="comp.image != null"
-											ng-src="/service/file/{{comp.image.id}}" />{{comp.localInformations.name}}</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Build On Components</div>
+					<div class="panel-body nav_search_components">
+						<button type="button" class="btn btn-primary btn-sm"
+							ng-disabled="!hasSelection()"
+							ng-click="addToBuiltOn(selectedApplicationVersion)">Add
+							to build on</button>
+						<button type="button" class="btn btn-primary btn-sm"
+							ng-disabled="!hasSelectionInBuiltOn(selectedApplicationVersion)"
+							ng-click="removeFromBuiltOn(selectedApplicationVersion)">Remove
+							from build on</button>
+						<table class="table table-striped">
+							<tbody>
+								<tr
+									ng-repeat="comp in selectedApplicationVersion.builtOn.components | orderBy:predicate:reverse">
+									<td><input class="checkbox" type="checkbox"
+										ng-model="comp.selectedForAssociationWithApplication" /></td>
+									<td><img height="32" width="32"
+										ng-show="comp.image != null"
+										ng-src="/service/file/{{comp.image.id}}" />{{comp.localInformations.name}}</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
-				<div class="col-md-6">
-					<div class="panel panel-primary">
-						<div class="panel-heading">Can Run On Components</div>
-						<div class="panel-body nav_search_components">
-							<button type="button" class="btn btn-primary btn-sm"
-								ng-disabled="!hasSelection()"
-								ng-click="addToCanRunOn(selectedApplicationVersion)">Add to
-								build on</button>
-							<button type="button" class="btn btn-primary btn-sm"
-								ng-disabled="!hasSelectionInCanRunOn(selectedApplicationVersion)"
-								ng-click="removeFromCanRunOn(selectedApplicationVersion)">Remove
-								from build on</button>
-							<table class="table table-striped">
-								<tbody>
-									<tr
-										ng-repeat="comp in selectedApplicationVersion.canRunOn.components | orderBy:predicate:reverse">
-										<td><input class="checkbox" type="checkbox"
-											ng-model="comp.selectedForAssociationWithApplication" /></td>
-										<td><img height="32" width="32"
-											ng-show="comp.image != null"
-											ng-src="/service/file/{{comp.image.id}}" />{{comp.localInformations.name}}</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Can Run On Components</div>
+					<div class="panel-body nav_search_components">
+						<button type="button" class="btn btn-primary btn-sm"
+							ng-disabled="!hasSelection()"
+							ng-click="addToCanRunOn(selectedApplicationVersion)">Add
+							to build on</button>
+						<button type="button" class="btn btn-primary btn-sm"
+							ng-disabled="!hasSelectionInCanRunOn(selectedApplicationVersion)"
+							ng-click="removeFromCanRunOn(selectedApplicationVersion)">Remove
+							from build on</button>
+						<table class="table table-striped">
+							<tbody>
+								<tr
+									ng-repeat="comp in selectedApplicationVersion.canRunOn.components | orderBy:predicate:reverse">
+									<td><input class="checkbox" type="checkbox"
+										ng-model="comp.selectedForAssociationWithApplication" /></td>
+									<td><img height="32" width="32"
+										ng-show="comp.image != null"
+										ng-src="/service/file/{{comp.image.id}}" />{{comp.localInformations.name}}</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- On blocks -->
 </div>
 
 
+
+<div class="row" id="searchSection"
+	ng-show="selectedApplicationVersion!=null">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">Search components in catalog for
+				application {{selectedApplicationVersion.name}}</div>
+			<div class="panel-body">
+				<form name="searchComponentForm" class="form-group form-group-sm">
+					<label class="col-md-2 control-label">Path expression</label>
+					<div class="col-md-4">
+						<input type="text" class="form-control" name="expression"
+							ng-model="searchComponentsFromFullPathNameExpression" />
+					</div>
+					<div class="col-md-4">
+						<button type="submit" class="btn btn-primary"
+							ng-click="searchComponentsFromFullPathName(searchComponentsFromFullPathNameExpression)">Search</button>
+					</div>
+				</form>
+				
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th></th>
+							<th><a href=""
+								ng-click="predicate = '-localInformations.name'; reverse=!reverse">Name</a></th>
+							<th><a href=""
+								ng-click="predicate = 'fullPathname'; reverse=!reverse">Full
+									Pathname</a></th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							ng-repeat="comp in searchComponents | orderBy:predicate:reverse">
+							<td><input class="checkbox" type="checkbox"
+								ng-model="comp.selectedForAssociationWithApplication"
+								ng-change="updateFullSelection()" /></td>
+							<td><img height="32" width="32" ng-show="comp.image != null"
+								ng-src="/service/file/{{comp.image.id}}" />{{comp.localInformations.name}}</td>
+							<td>{{comp.fullPathname}}</td>
+						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+		</div>
+	</div>
+</div>
+-->
 <script>
 	$('#myTab a').click(function(e) {
 		e.preventDefault()

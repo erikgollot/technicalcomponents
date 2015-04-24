@@ -1,7 +1,8 @@
 <br>
 <button type="button" class="btn btn-default"
-	ng-click="takeNewSnapshot()" ng-hide="selectedApplicationVersion == null">Create
-	new KPI snapshot</button>
+	ng-click="takeNewSnapshot()"
+	ng-hide="selectedApplicationVersion == null">Create new KPI
+	snapshot</button>
 <hr>
 <div class="panel panel-default" ng-show="hasSnapshot">
 	<div class="panel-heading">KPI snapshots for
@@ -63,7 +64,7 @@
 		{{currentSnapshot.forDate}}</div>
 	<div class="panel-body">
 		<div class="container-fluid">
-			<div class="col-md-3">
+			<div class="col-md-2">
 				<div class="container-fluid">
 					<!-- List of automatic Kpis -->
 					<div class="row">
@@ -90,12 +91,35 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-9">
+			<div class="col-md-10">
 				<div class="container-fluid">
 					<div class="row">
-						<button class="btn btn-default btn-xs"
+						<!-- <button class="btn btn-default btn-xs"
 							ng-click="createNewMeasurement(currentSnapshot)"
 							ng-disabled="currentSnapshot.frozen">New measurement</</button>
+-->
+						<div class="dropdown">
+							<button class="btn btn-default dropdown-toggle" type="button"
+								ng-disabled="currentSnapshot.frozen" id="newMeasurement"
+								data-toggle="dropdown" aria-expanded="true">
+								New measurement <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu"
+								aria-labelledby="newMeasurement">
+								<li role="presentation"
+									ng-click="createNewMeasurement(currentSnapshot)"><a
+									role="menuitem" tabindex="-1"
+									ng-show="!alreadyExistMeasurementForLoggedUser()" href>For
+										me</a></li>
+								<li role="presentation"
+									ng-click="createNewMeasurementForOtherUserThanMe(currentSnapshot)"><a
+									role="menuitem" tabindex="-1" href>For another user</a></li>
+							</ul>
+						</div>
+
+
+
+
 					</div>
 					<div class="row">
 						<table name="tableMeasurements"
@@ -103,6 +127,7 @@
 							<thead>
 								<tr>
 									<th>Who</th>
+									<th>Comments</th>
 									<th
 										ng-repeat="kpi in manualMeasurementsOfSnapshot(currentSnapshot)">{{kpi.name}}</th>
 									<th>Edit</th>
@@ -112,6 +137,11 @@
 								<tr
 									ng-repeat="measurement in currentSnapshot.manualMeasurements">
 									<td>{{measurement.who.name}}</td>
+
+									<td><span editable-textarea="measurement.comments"
+										e-name="comments" e-form="rowMeasurementform"> {{
+											measurement.comments || 'empty' }} </span></td>
+
 									<!-- prendre les values du measurements et pas les kpis car on pointe sur la même donnée dans chaque colonne -->
 									<td ng-repeat="val in measurement.values">
 										<!-- MANUAL_APPLICATION_NUMERIC --> <span
@@ -165,9 +195,11 @@
 <div class="container-fluid">
 	<div class="col-md-2">
 		<button class="btn btn-primary btn-xs"
-			ng-click="refreshMeasurementsKiviaChart()" ng-disabled="currentSnapshot==null || currentSnapshot.manualMeasurements==null || currentSnapshot.manualMeasurements.length==0">Refresh chart</button>
+			ng-click="refreshMeasurementsKiviaChart()"
+			ng-disabled="currentSnapshot==null || currentSnapshot.manualMeasurements==null || currentSnapshot.manualMeasurements.length==0">Refresh
+			chart</button>
 	</div>
 	<div class="col-md-9">
-		<canvas id="measurementsKiviaChart" width="500" height="400"></canvas>
+		<canvas id="measurementsKiviaChart" width="800" height="800"></canvas>
 	</div>
 </div>

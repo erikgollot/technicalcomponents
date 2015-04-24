@@ -6,6 +6,7 @@ import java.util.List;
 public class ApplicationKpiHistory {
 	String kpiName;
 	String kpiCategory;
+	boolean isComputed = false;
 	List<DateKpiValue> values;
 
 	public String getKpiCategory() {
@@ -40,5 +41,13 @@ public class ApplicationKpiHistory {
 
 	public void setValues(List<DateKpiValue> values) {
 		this.values = values;
+	}
+
+	public boolean isComputed() {
+		return isComputed;
+	}
+
+	public void setComputed(boolean isComputed) {
+		this.isComputed = isComputed;
 	}
 }

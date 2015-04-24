@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
@@ -31,10 +32,10 @@ public class ComponentCatalog {
 		this.version = version;
 	}
 
-	@Column
+	@Column(columnDefinition="VARCHAR(100)")
 	private String name;
 
-	@Column
+	@Column(columnDefinition="VARCHAR(255)")
 	private String description;
 
 	@OneToMany(cascade = CascadeType.ALL)

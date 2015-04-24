@@ -13,7 +13,7 @@
 				<hr>
 				<div
 					ng-repeat="gname in dashboards[selectedApplication.id].graphNames">
-					<h4>{{gname.name}}</h4>
+					<h4>{{gname.name}} <a class="glyphicon glyphicon-cog" ng-if="gname.isComputed"></a><a class="glyphicon glyphicon-user" ng-if="!gname.isComputed"></a></h4>
 					<canvas id="{{gname.id}}" width="800" height="200"></canvas>
 				</div>
 			</div>

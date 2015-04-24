@@ -6,6 +6,7 @@
 				<tr>
 					<th>Name</th>
 					<th>Description</th>
+					<th>Unit</th>
 					<th>Active</th>
 					<th>Category</th>
 					<th>Is Integer ?</th>
@@ -16,33 +17,32 @@
 			</thead>
 			<tbody>
 				<!-- Numeric KPIs -->
-				<tr ng-repeat="kpi in kpis | filter:{kind:'MANUAL_APPLICATION_NUMERIC'}">
-					<td>
-						<!-- editable username (text with validation) --> <span
-						editable-text="kpi.name" e-name="name" e-form="rowform" e-required>
-							<b>{{ kpi.name || 'empty' }}</b> </span>
-					</td>
-					<td>
-						<!-- editable username (text with validation) --> <span
-						editable-textarea="kpi.description" e-name="description"
-						e-form="rowform" e-required> {{ kpi.description || 'empty'
-							}} </span>
-					</td>
-					<td><a href="#" editable-checkbox="kpi.isActive" e-name="isActive"
-						e-form="rowform" e-title="Is Active ?"> {{ kpi.isActive &&
-							"Active" || "Not Active" }} </a></td>
-					<td>
-						<!-- editable category (text with validation) --> <span
-						editable-text="kpi.category" e-name="category" e-form="rowform"
-						e-required> {{ kpi.category || 'not defined' }} </span>
-					</td>
+				<tr
+					ng-repeat="kpi in kpis | filter:{kind:'MANUAL_APPLICATION_NUMERIC'}">
+					<td><span editable-text="kpi.name" e-name="name"
+						e-form="rowform" e-required> <b>{{ kpi.name || 'empty'
+								}}</b>
+					</span></td>
+					<td><span editable-textarea="kpi.description"
+						e-name="description" e-form="rowform" e-required> {{
+							kpi.description || 'empty' }} </span></td>
+					<td><span editable-text="kpi.unit" e-name="unit"
+						e-form="rowform" e-required> {{ kpi.unit || 'empty' }} </span></td>
+					<td><a href="#" editable-checkbox="kpi.isActive"
+						e-name="isActive" e-form="rowform" e-title="Is Active ?"> {{
+							kpi.isActive && "Active" || "Not Active" }} </a></td>
+					<td><span editable-text="kpi.category" e-name="category"
+						e-form="rowform" e-required> {{ kpi.category || 'not
+							defined' }} </span></td>
 					<td><a href="#" editable-checkbox="kpi.isInt" e-name="isInt"
 						e-form="rowform" e-title="Is Integer?"> {{ kpi.isInt &&
 							"Integer" || "Pure float" }} </a></td>
-					<td><a href="#" editable-number="kpi.minValue" e-name="minValue"
-						e-form="rowform">{{ kpi.minValue || 'not defined' }}</a></td>
-					<td><a href="#" editable-number="kpi.maxValue" e-name="maxValue"
-						e-form="rowform">{{ kpi.maxValue || 'not defined' }}</a></td>
+					<td><a href="#" editable-number="kpi.minValue"
+						e-name="minValue" e-form="rowform">{{ kpi.minValue || 'not
+							defined' }}</a></td>
+					<td><a href="#" editable-number="kpi.maxValue"
+						e-name="maxValue" e-form="rowform">{{ kpi.maxValue || 'not
+							defined' }}</a></td>
 
 					<!-- Edition column -->
 					<td style="white-space: nowrap">
@@ -52,9 +52,9 @@
 							class="form-buttons form-inline" shown="inserted == kpi">
 							<button type="submit" ng-disabled="rowform.$waiting"
 								class="btn btn-primary btn-xs">save</button>
-							<button type="button" class="btn btn-xs" ng-disabled="rowform.$waiting"
-								ng-click="rowform.$cancel()" class="btn btn-default">
-								cancel</button>
+							<button type="button" class="btn btn-xs"
+								ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"
+								class="btn btn-default">cancel</button>
 						</form>
 						<div class="buttons" ng-show="!rowform.$visible">
 							<button class="btn btn-primary btn-xs" ng-click="rowform.$show()">edit</button>
@@ -67,19 +67,19 @@
 		</table>
 		<button class="btn btn-default" ng-click="addNewEmptyNumericKpi()">Add
 			new KPI</button>
-	</div>	
+	</div>
 </div>
 <hr>
 <div class="row">
-<div class="col-md-7">
-<h3>Enumeration Key Performance Indicators</h3>
-</div>
-<div class="col-md-5">
-<h3 ng-show="hasEditedEnumKpi">Values of {{editedEnumKpi.name}}</h3>	
-</div>
+	<div class="col-md-7">
+		<h3>Enumeration Key Performance Indicators</h3>
+	</div>
+	<div class="col-md-5">
+		<h3 ng-show="hasEditedEnumKpi">Values of {{editedEnumKpi.name}}</h3>
+	</div>
 </div>
 <div class="row">
-	
+
 	<div class="col-md-7">
 
 		<table class="table table-striped table-hover table-condensed">
@@ -87,12 +87,14 @@
 				<tr>
 					<th>Name</th>
 					<th>Description</th>
+					<th>Unit</th>
 					<th>Active</th>
 					<th>Edit</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="kpi in kpis | filter:{kind:'MANUAL_APPLICATION_ENUM'}">
+				<tr
+					ng-repeat="kpi in kpis | filter:{kind:'MANUAL_APPLICATION_ENUM'}">
 					<td>
 						<!-- editable username (text with validation) --> <span
 						editable-text="kpi.name" e-name="name" e-form="rowEnumform"
@@ -104,28 +106,33 @@
 						e-form="rowEnumform" e-required> {{ kpi.description ||
 							'empty' }} </span>
 					</td>
-					<td><a href="#" editable-checkbox="kpi.isActive" e-name="isActive"
-						e-form="rowEnumform" e-title="Is Active ?"> {{ kpi.isActive &&
-							"Active" || "Not Active" }} </a></td>
+					<td><span editable-text="kpi.unit" e-name="unit"
+						e-form="rowform" e-required> {{ kpi.unit || 'empty' }} </span></td>
+					<td><a href="#" editable-checkbox="kpi.isActive"
+						e-name="isActive" e-form="rowEnumform" e-title="Is Active ?">
+							{{ kpi.isActive && "Active" || "Not Active" }} </a></td>
 
 					<!-- Edition column -->
 					<td style="white-space: nowrap">
 						<!-- form -->
 						<form editable-form name="rowEnumform"
-							onbeforesave="saveKpi($data, kpi)"
-							ng-show="rowEnumform.$visible" class="form-buttons form-inline"
-							shown="inserted == kpi">
+							onbeforesave="saveKpi($data, kpi)" ng-show="rowEnumform.$visible"
+							class="form-buttons form-inline" shown="inserted == kpi">
 							<button type="submit" ng-disabled="rowEnumform.$waiting"
 								class="btn btn-primary btn-xs">save</button>
-							<button type="button" class="btn btn-xs" ng-disabled="rowEnumform.$waiting"
+							<button type="button" class="btn btn-xs"
+								ng-disabled="rowEnumform.$waiting"
 								ng-click="rowEnumform.$cancel()" class="btn btn-default">
 								cancel</button>
 						</form>
 						<div class="buttons" ng-show="!rowEnumform.$visible">
-							<button class="btn btn-primary btn-xs" ng-click="rowEnumform.$show()">edit</button>
-							<button class="btn btn-primary btn-xs" ng-click="setEditedEnumKpi(kpi)" ng-disabled="kpi.id==null">edit
+							<button class="btn btn-primary btn-xs"
+								ng-click="rowEnumform.$show()">edit</button>
+							<button class="btn btn-primary btn-xs"
+								ng-click="setEditedEnumKpi(kpi)" ng-disabled="kpi.id==null">edit
 								values</button>
-							<button class="btn btn-danger btn-xs" ng-click="removeEnumKpi($index)">del</button>
+							<button class="btn btn-danger btn-xs"
+								ng-click="removeEnumKpi($index)">del</button>
 						</div>
 					</td>
 				</tr>
@@ -135,7 +142,7 @@
 			new KPI</button>
 	</div>
 	<!-- Enumerationn literals of current edited enum kpi -->
-	<div class="col-md-5">	
+	<div class="col-md-5">
 		<table class="table table-striped table-hover table-condensed"
 			ng-show="hasEditedEnumKpi">
 			<thead>
@@ -167,12 +174,14 @@
 							class="form-buttons form-inline" shown="inserted == literal">
 							<button type="submit" ng-disabled="rowLiteralform.$waiting"
 								class="btn btn-primary btn-xs">save</button>
-							<button type="button" class="btn btn-xs" ng-disabled="rowLiteralform.$waiting"
+							<button type="button" class="btn btn-xs"
+								ng-disabled="rowLiteralform.$waiting"
 								ng-click="rowLiteralform.$cancel()" class="btn btn-default">
 								cancel</button>
 						</form>
 						<div class="buttons" ng-show="!rowLiteralform.$visible">
-							<button class="btn btn-primary btn-xs" ng-click="rowLiteralform.$show()">edit</button>
+							<button class="btn btn-primary btn-xs"
+								ng-click="rowLiteralform.$show()">edit</button>
 							<button class="btn btn-danger btn-xs"
 								ng-click="removeEnumLiteral($index)">del</button>
 						</div>

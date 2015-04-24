@@ -2,16 +2,21 @@
 	<h3>Catalog structure</h3>
 	<p class="text-left">
 		<button class="btn btn-default btn-xs" data-toggle="modal"
-			ng-click="resetEditedComponent()" data-target="#editComponentDialog"
-			data-ng-disabled="!hasSelectedLeafCategory">Create new
-			component</button>
+			ng-click="resetEditedComponent()" data-target="#editComponentDialog">Create
+			new component</button>
 		<button class="btn btn-default btn-xs" data-toggle="modal"
 			data-target="#addCategoryDialog"
 			data-ng-disabled="!hasSelectedCategory">Add sub-category</button>
-		<button class="btn btn-default btn-xs" ng-disabled="!hasSelectedCategory" ng-click="deleteCategory()">Remove category</button>
+		<button class="btn btn-default btn-xs"
+			ng-disabled="!hasSelectedCategory" ng-click="deleteCategory()">Remove
+			category</button>
 	</p>
-	<abn-tree tree-data="component_catalog" icon-leaf="fa fa-cubes"
-		icon-expand="fa fa-caret-right" expand-level="3"
-		icon-collapse="fa fa-caret-down"></abn-tree>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<abn-tree tree-data="component_catalog" icon-leaf="fa fa-cubes"
+				icon-expand="fa fa-caret-right" expand-level="3"
+				icon-collapse="fa fa-caret-down"></abn-tree>
+			<div class="panel panel-default"></div>
+		</div>
+	</div>
 </div>
-

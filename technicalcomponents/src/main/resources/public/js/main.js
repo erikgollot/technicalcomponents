@@ -7,21 +7,15 @@
  * Main AngularJS Web Application
  */
 var app = angular.module('technicalComponents', [ 'ngRoute', 'techMain',
-		'uploadControllers', 'galleryControllers', 'storageControllers',
-		'kpisControllers', 'applicationsControllers' ,'testsControllers' ]);
+		 'uploadControllers', 'galleryControllers',
+		'storageControllers', 'kpisControllers', 'applicationsControllers',
+		'testsControllers' ]);
 
 /**
  * Configure the Routes
  */
 app.config([ '$routeProvider', function($routeProvider) {
-	$routeProvider
-	// Home
-	.when("/", {
-		templateUrl : "partials/home.html",
-		controller : "PageCtrl"
-	})
-	// Pages
-	.when("/catalog", {
+	$routeProvider.when("/catalog", {
 		templateUrl : "partials/catalog.html",
 		controller : "techMainController"
 	}).when("/gallery", {
@@ -39,14 +33,21 @@ app.config([ '$routeProvider', function($routeProvider) {
 	}).when("/tests", {
 		templateUrl : "partials/tests.html",
 		controller : "testsController"
-	}).otherwise("/404", {
-		templateUrl : "partials/404.html",
-		controller : "PageCtrl"
+	}).otherwise("/", {
+		redirectTo : '/',
+		controller : "nopCtrl"
 	});
 } ]);
 
 /**
- * Controls all other Pages
+ * Controller for index page
  */
-app.controller('PageCtrl', function(/* $scope, $location, $http */) {
+app.controller('nopCtrl', function($scope) {	
+});
+
+app.run(function($rootScope) {
+	$rootScope.currentUser = {
+		id : 1,
+		name : "Erik"
+	};
 });

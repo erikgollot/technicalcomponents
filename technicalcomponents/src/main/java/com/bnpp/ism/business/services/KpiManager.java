@@ -15,9 +15,7 @@ import com.bnpp.ism.api.exchangedata.kpi.metadata.KpiEnumLiteralView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.ManualEnumKpiView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.ManualNumericKpiView;
 import com.bnpp.ism.dao.kpi.metadata.AbstractKpiDao;
-import com.bnpp.ism.dao.kpi.metadata.KpiConfigurationDao;
 import com.bnpp.ism.dao.kpi.metadata.KpiEnumLiteralDao;
-import com.bnpp.ism.dao.kpi.metadata.KpiUsageDao;
 import com.bnpp.ism.entity.kpi.metadata.AbstractKpi;
 import com.bnpp.ism.entity.kpi.metadata.KpiEnumLiteral;
 import com.bnpp.ism.entity.kpi.metadata.ManualEnumKpi;
@@ -27,10 +25,6 @@ import com.bnpp.ism.entity.kpi.metadata.ManualNumericKpi;
 public class KpiManager implements IKpiManager {
 	@Autowired
 	AbstractKpiDao kpiDao;
-	@Autowired
-	KpiUsageDao kpiUsageDao;
-	@Autowired
-	KpiConfigurationDao kpiConfigurationDao;
 	@Autowired
 	KpiEnumLiteralDao kpiEnumLiteralDao;
 

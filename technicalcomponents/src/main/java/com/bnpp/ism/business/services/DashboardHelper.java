@@ -11,6 +11,7 @@ import com.bnpp.ism.api.exchangedata.application.ApplicationKpiHistory;
 import com.bnpp.ism.api.exchangedata.application.DateKpiValue;
 import com.bnpp.ism.entity.application.ApplicationVersion;
 import com.bnpp.ism.entity.kpi.metadata.AbstractKpi;
+import com.bnpp.ism.entity.kpi.metadata.ComputedKpi;
 import com.bnpp.ism.entity.kpi.metadata.KpiEnum;
 import com.bnpp.ism.entity.kpi.value.ApplicationVersionKpiSnapshot;
 import com.bnpp.ism.entity.kpi.value.KpiValue;
@@ -34,14 +35,21 @@ public class DashboardHelper {
 		SimpleDateFormat format = new SimpleDateFormat("yyy-MM-dd");
 		history.setKpiName(kpi.getName());
 		history.setKpiCategory(kpi.getCategory());
+		if (kpi instanceof ComputedKpi) {
+			history.setComputed(true);
+		}
+		// Look for all snapshots of all application version
 		for (ApplicationVersion version : versions) {
 			if (version.getKpiSnapshots() != null) {
 				for (ApplicationVersionKpiSnapshot snapshot : version
 						.getKpiSnapshots()) {
-					// Computed Kpis
+					boolean computedFound = false;
+					// First, look for computed Kpis
 					if (snapshot.getComputedKpisValues() != null) {
 						for (KpiValue v : snapshot.getComputedKpisValues()) {
+							// Just get current Kpi, others will be taken in the next call to createHistory
 							if (v.getKpi() == kpi) {
+								computedFound = true;
 								DateKpiValue val = new DateKpiValue();
 								val.setDate(snapshot.getForDate());
 								val.setValue(v.getValue());
@@ -58,8 +66,8 @@ public class DashboardHelper {
 							}
 						}
 					}
-					// Measurements
-					if (snapshot.getManualMeasurements() != null) {
+					// Measurements, only if computed have not be founded. Not necessary if the current kpi has already been found previously
+					if (!computedFound && snapshot.getManualMeasurements() != null) {
 						for (ManualUserMeasurement measurement : snapshot
 								.getManualMeasurements()) {
 							float total = 0.0f;
@@ -70,9 +78,10 @@ public class DashboardHelper {
 									total += v.getValue();
 								}
 							}
+							// num is not null because we came here because computedFound = false. So we necessarelly have at least one value.
 							total = total / num;
 							// Now adjust value...reason is for ENUM Kpi that
-							// need to give only literals
+							// needs to give only literals
 							total = kpi.adjustValue(total);
 							DateKpiValue val = new DateKpiValue();
 							val.setDate(snapshot.getForDate());

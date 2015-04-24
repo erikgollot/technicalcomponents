@@ -5,7 +5,7 @@ import com.bnpp.ism.entity.kpi.metadata.KpiEnumLiteral;
 public class ApplicationObsolescenceEnumLiteralWarning extends KpiEnumLiteral {
 	public ApplicationObsolescenceEnumLiteralWarning() {
 		setRank(2);
-		setValue(2.0f);
+		setValue(3.0f);
 		setName("WARNING");
 	}
 }

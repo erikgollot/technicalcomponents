@@ -30,7 +30,7 @@ public class ObsolescenceStrategy implements ObsolescenceStrategyCalculator {
 	public void setVersion(Long version) {
 		this.version = version;
 	}
-	@Column
+	@Column(columnDefinition="VARCHAR(100)")
 	private String name;
 
 	@Column

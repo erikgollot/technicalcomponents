@@ -17,7 +17,7 @@ public class KpiEnumLiteral {
 	Long version;
 	@Column
 	int rank;
-	@Column(columnDefinition = "VARCHAR(50)")
+	@Column(columnDefinition = "VARCHAR(100)")
 	String name;
 	@Column
 	float value;

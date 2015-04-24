@@ -376,7 +376,7 @@ techMain
 											+ '</b>] component',
 									buttons : [
 											{
-												label : 'Close',
+												label : 'Cancel',
 												action : function(dialog) {
 													dialog.close();
 												}

@@ -29,10 +29,10 @@ public class ComponentCategory {
 		this.version = version;
 	}
 
-	@Column
+	@Column(columnDefinition="VARCHAR(100)")
 	private String name;
 
-	@Column
+	@Column(columnDefinition="VARCHAR(255)")
 	private String description;
 
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)

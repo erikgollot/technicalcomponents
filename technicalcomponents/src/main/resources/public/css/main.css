@@ -171,17 +171,20 @@ footer {
 }
 
 .nav_search {
-	height:90px;
+	height: 90px;
 	overflow-y: scroll;
 }
 
 .nav_select_image_gallery {
-	max-height:300px;
+	max-height: 300px;
 	overflow-y: scroll;
 }
 
-
 .nav_search_components {
-	max-height:300px;
+	max-height: 300px;
+	overflow-y: scroll;
+}
+.nav_search_result {
+	max-height: 300px;
 	overflow-y: scroll;
 }

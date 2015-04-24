@@ -7,11 +7,12 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class ComponentVersionInfo {
-	@Column
+	@Column(columnDefinition="VARCHAR(100)")
 	private String name;
 	@Column
 	private String version;
-	@Column
+	
+	@Column(columnDefinition="VARCHAR(255)")
 	private String description;
 	
 	@Column

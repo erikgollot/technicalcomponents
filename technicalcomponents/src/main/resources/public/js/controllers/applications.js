@@ -1,5 +1,6 @@
-var applicationsControllers = angular.module('applicationsControllers', [
-		'angularBootstrapNavTree', 'ui.bootstrap', 'xeditable' ]);
+var applicationsControllers = angular
+		.module('applicationsControllers', [ 'loggedUsers',
+				'angularBootstrapNavTree', 'ui.bootstrap', 'xeditable' ]);
 
 applicationsControllers.run(function(editableOptions) {
 	editableOptions.theme = 'bs3';
@@ -8,11 +9,12 @@ applicationsControllers.run(function(editableOptions) {
 applicationsControllers
 		.controller(
 				'applicationsController',
-				function($scope, $http, $filter, $timeout) {
+				function($scope, $rootScope, $http, $filter, $timeout) {
 
 					// Chargement de toutes les applications....à revoir lors de
 					// l'integration
 					$scope.loadApps = function() {
+						$scope.applications = [];
 						$http.get("/service/applications").success(
 								function(response) {
 									$scope.applications = response;
@@ -119,6 +121,16 @@ applicationsControllers
 							}
 						}
 					}
+					
+					$scope.resetFullSelection=function() {
+						if ($scope.fullSelection != null) {
+							for (i = 0; i < $scope.searchComponents.length; i++) {
+								var c = $scope.searchComponents[i];
+								c.selectedForAssociationWithApplication = false;
+							}
+						}
+					}
+					
 					$scope.hasSelection = function() {
 						if ($scope.fullSelection != null
 								&& $scope.fullSelection.length > 0) {
@@ -360,6 +372,15 @@ applicationsControllers
 						}
 					}
 
+					$scope.createNewMeasurementForOtherUserThanMe = function(
+							snapshot) {
+						// TODO
+						BootstrapDialog.show({
+							title : 'Information',
+							message : 'Not implemented yet'
+						});
+					}
+
 					// Save entered value in measurement column
 					$scope.saveOneValue = function(data, val) {
 						if (val.kpi.minValue != null && data < val.kpi.minValue) {
@@ -371,7 +392,13 @@ applicationsControllers
 						val.value = data;
 					}
 					$scope.saveMeasurement = function(data, measurement) {
-
+						if ($scope.existSameMeasurementUser(measurement)) {
+							BootstrapDialog.show({
+								title : 'Error',
+								message : 'No measurement for the same user'
+							});
+							return "ERROR";
+						}
 						$http
 								.post("/service/updateMeasurement", measurement)
 								.success(
@@ -391,6 +418,39 @@ applicationsControllers
 													});
 										});
 					}
+
+					$scope.existSameMeasurementUser = function(measurement) {
+						for (i = 0; i < $scope.currentSnapshot.manualMeasurements.length; i++) {
+							var other = $scope.currentSnapshot.manualMeasurements[i];
+							if (other != measurement && other.who != null
+									&& measurement.who != null
+									&& measurement.who.name == other.who.name) {
+								return true;
+							}
+						}
+						return false;
+					}
+
+					$scope.alreadyExistMeasurementForLoggedUser = function() {
+						if ($scope.currentSnapshot == null) {
+							return false;
+						}
+						if ($scope.currentSnapshot.manualMeasurements == null) {
+							return false;
+						}
+
+						var currentUser = $rootScope.currentUser;
+
+						for (i = 0; i < $scope.currentSnapshot.manualMeasurements.length; i++) {
+							var other = $scope.currentSnapshot.manualMeasurements[i];
+							if (other.who != null
+									&& other.who.name == currentUser.name) {
+								return true;
+							}
+						}
+						return false;
+					}
+
 					$scope.convertDate = function(aDate) {
 						var formatedDate = Date.parse(aDate);
 						var formatedDateAsString = "";
@@ -401,6 +461,17 @@ applicationsControllers
 					}
 					$scope.updateSnapshot = function(data, snapshot) {
 						theDate = $scope.convertDate(data.forDate);
+
+						// We cannot create 2 snapshots for the same date
+						if ($scope.existSnapshotWithSameDate(snapshot, theDate)) {
+							BootstrapDialog
+									.show({
+										title : 'Error',
+										message : 'Snapshot with this date already exists'
+									});
+							return "Wrong date";
+						}
+
 						frozenVal = false;
 						if (data.frozen == null) {
 							frozenVal = false;
@@ -433,6 +504,27 @@ applicationsControllers
 													});
 										});
 					}
+
+					$scope.existSnapshotWithSameDate = function(snapshot,
+							theDate) {
+						for (i = 0; i < $scope.currentSnapshots.length; i++) {
+							var otherSnapshot = $scope.currentSnapshots[i];
+							if (otherSnapshot != snapshot) {
+								var otherDate = Date
+										.parse(otherSnapshot.forDate);
+								var toCompare = Date.parse(theDate);
+								if (otherDate.getFullYear() == toCompare
+										.getFullYear()
+										&& otherDate.getDate() == toCompare
+												.getDate()
+										&& otherDate.getMonth() == toCompare
+												.getMonth())
+									return true;
+							}
+						}
+						return false;
+					}
+
 					$scope.deleteSnapshot = function(idx) {
 						snapshot = $scope.currentSnapshots[idx];
 						BootstrapDialog.show({
@@ -609,6 +701,18 @@ applicationsControllers
 								"rgba(172,57,57", "rgba(57,57,172",
 								"rgba(172,57,115", "rgba(184,0,147",
 								"rgba(0,184,37", ];
+						// First, need to compute max values because Radar uses
+						// percentages, not absolute values
+						var maxValues = [];
+						for (j = 0; j < $scope.currentSnapshot.manualMeasurements.length; j++) {
+							var measurement = $scope.currentSnapshot.manualMeasurements[j];
+							for (k = 0; k < measurement.values.length; k++) {
+								if (measurement.values[k].value != null
+										&& (maxValues[k] == null || maxValues[k] < measurement.values[k].value)) {
+									maxValues[k] = measurement.values[k].value;
+								}
+							}
+						}
 						for (j = 0; j < $scope.currentSnapshot.manualMeasurements.length; j++) {
 							var measurement = $scope.currentSnapshot.manualMeasurements[j];
 							var dataset = {};
@@ -629,7 +733,8 @@ applicationsControllers
 									dataset.data.push(0);
 								} else {
 									dataset.data
-											.push(measurement.values[k].value);
+											.push(measurement.values[k].value
+													/ maxValues[k]);
 								}
 							}
 							datasets.push(dataset);
@@ -696,11 +801,13 @@ applicationsControllers
 							// colour
 							datasetFill : true,
 
+							barShowStroke : true,
+
 							// String - A legend template
-							legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+							legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label +'coucou'%><%}%></li><%}%></ul>"
 
 						}
-						var myLineChart = new Chart(ctx).Radar(data, options);
+						var myChart = new Chart(ctx).Radar(data, options);
 					}
 
 					// Application Kpi dashboard of $scope.selectedApplication
@@ -722,7 +829,8 @@ applicationsControllers
 													var names = {
 														id : $scope.selectedApplication.id
 																+ "_hist_" + k,
-														name : dashboard.kpiHistories[k].kpiName
+														name : dashboard.kpiHistories[k].kpiName,
+														isComputed : dashboard.kpiHistories[k].computed
 													}
 													$scope.dashboards[$scope.selectedApplication.id].graphNames
 															.push(names);
@@ -777,8 +885,8 @@ applicationsControllers
 								// /Boolean - Whether grid lines are shown
 								// across the chart
 								scaleShowGridLines : true,
-								
-								scaleBeginAtZero: true,
+
+								scaleBeginAtZero : true,
 
 								// String - Colour of the grid lines
 								scaleGridLineColor : "rgba(0,0,0,.05)",
