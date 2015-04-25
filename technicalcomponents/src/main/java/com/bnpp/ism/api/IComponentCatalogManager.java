@@ -35,6 +35,8 @@ public interface IComponentCatalogManager {
 
 	void deleteCategory(Long categoryId);
 	
+	void changeCategoryName(Long categoryId,String newName);
+	
 	List<TechnicalComponentView> searchComponentsFromFullPathName(String regexp);
 	
 	void evictCachedComponentsFromFullPathName();

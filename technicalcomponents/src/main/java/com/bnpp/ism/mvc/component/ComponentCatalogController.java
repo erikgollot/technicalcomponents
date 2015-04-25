@@ -136,5 +136,9 @@ public class ComponentCatalogController {
 	}
 	
 	
-	
+	@RequestMapping(value = "/service/changeCategoryName/{categoryId}", method = RequestMethod.POST, headers = "Accept=application/json")
+	public @ResponseBody
+	void changeCategoryName(@PathVariable("categoryId") Long categoryId, @RequestParam("newName") String newName) {
+		service.changeCategoryName(categoryId, newName);
+	}
 }

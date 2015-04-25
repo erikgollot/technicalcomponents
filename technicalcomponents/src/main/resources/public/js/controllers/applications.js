@@ -86,7 +86,7 @@ applicationsControllers
 							$scope.selectedApplication = node.obj;
 							$scope.selectedApplicationVersion = null;
 						}
-
+						$scope.currentSnapshot = null;
 					}
 					$scope.initializeBuiltOn = function(application) {
 						if (application.builtOn != null
@@ -121,8 +121,8 @@ applicationsControllers
 							}
 						}
 					}
-					
-					$scope.resetFullSelection=function() {
+
+					$scope.resetFullSelection = function() {
 						if ($scope.fullSelection != null) {
 							for (i = 0; i < $scope.searchComponents.length; i++) {
 								var c = $scope.searchComponents[i];
@@ -130,7 +130,7 @@ applicationsControllers
 							}
 						}
 					}
-					
+
 					$scope.hasSelection = function() {
 						if ($scope.fullSelection != null
 								&& $scope.fullSelection.length > 0) {
@@ -312,11 +312,13 @@ applicationsControllers
 						$scope.currentSnapshot = snapshot;
 					}
 
-					$scope.createNewMeasurement = function(snapshot) {
+					$scope.createNewMeasurement = function(snapshot,user) {
 						// Create a new measurement for current logged user...if
 						// this
 						// measurement does not already exist
-
+						if (user==null) {
+							user=$rootScope.currentUser;
+						}
 						if (snapshot.kpis != null) {
 							// TODO check if not already exist
 
@@ -325,7 +327,7 @@ applicationsControllers
 								method : "POST",
 								params : {
 									snapshotId : snapshot.id,
-									userId : 1
+									userId : user.id
 								}
 							})
 									.success(
@@ -372,13 +374,45 @@ applicationsControllers
 						}
 					}
 
+					$scope.allUsers = null;
+					$scope.selectUserForNewMeasurementAndGo = function() {
+						$scope.allUsers = $http
+								.get("/service/allUsers")
+								.success(
+										function(all) {
+											$scope.allUsers = all;
+											$(
+													'#addMeasurementForOtherUserDialog')
+													.modal('show');
+
+										})
+								.error(
+										function(data, status, headers, config) {
+											BootstrapDialog
+													.show({
+														title : 'Error',
+														message : 'Cannot retrieve all users\nReason is : '
+																+ data.message
+													});
+										})
+
+					}
+					$scope.currentSelectedUser = null;
+					$scope.setCurrentSelectedUser = function(user) {
+						$scope.currentSelectedUser = user;
+					}
 					$scope.createNewMeasurementForOtherUserThanMe = function(
 							snapshot) {
-						// TODO
-						BootstrapDialog.show({
-							title : 'Information',
-							message : 'Not implemented yet'
-						});
+						if ($rootScope.currentUser.id == $scope.currentSelectedUser.id) {
+							BootstrapDialog.show({
+								title : 'Error',
+								message : 'Not you, another user, please'
+							});
+						} else {
+							$('#addMeasurementForOtherUserDialog')
+									.modal('hide');
+							$scope.createNewMeasurement($scope.currentSnapshot,$scope.currentSelectedUser);
+						}
 					}
 
 					// Save entered value in measurement column
@@ -676,20 +710,10 @@ applicationsControllers
 					}
 					// Charts
 					$scope.refreshMeasurementsKiviaChart = function() {
-						var ctx = $("#measurementsKiviaChart").get(0)
-								.getContext("2d");
-						// Create data from manualMeasurements
-						var data = {};
-
 						// Labels are kpi names
 						var kpis = $scope
 								.manualMeasurementsOfSnapshot($scope.currentSnapshot);
-						var labels = new Array();
-						for (i = 0; i < kpis.length; i++) {
-							labels.push(kpis[i].name);
-						}
-						// datasets are measurements (one per user)
-						var datasets = new Array();
+
 						// 20 colors for the 20 first measurements
 						var colors = [ "rgba(220,220,200", "rgba(151,187,205",
 								"rgba(217,204,255", "rgba(242,204,255",
@@ -713,6 +737,8 @@ applicationsControllers
 								}
 							}
 						}
+						var datasetsD3 = [];
+
 						for (j = 0; j < $scope.currentSnapshot.manualMeasurements.length; j++) {
 							var measurement = $scope.currentSnapshot.manualMeasurements[j];
 							var dataset = {};
@@ -721,93 +747,35 @@ applicationsControllers
 							} else {
 								colorStr = "rgba(230,230,230";
 							}
-							dataset.label = measurement.who.name;
-							dataset.strokeColor = colorStr + ",1)";
-							dataset.pointColor = colorStr + ",1)";
-							dataset.fillColor = colorStr + ",0.2)";
-							dataset.pointHighlightFill = "#fff";
-							dataset.pointHighlightStroke = colorStr + ",1)";
-							dataset.data = new Array();
+
+							datasetD3 = [];
+
 							for (k = 0; k < measurement.values.length; k++) {
-								if (measurement.values[k].value == null) {
-									dataset.data.push(0);
-								} else {
-									dataset.data
-											.push(measurement.values[k].value
-													/ maxValues[k]);
-								}
+								datasetD3.push({
+									axis : measurement.values[k].kpi.name,
+									value : measurement.values[k].value
+											/ maxValues[k]
+								})
 							}
-							datasets.push(dataset);
-						}
-						var data = {
-							labels : labels,
-							datasets : datasets
-						};
-						var options = {
-							// Boolean - Whether to show lines for each scale
-							// point
-							scaleShowLine : true,
-
-							// Boolean - Whether we show the angle lines out of
-							// the radar
-							angleShowLineOut : true,
-
-							// Boolean - Whether to show labels on the scale
-							scaleShowLabels : false,
-
-							multiTooltipTemplate : "<%= datasetLabel %> - <%= value %>",
-
-							// Boolean - Whether the scale should begin at zero
-							scaleBeginAtZero : true,
-
-							// String - Colour of the angle line
-							angleLineColor : "rgba(0,0,0,.1)",
-
-							// Number - Pixel width of the angle line
-							angleLineWidth : 1,
-
-							// String - Point label font declaration
-							pointLabelFontFamily : "'Arial'",
-
-							// String - Point label font weight
-							pointLabelFontStyle : "normal",
-
-							// Number - Point label font size in pixels
-							pointLabelFontSize : 12,
-
-							// String - Point label font colour
-							pointLabelFontColor : "#666",
-
-							// Boolean - Whether to show a dot for each point
-							pointDot : true,
-
-							// Number - Radius of each point dot in pixels
-							pointDotRadius : 3,
-
-							// Number - Pixel width of point dot stroke
-							pointDotStrokeWidth : 1,
-
-							// Number - amount extra to add to the radius to
-							// cater for hit detection outside the drawn point
-							pointHitDetectionRadius : 20,
-
-							// Boolean - Whether to show a stroke for datasets
-							datasetStroke : true,
-
-							// Number - Pixel width of dataset stroke
-							datasetStrokeWidth : 2,
-
-							// Boolean - Whether to fill the dataset with a
-							// colour
-							datasetFill : true,
-
-							barShowStroke : true,
-
-							// String - A legend template
-							legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label +'coucou'%><%}%></li><%}%></ul>"
+							datasetsD3.push(datasetD3);
 
 						}
-						var myChart = new Chart(ctx).Radar(data, options);
+
+						// D3
+						var w = 600, h = 600;
+
+						var colorscale = d3.scale.category10();
+
+						// Options for the Radar chart, other than default
+						var mycfg = {
+							w : w,
+							h : h,
+							maxValue : 0.8,
+							levels : 6,
+							ExtraWidthX : 300
+						}
+						RadarChart.draw("#chart", datasetsD3, mycfg);
+
 					}
 
 					// Application Kpi dashboard of $scope.selectedApplication
@@ -824,20 +792,53 @@ applicationsControllers
 												$scope.dashboards[$scope.selectedApplication.id] = new Object();
 												$scope.dashboards[$scope.selectedApplication.id].dashboard = dashboard;
 												$scope.dashboards[$scope.selectedApplication.id].num_graphs = dashboard.kpiHistories.length;
-												$scope.dashboards[$scope.selectedApplication.id].graphNames = [];
+												// Graphs structured by kpi
+												// category
+												// First, create level one that
+												// contains category names + the
+												// default one when no category
+												// is defined for a kpi
+												$scope.dashboards[$scope.selectedApplication.id].categories = [];
+												$scope.dashboards[$scope.selectedApplication.id].categories["default"] = {
+													catName : "default",
+													graphNames : new Array()
+												};
+												$scope.dashboards[$scope.selectedApplication.id].categoryNames = [ "default" ];
 												for (k = 0; k < dashboard.kpiHistories.length; k++) {
+													var hist = dashboard.kpiHistories[k];
+													if (hist.kpiCategory != null
+															&& hist.kpiCategory != "") {
+														if ($scope.dashboards[$scope.selectedApplication.id].categories[hist.kpiCategory] == null) {
+															$scope.dashboards[$scope.selectedApplication.id].categories[hist.kpiCategory] = {
+																catName : hist.kpiCategory,
+																graphNames : new Array()
+															}
+															$scope.dashboards[$scope.selectedApplication.id].categoryNames
+																	.push(hist.kpiCategory);
+														}
+													}
+												}
+												// Now add graph names into
+												// category
+												for (k = 0; k < dashboard.kpiHistories.length; k++) {
+													var hist = dashboard.kpiHistories[k];
 													var names = {
 														id : $scope.selectedApplication.id
 																+ "_hist_" + k,
 														name : dashboard.kpiHistories[k].kpiName,
 														isComputed : dashboard.kpiHistories[k].computed
 													}
-													$scope.dashboards[$scope.selectedApplication.id].graphNames
+													var catRank = hist.kpiCategory;
+													if (hist.kpiCategory == null
+															|| hist.kpiCategory == "") {
+														catRank = "default";
+													}
+													$scope.dashboards[$scope.selectedApplication.id].categories[catRank].graphNames
 															.push(names);
 												}
 												$timeout(
 														$scope.refreshKpiDashboard,
-														1300);
+														1000);
 											}
 										})
 								.error(
@@ -850,98 +851,115 @@ applicationsControllers
 													})
 										});
 					}
-					// Dashboard graphs creation after loading dashobard data
+					// Dashboard graphs creation after loading dashboard data
 					$scope.refreshKpiDashboard = function() {
 						var dashboard = $scope.dashboards[$scope.selectedApplication.id];
-						for (i = 0; i < dashboard.num_graphs; i++) {
-							var history = dashboard.dashboard.kpiHistories[i];
-							var ctx = document.getElementById(
-									dashboard.graphNames[i].id)
-									.getContext("2d");
-							// Build data
-							var data = {};
-							var dates = [];
-							var points = [];
-							// X-axis labels are the dates
-							for (j = 0; j < history.values.length; j++) {
-								dates.push(history.values[j].dateStr);
-								points.push(history.values[j].value);
+						for (k = 0; k < dashboard.dashboard.kpiHistories.length; k++) {
+							var history = dashboard.dashboard.kpiHistories[k];
+							// graphnames are in...graphNames of category
+							var catRank = history.kpiCategory;
+							if (history.kpiCategory == null
+									|| history.kpiCategory == "") {
+								catRank = "default";
 							}
-							data.labels = dates;
-							data.datasets = [ {
-								label : history.kpiName,
-								fillColor : "rgba(151,187,205,0.2)",
-								strokeColor : "rgba(151,187,205,1)",
-								pointColor : "rgba(151,187,205,1)",
-								pointStrokeColor : "#fff",
-								pointHighlightFill : "#fff",
-								pointHighlightStroke : "rgba(151,187,205,1)",
-								data : points
-							} ];
+							var graphNames = dashboard.categories[catRank].graphNames;
+							for (i = 0; i < graphNames.length; i++) {
+								var nameOfUIGraph = graphNames[i].id;
+								var doc = document;
+								var element = document
+										.getElementById(nameOfUIGraph);
+								var ctx = element.getContext("2d");
+								// Build data
+								var data = {};
+								var dates = [];
+								var points = [];
+								// X-axis labels are the dates
+								for (j = 0; j < history.values.length; j++) {
+									dates.push(history.values[j].dateStr);
+									points.push(history.values[j].value);
+								}
+								data.labels = dates;
+								data.datasets = [ {
+									label : history.kpiName,
+									fillColor : "rgba(151,187,205,0.2)",
+									strokeColor : "rgba(151,187,205,1)",
+									pointColor : "rgba(151,187,205,1)",
+									pointStrokeColor : "#fff",
+									pointHighlightFill : "#fff",
+									pointHighlightStroke : "rgba(151,187,205,1)",
+									data : points
+								} ];
 
-							// build options
-							var options = {
+								// build options
+								var options = {
 
-								// /Boolean - Whether grid lines are shown
-								// across the chart
-								scaleShowGridLines : true,
+									// /Boolean - Whether grid lines are shown
+									// across the chart
+									scaleShowGridLines : true,
 
-								scaleBeginAtZero : true,
+									scaleBeginAtZero : true,
 
-								// String - Colour of the grid lines
-								scaleGridLineColor : "rgba(0,0,0,.05)",
+									// String - Colour of the grid lines
+									scaleGridLineColor : "rgba(0,0,0,.05)",
 
-								// Number - Width of the grid lines
-								scaleGridLineWidth : 1,
+									// Number - Width of the grid lines
+									scaleGridLineWidth : 1,
 
-								// Boolean - Whether to show horizontal lines
-								// (except X axis)
-								scaleShowHorizontalLines : true,
+									// Boolean - Whether to show horizontal
+									// lines
+									// (except X axis)
+									scaleShowHorizontalLines : true,
 
-								// Boolean - Whether to show vertical lines
-								// (except Y axis)
-								scaleShowVerticalLines : true,
+									// Boolean - Whether to show vertical lines
+									// (except Y axis)
+									scaleShowVerticalLines : true,
 
-								// Boolean - Whether the line is curved between
-								// points
-								bezierCurve : true,
+									// Boolean - Whether the line is curved
+									// between
+									// points
+									bezierCurve : true,
 
-								// Number - Tension of the bezier curve between
-								// points
-								bezierCurveTension : 0.4,
+									// Number - Tension of the bezier curve
+									// between
+									// points
+									bezierCurveTension : 0.4,
 
-								// Boolean - Whether to show a dot for each
-								// point
-								pointDot : true,
+									// Boolean - Whether to show a dot for each
+									// point
+									pointDot : true,
 
-								// Number - Radius of each point dot in pixels
-								pointDotRadius : 4,
+									// Number - Radius of each point dot in
+									// pixels
+									pointDotRadius : 4,
 
-								// Number - Pixel width of point dot stroke
-								pointDotStrokeWidth : 1,
+									// Number - Pixel width of point dot stroke
+									pointDotStrokeWidth : 1,
 
-								// Number - amount extra to add to the radius to
-								// cater for hit detection outside the drawn
-								// point
-								pointHitDetectionRadius : 20,
+									// Number - amount extra to add to the
+									// radius to
+									// cater for hit detection outside the drawn
+									// point
+									pointHitDetectionRadius : 20,
 
-								// Boolean - Whether to show a stroke for
-								// datasets
-								datasetStroke : true,
+									// Boolean - Whether to show a stroke for
+									// datasets
+									datasetStroke : true,
 
-								// Number - Pixel width of dataset stroke
-								datasetStrokeWidth : 2,
+									// Number - Pixel width of dataset stroke
+									datasetStrokeWidth : 2,
 
-								// Boolean - Whether to fill the dataset with a
-								// colour
-								datasetFill : true,
+									// Boolean - Whether to fill the dataset
+									// with a
+									// colour
+									datasetFill : true,
 
-							};
-							// Set Line chart with data & options
-							var chart = new Chart(ctx).Line(data, options);
+								};
+								// Set Line chart with data & options
+								var chart = new Chart(ctx).Line(data, options);
+							}
 						}
 					}
+
 					// Init
 					$scope.loadApps();
-
 				});

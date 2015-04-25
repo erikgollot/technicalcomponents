@@ -136,7 +136,7 @@ public class ComponentCatalogServiceManager implements IComponentCatalogManager 
 		StoredFileVersion image = loaded.getImage();
 		// Copy from view
 		dozerBeanMapper.map(toUpdate, loaded);
-		
+
 		// Restore image
 		loaded.setImage(image);
 
@@ -315,5 +315,26 @@ public class ComponentCatalogServiceManager implements IComponentCatalogManager 
 	@CacheEvict(value = SEARCH_COMPONENTS_FROM_FULL_PATHNAME_CACHE)
 	public void evictCachedComponentsFromFullPathName() {
 		// Nothing to do, eviction is done by Spring
+	}
+	
+	@Transactional
+	@Override
+	public void changeCategoryName(Long categoryId, String newName) {
+		ComponentCategory cat = componentCategoryDao.findOne(categoryId);
+		if (cat != null) {
+			if (cat.getParent() != null) {
+				ComponentCategory parent = cat.getParent();
+				// Check if no other category has the same name
+				for (ComponentCategory other : parent.getCategories()) {
+					if (other != cat && other.getName().equals(newName)) {
+						throw new RuntimeException(
+								"A category already has this name : " + newName);
+					}
+				}
+			}
+			cat.setName(newName);
+			componentCategoryDao.save(cat);
+		}
+
 	}
 }

@@ -1,20 +1,31 @@
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-2">
+		<div class="col-md-1">
 			<button class="btn btn-primary btn-xs"
 				ng-click="buildKpiHistoryDashboard()">Load Dashboard</button>
 		</div>
 
-		<div class="col-md-10"
+		<div class="col-md-11"
 			ng-show="dashboards[selectedApplication.id] != null">
 			<div class="row">
 				<h1>{{selectedApplication.name}} Key Performance Indicators
 					History</h1>
 				<hr>
 				<div
-					ng-repeat="gname in dashboards[selectedApplication.id].graphNames">
-					<h4>{{gname.name}} <a class="glyphicon glyphicon-cog" ng-if="gname.isComputed"></a><a class="glyphicon glyphicon-user" ng-if="!gname.isComputed"></a></h4>
-					<canvas id="{{gname.id}}" width="800" height="200"></canvas>
+					ng-repeat="cat in dashboards[selectedApplication.id].categoryNames">
+					<h3 ng-hide="cat=='default'">{{cat}}</h3>
+					<hr ng-hide="cat=='default'">
+					<div class="row">
+						<div
+							ng-repeat="graph in dashboards[selectedApplication.id].categories[cat].graphNames | orderBy:'name'">
+							<h4>
+								{{graph.name}} <a class="glyphicon glyphicon-cog"
+									ng-if="graph.isComputed"></a><a
+									class="glyphicon glyphicon-user" ng-if="!graph.isComputed"></a>
+							</h4>
+							<canvas id="{{graph.id}}" width="800" height="200"></canvas>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

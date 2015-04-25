@@ -1,10 +1,10 @@
 var techMain = angular.module('techMain', [ 'ui.tree', 'ui.bootstrap',
-		'angularBootstrapNavTree' ]);
+		'angularBootstrapNavTree' ,'ngAnimate']);
 
 techMain
 		.controller(
 				'techMainController',
-				function($scope, $http) {
+				function($scope, $http, $route) {
 					$scope.today = function() {
 						$scope.dt = new Date();
 					};
@@ -103,6 +103,31 @@ techMain
 						$scope.selectedCategoryNode = category;
 						$scope
 								.loadComponentsOfSelectedCategory(category.category_id);
+					}
+					// Change category name. Return string error if necessary to
+					// avoid change in ui
+					$scope.changeCategoryName = function(newName) {
+						return $http(
+								{
+									url : "/service/changeCategoryName/"
+											+ $scope.selectedCategoryNode.category_id,
+									method : "POST",
+									params : {
+										newName : newName
+									}
+								})
+								.success(function(response) {
+								})
+								.error(
+										function(data, status, headers, config) {
+											BootstrapDialog
+													.show({
+														title : 'Error',
+														message : 'Cannot update category\nReason is : '
+																+ data.message
+													});
+										});
+
 					}
 
 					// Create new component on dialog save button click
@@ -322,7 +347,7 @@ techMain
 					$scope.selectedLogo = function(id) {
 						$scope.image.id = id;
 					}
-					$scope.forgetSelectedLog = function() {
+					$scope.forgetSelectedLogo = function() {
 						$scope.image.id = -1;
 					}
 

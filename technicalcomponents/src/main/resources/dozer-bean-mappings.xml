@@ -45,15 +45,5 @@
 		</class-a>
 		<class-b>com.bnpp.ism.api.exchangedata.kpi.application.ApplicationObsolescenceKpiView
 		</class-b>
-	</mapping>
-	<mapping>
-		<class-a>com.bnpp.ism.entity.kpi.metadata.KpiUsage
-		</class-a>
-		<class-b>com.bnpp.ism.api.exchangedata.kpi.metadata.KpiSimpleUsageView
-		</class-b>
-		<field>
-			<a>kpi.id</a>
-			<b>kpiId</b>
-		</field>
-	</mapping>
+	</mapping>	
 </mappings>

@@ -67,6 +67,10 @@ public class InitialContentInitializer {
 		User erik = new User();
 		erik.setName("Erik");
 		userDao.save(erik);
+		
+		User alex = new User();
+		alex.setName("Alex");
+		userDao.save(alex);
 
 	}
 

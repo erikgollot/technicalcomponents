@@ -1,5 +1,5 @@
-<div class="col-sm-12">
-<h3>Content of {{selectedCategoryNode.label}}</h3>
+<div class="col-sm-12" ng-show="selectedCategoryNode != null">
+<h3>Content of <a href editable-text="selectedCategoryNode.label" onbeforesave="changeCategoryName($data)" ng-show="selectedCategoryNode!=null">{{ selectedCategoryNode.label }}</a></h3>
 	<table class="table table-striped">
 		<thead>
 			<tr>
