@@ -65,6 +65,7 @@ public class KpiManager implements IKpiManager {
 
 	private void copyAbstractKpiInfo(AbstractKpiView kpi, AbstractKpi entity) {
 		entity.setName(kpi.getName());
+		entity.setShortName(kpi.getShortName());
 		entity.setDescription(kpi.getDescription());
 		entity.setCategory(kpi.getCategory());
 		entity.setActive(kpi.isActive());

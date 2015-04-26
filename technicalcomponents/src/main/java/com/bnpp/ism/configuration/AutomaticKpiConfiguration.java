@@ -61,6 +61,7 @@ public class AutomaticKpiConfiguration {
 	private void KC3_Incident_SLA_compliance() {
 		ManualNumericKpi kpi = new ManualNumericKpi();
 		kpi.setName("Incident SLA compliance");
+		kpi.setShortName("KC3-Inc. SLA comp.");
 		kpi.setDescription("Performance Measurement of the Application Maintenance service for incident resolution against the target SLAs.<br>Calculated monthly on a 12 months rolling period");
 		kpi.setInt(false);
 		kpi.setMinValue(0.0f);
@@ -78,6 +79,7 @@ public class AutomaticKpiConfiguration {
 		ManualEnumKpi kpi = new ManualEnumKpi();
 		kpi.setKind(KpiKindEnum.MANUAL_APPLICATION_ENUM);
 		kpi.setName("Application landscape obsolescence");
+		kpi.setShortName("KC2d-Obsoclescence");
 		kpi.setDescription("A measure of the non-alignment of the application portfolio with the IT strategy due to obsolete underlying technologies.");
 		kpi.setCategory(quality_risk);
 
@@ -102,6 +104,7 @@ public class AutomaticKpiConfiguration {
 	private void KC2c_Application_cost_complexity() {
 		ManualNumericKpi kpi = new ManualNumericKpi();
 		kpi.setName("Application cost complexity");
+		kpi.setShortName("KC2c-Cost comp.");
 		kpi.setDescription("Estimation of remediation costs linked to code non quality and associated potential business impacts.<br>Calculated on a 12 months period.");
 		kpi.setInt(false);
 		kpi.setMinValue(0.0f);
@@ -114,6 +117,7 @@ public class AutomaticKpiConfiguration {
 	private void KC2b_Incident_stock_resolution_variability() {
 		ManualNumericKpi kpi = new ManualNumericKpi();
 		kpi.setName("Incident stock resolution variability");
+		kpi.setShortName("KC2b-stock res. var.");
 		kpi.setDescription("The variability of all incidents relating to critical applications which need to be fulfilled by the application development and maintenance (ADM) team.<br>Calculated monthly on a 12 months rolling period.");
 		kpi.setInt(false);
 		kpi.setMinValue(0.0f);
@@ -126,6 +130,7 @@ public class AutomaticKpiConfiguration {
 	private void KC2a_Run_phase_incident_density_per_month() {
 		ManualNumericKpi kpi = new ManualNumericKpi();
 		kpi.setName("Run phase incident density per month");
+		kpi.setShortName("KC2a-Inc. density");
 		kpi.setDescription("This is a measurement of the relative incident density of the application portfolio used to ensure that the robustness and stability of the service improves over time.<br>Calculated monthly on a 12 months rolling period.");
 		kpi.setInt(false);
 		kpi.setMinValue(0.0f);
@@ -139,6 +144,7 @@ public class AutomaticKpiConfiguration {
 	private void KC1_Run_Cost_Per_Iotal_Landscape_Function_Points() {
 		ManualNumericKpi kpi = new ManualNumericKpi();
 		kpi.setName("Run cost per total landscape function points");
+		kpi.setShortName("KC1-Run cost. per fp");
 		kpi.setDescription("To measure the total cost spent on the run against the size maintained (run cost per FP) - excluding software packages maintenance fees");
 		kpi.setInt(false);
 		kpi.setMinValue(0.0f);
@@ -151,6 +157,7 @@ public class AutomaticKpiConfiguration {
 	private void KA2a_End_user_satisfaction_index() {
 		ManualNumericKpi kpi = new ManualNumericKpi();
 		kpi.setName("End-user satisfaction index");
+		kpi.setShortName("KA2a-User satisf.");
 		kpi.setDescription("Used to asses the end-user satisfaction index.<br>Value is an integer from 0 : <b>very bad</b> to 5 : <b>excellent</b>");
 		kpi.setInt(true);
 		kpi.setMinValue(0.0f);
@@ -164,6 +171,7 @@ public class AutomaticKpiConfiguration {
 		ManualEnumKpi kpi = new ManualEnumKpi();
 		kpi.setKind(KpiKindEnum.MANUAL_APPLICATION_ENUM);
 		kpi.setName("Application documentation quality");
+		kpi.setShortName("Doc. quality");
 		kpi.setDescription("Used to assess the conformity of the application's documentation to standards.<br>Values are :<br><ul> <li><b>BAD</b> (1)</li><li><b>NEED IMPROVEMENTS</b> (3)</li><li><b>CORRECT</b> (5)</li></ul>");
 		KpiEnumLiteral bad_documentation = new KpiEnumLiteral();
 		bad_documentation.setName("BAD");

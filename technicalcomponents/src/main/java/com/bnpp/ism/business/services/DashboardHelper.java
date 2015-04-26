@@ -47,7 +47,8 @@ public class DashboardHelper {
 					// First, look for computed Kpis
 					if (snapshot.getComputedKpisValues() != null) {
 						for (KpiValue v : snapshot.getComputedKpisValues()) {
-							// Just get current Kpi, others will be taken in the next call to createHistory
+							// Just get current Kpi, others will be taken in the
+							// next call to createHistory
 							if (v.getKpi() == kpi) {
 								computedFound = true;
 								DateKpiValue val = new DateKpiValue();
@@ -66,34 +67,42 @@ public class DashboardHelper {
 							}
 						}
 					}
-					// Measurements, only if computed have not be founded. Not necessary if the current kpi has already been found previously
-					if (!computedFound && snapshot.getManualMeasurements() != null) {
+					// Measurements, only if computed have not be founded. Not
+					// necessary if the current kpi has already been found
+					// previously
+					if (!computedFound
+							&& snapshot.getManualMeasurements() != null) {
+						float total = 0.0f;
+						int num = 0;
+						// Sum all measurements of all users
 						for (ManualUserMeasurement measurement : snapshot
 								.getManualMeasurements()) {
-							float total = 0.0f;
-							int num = 0;
+
 							for (KpiValue v : measurement.getValues()) {
 								if (v.getKpi() == kpi) {
 									num++;
 									total += v.getValue();
 								}
 							}
-							// num is not null because we came here because computedFound = false. So we necessarelly have at least one value.
-							total = total / num;
-							// Now adjust value...reason is for ENUM Kpi that
-							// needs to give only literals
-							total = kpi.adjustValue(total);
-							DateKpiValue val = new DateKpiValue();
-							val.setDate(snapshot.getForDate());
-							val.setValue(total);
-							val.setDateStr(format.format(snapshot.getForDate()));
-							if (kpi instanceof KpiEnum) {
-								KpiEnum kpiAsEnum = (KpiEnum) kpi;
-								val.setValueAsString(kpiAsEnum
-										.getLiteralWithValue(total).toString());
-							}
-							history.addValue(val);
+
 						}
+						// num is not null because we came here because
+						// computedFound = false. So we necessarily have at
+						// least one value.
+						total = total / num;
+						// Now adjust value...reason is for ENUM Kpi that
+						// needs to give only literals
+						total = kpi.adjustValue(total);
+						DateKpiValue val = new DateKpiValue();
+						val.setDate(snapshot.getForDate());
+						val.setValue(total);
+						val.setDateStr(format.format(snapshot.getForDate()));
+						if (kpi instanceof KpiEnum) {
+							KpiEnum kpiAsEnum = (KpiEnum) kpi;
+							val.setValueAsString(kpiAsEnum.getLiteralWithValue(
+									total).toString());
+						}
+						history.addValue(val);
 					}
 				}
 			}

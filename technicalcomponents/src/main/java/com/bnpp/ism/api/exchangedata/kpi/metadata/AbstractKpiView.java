@@ -20,7 +20,8 @@ public abstract class AbstractKpiView implements Comparable<AbstractKpiView> {
 	}
 
 	String name;
-
+	String shortName;
+	
 	String description;
 
 	String category;
@@ -90,5 +91,13 @@ public abstract class AbstractKpiView implements Comparable<AbstractKpiView> {
 
 	public void setKind(String kind) {
 		this.kind = kind;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 }

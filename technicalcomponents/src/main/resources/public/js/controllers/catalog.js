@@ -59,7 +59,8 @@ techMain
 						treeNode.category_id = cat.id;
 						treeNode.isLeafCategory = true;
 						return treeNode;
-					}
+					}			
+					
 					$scope.hasImages = false;
 
 					$scope.refreshGallery = function() {

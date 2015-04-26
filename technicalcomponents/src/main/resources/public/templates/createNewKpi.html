@@ -5,6 +5,7 @@
 			<thead>
 				<tr>
 					<th>Name</th>
+					<th>Short Name</th>
 					<th>Description</th>
 					<th>Unit</th>
 					<th>Active</th>
@@ -21,6 +22,10 @@
 					ng-repeat="kpi in kpis | filter:{kind:'MANUAL_APPLICATION_NUMERIC'}">
 					<td><span editable-text="kpi.name" e-name="name"
 						e-form="rowform" e-required> <b>{{ kpi.name || 'empty'
+								}}</b>
+					</span></td>
+					<td><span editable-text="kpi.shortName" e-name="shortName"
+						e-form="rowform" e-required> <b>{{ kpi.shortName || 'empty'
 								}}</b>
 					</span></td>
 					<td><span editable-textarea="kpi.description"
@@ -86,6 +91,7 @@
 			<thead>
 				<tr>
 					<th>Name</th>
+					<th>Short Name</th>
 					<th>Description</th>
 					<th>Unit</th>
 					<th>Active</th>
@@ -96,9 +102,14 @@
 				<tr
 					ng-repeat="kpi in kpis | filter:{kind:'MANUAL_APPLICATION_ENUM'}">
 					<td>
-						<!-- editable username (text with validation) --> <span
+						 <span
 						editable-text="kpi.name" e-name="name" e-form="rowEnumform"
 						e-required><b>{{ kpi.name || 'empty' }}</b> </span>
+					</td>
+					<td>
+						 <span
+						editable-text="kpi.shortName" e-name="shortName" e-form="rowEnumform"
+						e-required><b>{{ kpi.shortName || 'empty' }}</b> </span>
 					</td>
 					<td>
 						<!-- editable username (text with validation) --> <span

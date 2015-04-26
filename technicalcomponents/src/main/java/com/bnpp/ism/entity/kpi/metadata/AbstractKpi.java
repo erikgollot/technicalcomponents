@@ -37,6 +37,10 @@ public abstract class AbstractKpi implements Kpi, Comparable<AbstractKpi> {
 
 	@Column(columnDefinition = "VARCHAR(100)")
 	String name;
+	
+	@Column(columnDefinition = "VARCHAR(30)")
+	String shortName;
+	
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	String description;
@@ -110,6 +114,14 @@ public abstract class AbstractKpi implements Kpi, Comparable<AbstractKpi> {
 	@Override
 	public int compareTo(AbstractKpi o) {
 		return getId().compareTo(o.getId());
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 
 }

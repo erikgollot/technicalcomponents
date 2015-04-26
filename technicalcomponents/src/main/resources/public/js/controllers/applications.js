@@ -399,7 +399,15 @@ applicationsControllers
 					}
 					$scope.currentSelectedUser = null;
 					$scope.setCurrentSelectedUser = function(user) {
-						$scope.currentSelectedUser = user;
+						// We cannot set a user that already has a measurement
+						if ($scope.alreadyExistMeasurementForUser(user)) {
+							BootstrapDialog.show({
+								title : 'Error',
+								message : user.name+ ' already has made a measurement'
+							});
+						}else {
+							$scope.currentSelectedUser = user;	
+						}						
 					}
 					$scope.createNewMeasurementForOtherUserThanMe = function(
 							snapshot) {
@@ -466,14 +474,16 @@ applicationsControllers
 					}
 
 					$scope.alreadyExistMeasurementForLoggedUser = function() {
+						return $scope.alreadyExistMeasurementForUser($rootScope.currentUser);						
+					}
+					
+					$scope.alreadyExistMeasurementForUser = function(currentUser) {
 						if ($scope.currentSnapshot == null) {
 							return false;
 						}
 						if ($scope.currentSnapshot.manualMeasurements == null) {
 							return false;
-						}
-
-						var currentUser = $rootScope.currentUser;
+						}						
 
 						for (i = 0; i < $scope.currentSnapshot.manualMeasurements.length; i++) {
 							var other = $scope.currentSnapshot.manualMeasurements[i];
@@ -752,7 +762,7 @@ applicationsControllers
 
 							for (k = 0; k < measurement.values.length; k++) {
 								datasetD3.push({
-									axis : measurement.values[k].kpi.name,
+									axis : measurement.values[k].kpi.shortName,
 									value : measurement.values[k].value
 											/ maxValues[k]
 								})
