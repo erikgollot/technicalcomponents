@@ -30,7 +30,7 @@ public class ComponentGalleryController {
 	@Autowired
 	Mapper dozerBeanMapper;
 
-	@RequestMapping(value = "/componentGallery/storeImage", method = RequestMethod.POST)
+	@RequestMapping(value = "/service/component/componentGallery/storeImage", method = RequestMethod.POST)
 	public @ResponseBody
 	ImageGallery uploadFile(@RequestParam("file") MultipartFile file) {
 
@@ -60,7 +60,7 @@ public class ComponentGalleryController {
 		}
 	}
 
-	@RequestMapping(value = "/componentGallery/removeImage/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/service/component/componentGallery/removeImage/{id}", method = RequestMethod.POST)
 	public @ResponseBody
 	void removeImage(@PathVariable("id") Long idOfVersion) {
 		if (idOfVersion != null) {
@@ -75,13 +75,13 @@ public class ComponentGalleryController {
 		}
 	}
 
-	@RequestMapping(value = "/componentGallery/all", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/component/componentGallery/all", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
 	List<ImageGallery> all() {
 		return galleryManager.getImages();
 	}
 
-	@RequestMapping(value = "/componentGallery/canStoreImage", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/component/componentGallery/canStoreImage", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
 	boolean canStoreImages() {
 		return galleryManager.canStoreImages();

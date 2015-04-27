@@ -1,5 +1,5 @@
 var kpisControllers = angular.module('kpisControllers', [ 'angularFileUpload',
-		'xeditable', 'angularModalService' ]);
+		'ismCommons', 'xeditable', 'angularModalService' ]);
 
 kpisControllers.run(function(editableOptions) {
 	editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2',
@@ -20,19 +20,16 @@ kpisControllers
 						is_active : true,
 						name : "Erik"
 					}
-
-					
-
 					$scope.hasKpi = false;
 					$scope.kpiUsages = [];
 					$scope.newKpi = {};
 					$scope.type = "Numeric";
 
 					$http
-							.get("/service/kpis")
+							.get("/service/kpi/kpis")
 							.success(
 									function(response) {
-										$scope.kpis = response;
+										$scope.kpis = response.kpis;
 										// Copy for usages selection
 										if ($scope.kpis != null) {
 											for (i = 0; i < $scope.kpis.length; i++) {
@@ -47,12 +44,11 @@ kpisControllers
 												$scope.kpiUsages.push(usage);
 											}
 										}
-									});					
+									});
 
 					$scope.displaySafeHtml = function(html) {
 						return $sce.trustAsHtml(html);
 					}
-									
 
 					$scope.createNewKpi = function(newKpi) {
 						console.log(newKpi);
@@ -94,9 +90,9 @@ kpisControllers
 						});
 						if (kpi.kind == "MANUAL_APPLICATION_NUMERIC") {
 							if (kpi.id == null) {
-								url = '/service/createNumericKpi';
+								url = '/service/kpi/createNumericKpi';
 							} else {
-								url = '/service/updateNumericKpi';
+								url = '/service/kpi/updateNumericKpi';
 								message.success = "updated";
 								message.error = "update";
 								isCreate = false;
@@ -110,7 +106,7 @@ kpisControllers
 														.show({
 															title : 'Information',
 															message : 'Key Performance Indicator '
-																	+ data.name
+																	+ kpi.name
 																	+ " "
 																	+ message.success
 														});
@@ -125,8 +121,8 @@ kpisControllers
 														.show({
 															title : 'Error',
 															message : 'Key Performance Indicator ('
-																	+ +data.name
-																	+ " "
+																	+ kpi.name
+																	+ ") "
 																	+ message.error
 																	+ " error"
 																	+ '\n\n'
@@ -139,11 +135,11 @@ kpisControllers
 						} else {
 							// MANUAL_APPLICATION_ENUM
 							if (kpi.id == null) {
-								url = '/service/createEnumKpi';
+								url = '/service/kpi/createEnumKpi';
 							} else {
-								url = '/service/updateEnumKpi';
+								url = '/service/kpi/updateEnumKpi';
 								message.success = "updated";
-								message.error = "update"
+								message.error = "update";
 							}
 							return $http
 									.post('/service/createEnumKpi', data)
@@ -169,8 +165,8 @@ kpisControllers
 														.show({
 															title : 'Error',
 															message : 'Key Performance Indicator ('
-																	+ +kpi.name
-																	+ " "
+																	+ kpi.name
+																	+ ") "
 																	+ message.error
 																	+ " error"
 																	+ '\n\n'
@@ -221,14 +217,14 @@ kpisControllers
 						}
 						// Now try to physically remove the kpi in database
 						if (toRemove.id != null) {
-							$scope.removeKpiOnServer(toRemove,newIndex);
+							$scope.removeKpiOnServer(toRemove, newIndex);
 						} else {
 							$scope.kpis.splice(newIndex, 1);
 						}
 					};
 
-					$scope.removeKpiOnServer = function(kpi,newIndex) {
-						$http.post('/service/deleteKpi', kpi.id).success(
+					$scope.removeKpiOnServer = function(kpi, newIndex) {
+						$http.post('/service/kpi/deleteKpi', kpi.id).success(
 								function(response) {
 
 									BootstrapDialog.show({
@@ -258,8 +254,8 @@ kpisControllers
 						if (literal.id == null) {
 							// Create
 							return $http.post(
-									'/service/addLiteral/' + editedEnumKpi.id,
-									data).success(
+									'/service/kpi/addLiteral/'
+											+ editedEnumKpi.id, data).success(
 									function(response) {
 
 										BootstrapDialog.show({
@@ -273,7 +269,7 @@ kpisControllers
 										BootstrapDialog.show({
 											title : 'Error',
 											message : 'Literal (' + data.name
-													+ " cannot be created"
+													+ ") cannot be created"
 													+ " error" + '\n\n'
 													+ 'Reason : '
 													+ data.message
@@ -282,72 +278,92 @@ kpisControllers
 									});
 						} else {
 							// Update
-							return $http
-									.post('/service/updateLiteral', data)
-									.success(
-											function(response) {
+							return $http.post('/service/kpi/updateLiteral',
+									data).success(
+									function(response) {
 
-												BootstrapDialog.show({
-													title : 'Information',
-													message : 'Literal '
-															+ data.name
-															+ " updated"
-												});
-											})
-									.error(
-											function(data, status, headers,
-													config) {
-												BootstrapDialog
-														.show({
-															title : 'Error',
-															message : 'Literal ('
-																	+ +literal.name
-																	+ " cannot be updated"
-																	+ " error"
-																	+ '\n\n'
-																	+ 'Reason : '
-																	+ data.message
-														});
+										BootstrapDialog.show({
+											title : 'Information',
+											message : 'Literal ' + data.name
+													+ " updated"
+										});
+									}).error(
+									function(data, status, headers, config) {
+										BootstrapDialog.show({
+											title : 'Error',
+											message : 'Literal (' + +data.name
+													+ ") cannot be updated"
+													+ " error" + '\n\n'
+													+ 'Reason : '
+													+ data.message
+										});
 
-											});
+									});
 						}
 					};
 
 					$scope.removeEnumLiteral = function(index) {
 						if ($scope.editedEnumKpi.literals[index].id != null) {
-							$http
-									.post(
-											'/service/deleteLiteral',
-											$scope.editedEnumKpi.literals[index].id)
-									.success(
-											function(response) {
 
-												BootstrapDialog
-														.show({
-															title : 'Information',
-															message : 'Literal '
-																	+ $scope.editedEnumKpi.literals[index].name
-																	+ " updated"
-														});
-												$scope.editedEnumKpi.literals
-														.splice(index, 1);
-											})
-									.error(
-											function(data, status, headers,
-													config) {
-												BootstrapDialog
-														.show({
-															title : 'Error',
-															message : 'Literal ('
-																	+ +$scope.editedEnumKpi.literals[index].name
-																	+ " cannot be updated"
-																	+ " error"
-																	+ '\n\n'
-																	+ 'Reason : '
-																	+ data.message
-														});
+							BootstrapDialog
+									.show({
+										size : BootstrapDialog.SIZE_NORMAL,
+										title : 'Confirm',
+										message : 'Please confirm literal suppress',
+										buttons : [
+												{
+													label : 'Close',
+													action : function(dialog) {
+														dialog.close();
+													}
+												},
+												{
+													label : 'Delete',
+													action : function(dialog) {
+														$http
+																.post(
+																		'/service/kpi/deleteLiteral',
+																		$scope.editedEnumKpi.literals[index].id)
+																.success(
+																		function(
+																				response) {
 
-											});
+																			BootstrapDialog
+																					.show({
+																						title : 'Information',
+																						message : 'Literal '
+																								+ $scope.editedEnumKpi.literals[index].name
+																								+ " updated"
+																					});
+																			$scope.editedEnumKpi.literals
+																					.splice(
+																							index,
+																							1);
+																		})
+																.error(
+																		function(
+																				data,
+																				status,
+																				headers,
+																				config) {
+																			BootstrapDialog
+																					.show({
+																						title : 'Error',
+																						message : 'Literal ('
+																								+ +$scope.editedEnumKpi.literals[index].name
+																								+ " cannot be updated"
+																								+ " error"
+																								+ '\n\n'
+																								+ 'Reason : '
+																								+ data.message
+																					});
+
+																		});
+														dialog.close();
+													}
+												} ]
+									});
+
 						} else {
 							// Only remove in the ui list
 							$scope.editedEnumKpi.literals.splice(index, 1);
@@ -377,7 +393,8 @@ kpisControllers.filter('manual_application_kpi_filter', function() {
 	return function(kpis) {
 		var filtered = [];
 		angular.forEach(kpis, function(kpi) {
-			if (kpi.kind == "MANUAL_APPLICATION_ENUM" || kpi.kind == "MANUAL_APPLICATION_NUMERIC") {
+			if (kpi.kind == "MANUAL_APPLICATION_ENUM"
+					|| kpi.kind == "MANUAL_APPLICATION_NUMERIC") {
 				filtered.push(kpi);
 			}
 		});

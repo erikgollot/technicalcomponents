@@ -13,7 +13,7 @@
 				<form role="form" ng-if="hasImages">
 					<div class="radio" ng-repeat="img in galleryImages" >
 						<label><input type="radio" name="radio_{{img.fileId}}" ng-click="selectedLogo(img.fileId)"></label><img height="32" width="32"
-								ng-src="/service/file/{{img.fileId}}" />{{img.name}}
+								ng-src="/service/storage/file/{{img.fileId}}" />{{img.name}}
 					</div>
 				</form>				
 			</div>

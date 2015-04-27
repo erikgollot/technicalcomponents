@@ -3,7 +3,7 @@ var storageControllers = angular.module('storageControllers', []);
 storageControllers.controller('storageController', function($scope, $http,
 		$upload) {
 	$scope.loadStorages = function() {
-		$http.get("/service/storages").success(
+		$http.get("/service/storage/storages").success(
 				function(response) {
 					$scope.storages = response;
 					for (i = 0; i < $scope.storages.length; i++) {
@@ -37,7 +37,7 @@ storageControllers.controller('storageController', function($scope, $http,
 		}
 		// Now try to store the new storage
 		// $http.post(
-		// "/service/createNewStore/",newStorage)
+		// "/service/storage/createNewStore/",newStorage)
 		// .success(function(response) {
 		// console.log("storage created");
 		// BootstrapDialog.show({
@@ -55,7 +55,7 @@ storageControllers.controller('storageController', function($scope, $http,
 		// });
 
 		$http({
-			url : '/service/createNewStore/',
+			url : '/service/storage/createNewStore/',
 			method : 'POST',
 			params : {
 				store : newStorage
@@ -79,7 +79,7 @@ storageControllers.controller('storageController', function($scope, $http,
 	}
 
 	$scope.deleteStorage = function(storage) {
-		$http.post("/service/deleteStorage/" + storage.id).success(
+		$http.post("/service/storage/deleteStorage/" + storage.id).success(
 				function(response) {
 					BootstrapDialog.show({
 						title : 'Information',

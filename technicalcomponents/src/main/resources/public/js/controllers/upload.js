@@ -38,7 +38,7 @@ uploadControllers.controller('uploadCtrl', [ '$scope', 'fileUpload',
 			$scope.uploadFile = function() {
 				var file = $scope.myFile;
 				console.log('file is ' + JSON.stringify(file));
-				var uploadUrl = "/service/storeFile";
+				var uploadUrl = "/service/storage/storeFile";
 				fileUpload.uploadFileToUrl(uploadUrl, file);
 			};
 		} ]);

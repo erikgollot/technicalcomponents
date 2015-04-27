@@ -50,5 +50,16 @@ public class ManualNumericKpi extends AbstractKpi {
 		// Nothing todo for numeric value
 		return value;
 	}
-	
+
+	@Override
+	public boolean acceptValue(float value) {
+		if (getMinValue() != null && value < getMinValue()) {
+			return false;
+		}
+		if (getMaxValue() != null && value > getMaxValue()) {
+			return false;
+		}
+		return true;
+	}
+
 }

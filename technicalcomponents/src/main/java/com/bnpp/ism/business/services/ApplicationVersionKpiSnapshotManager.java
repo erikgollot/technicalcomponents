@@ -174,6 +174,9 @@ public class ApplicationVersionKpiSnapshotManager implements
 		ApplicationVersionKpiSnapshot snapshot = applicationVersionKpiSnapshotDao
 				.findOne(snapshotId);
 		if (snapshot != null) {
+
+			checkUserHasAlreadyAMeasurement(snapshot, userId);
+
 			ManualUserMeasurement measurement = new ManualUserMeasurement();
 			measurement.setCreationDate(new Date());
 			measurement.setWho(userDao.findOne(userId));
@@ -199,6 +202,19 @@ public class ApplicationVersionKpiSnapshotManager implements
 		}
 	}
 
+	private void checkUserHasAlreadyAMeasurement(
+			ApplicationVersionKpiSnapshot snapshot, Long userId) {
+		if (snapshot.getManualMeasurements() != null) {
+			for (ManualUserMeasurement m : snapshot.getManualMeasurements()) {
+				if (m.getWho().getId() == userId) {
+					throw new RuntimeException("This user ["
+							+ m.getWho().getName()
+							+ "] has already done a measurement");
+				}
+			}
+		}
+	}
+
 	@Transactional
 	@Override
 	public ManualUserMeasurementView updateMeasurement(
@@ -214,8 +230,12 @@ public class ApplicationVersionKpiSnapshotManager implements
 					KpiValueView newVal = findValue(v.getId(),
 							measurement.getValues());
 					if (newVal != null) {
-						// Should not be null
-						v.setValue(newVal.getValue());
+						if (v.getKpi().acceptValue(newVal.getValue())) {
+							v.setValue(newVal.getValue());
+						} else {
+							throw new RuntimeException("Value "
+									+ newVal.getValue() + " not accepted");
+						}
 					}
 				}
 			}

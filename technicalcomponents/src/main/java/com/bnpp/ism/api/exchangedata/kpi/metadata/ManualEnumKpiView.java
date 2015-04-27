@@ -2,12 +2,9 @@ package com.bnpp.ism.api.exchangedata.kpi.metadata;
 
 import java.util.List;
 
-import com.bnpp.ism.entity.kpi.metadata.KpiKindEnum;
-
 public class ManualEnumKpiView extends AbstractKpiView {
-	String clazz = "com.bnpp.ism.api.exchangedata.kpi.metadata.ManualEnumKpiView";
+
 	List<KpiEnumLiteralView> literals;
-	
 
 	public List<KpiEnumLiteralView> getLiterals() {
 		return literals;
@@ -24,16 +21,9 @@ public class ManualEnumKpiView extends AbstractKpiView {
 			}
 		}
 		return enumLiteral;
-	}	
-
-	public String getClazz() {
-		return clazz;
 	}
 
-	public void setClazz(String clazz) {
-		this.clazz = clazz;
-	}
-
+	
 
 	public void setLiterals(List<KpiEnumLiteralView> literals) {
 		this.literals = literals;

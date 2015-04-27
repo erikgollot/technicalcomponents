@@ -16,7 +16,7 @@ public class UserController {
 	@Autowired
 	private IUserManager service;
 
-	@RequestMapping(value = "/service/allUsers", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/user/allUsers", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
 	List<UserView> getAllUsers() {
 		return service.getAllUsers();

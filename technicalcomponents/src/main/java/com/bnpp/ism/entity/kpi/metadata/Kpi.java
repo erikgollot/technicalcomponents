@@ -9,6 +9,8 @@ public interface Kpi {
 	String getDescription();
 
 	KpiKindEnum getKind();
+	
+	boolean acceptValue(float value);
 
 	float adjustValue(float value);
 }

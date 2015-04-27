@@ -1,8 +1,5 @@
 package com.bnpp.ism.business.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.dozer.Mapper;
@@ -10,16 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bnpp.ism.api.IKpiManager;
+import com.bnpp.ism.api.exchangedata.kpi.metadata.AbstractKpiListView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.AbstractKpiView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.KpiEnumLiteralView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.ManualEnumKpiView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.ManualNumericKpiView;
 import com.bnpp.ism.dao.kpi.metadata.AbstractKpiDao;
 import com.bnpp.ism.dao.kpi.metadata.KpiEnumLiteralDao;
+import com.bnpp.ism.dao.kpi.value.KpiValueDao;
 import com.bnpp.ism.entity.kpi.metadata.AbstractKpi;
 import com.bnpp.ism.entity.kpi.metadata.KpiEnumLiteral;
 import com.bnpp.ism.entity.kpi.metadata.ManualEnumKpi;
 import com.bnpp.ism.entity.kpi.metadata.ManualNumericKpi;
+import com.bnpp.ism.entity.kpi.value.KpiValue;
 
 @Service
 public class KpiManager implements IKpiManager {
@@ -27,21 +27,22 @@ public class KpiManager implements IKpiManager {
 	AbstractKpiDao kpiDao;
 	@Autowired
 	KpiEnumLiteralDao kpiEnumLiteralDao;
-
+	@Autowired
+	KpiValueDao kpiValueDao;
 	@Autowired
 	Mapper dozerBeanMapper;
 
 	@Transactional
 	@Override
-	public List<AbstractKpiView> loadAllKpiDefinitions() {
-		List<AbstractKpiView> kpis = new ArrayList<AbstractKpiView>();
+	public AbstractKpiListView loadAllKpiDefinitions() {
+		AbstractKpiListView kpis = new AbstractKpiListView();
 		Iterable<AbstractKpi> alls = kpiDao.findAll();
 		if (alls != null) {
 			for (AbstractKpi kpi : alls) {
-				kpis.add(dozerBeanMapper.map(kpi, AbstractKpiView.class));
+				kpis.addKpi(dozerBeanMapper.map(kpi, AbstractKpiView.class));
 			}
 		}
-		return (kpis.size() > 0 ? kpis : null);
+		return (kpis.getKpis()!=null ? kpis : null);
 	}
 
 	@Transactional
@@ -77,8 +78,22 @@ public class KpiManager implements IKpiManager {
 		KpiEnumLiteral entity = kpiEnumLiteralDao.findOne(literalId);
 		if (entity != null) {
 			ManualEnumKpi en = ((ManualEnumKpi) entity.getEnumKpi());
+
+			// Check if literal is not used
+			checkLiteralNotUsed(en, entity.getValue(), entity.getName());
+
 			en.removeLiteral(entity);
 			kpiDao.save(en);
+		}
+	}
+
+	private void checkLiteralNotUsed(ManualEnumKpi en, float value,
+			String literalName) {
+		Iterable<KpiValue> values = kpiValueDao.findValuesUsingKpi(en.getId(),
+				value);
+		if (values != null && values.iterator().hasNext()) {
+			throw new RuntimeException("Literal " + literalName
+					+ " is used for measurements");
 		}
 	}
 
@@ -89,8 +104,35 @@ public class KpiManager implements IKpiManager {
 		// Name can be changed
 		KpiEnumLiteral entity = kpiEnumLiteralDao.findOne(literal.getId());
 		if (entity != null) {
+			ManualEnumKpi en = ((ManualEnumKpi) entity.getEnumKpi());
+			// If value is not the same and value is already used, no update
+			if (literal.getValue() != entity.getValue()) {
+
+				checkLiteralNotUsed(en, entity.getValue(), entity.getName());
+			}
+
+			checkValueAndLiteralNameNotAlreadyExist(en, literal);
+
 			dozerBeanMapper.map(literal, entity);
 			kpiEnumLiteralDao.save(entity);
+		}
+	}
+
+	private void checkValueAndLiteralNameNotAlreadyExist(ManualEnumKpi en,
+			KpiEnumLiteralView literal) {
+		for (KpiEnumLiteral eLiteral : en.getLiterals()) {
+			// We do not test with itself
+			if (literal.getId() != eLiteral.getId()
+					&& eLiteral.getName().equals(literal.getName())) {
+				throw new RuntimeException("The literal " + eLiteral.getName()
+						+ " already exists");
+			}
+			if (literal.getId() != eLiteral.getId()
+					&& eLiteral.getValue() == literal.getValue()) {
+				throw new RuntimeException("The literal " + eLiteral.getName()
+						+ " with value " + eLiteral.getValue()
+						+ " already exists");
+			}
 		}
 	}
 
@@ -99,6 +141,9 @@ public class KpiManager implements IKpiManager {
 	public KpiEnumLiteralView addLiteral(Long idKpi, KpiEnumLiteralView literal) {
 		ManualEnumKpi entity = (ManualEnumKpi) kpiDao.findOne(idKpi);
 		if (entity != null) {
+
+			checkValueAndLiteralNameNotAlreadyExist(entity, literal);
+
 			KpiEnumLiteral l = dozerBeanMapper.map(literal,
 					KpiEnumLiteral.class);
 			entity.addLiteral(l);
@@ -127,7 +172,39 @@ public class KpiManager implements IKpiManager {
 				.findOne(kpi.getId());
 		if (entity != null) {
 			copyAbstractKpiInfo(kpi, entity);
+			checkMinMax(entity, kpi.getMinValue(), kpi.getMaxValue());
+			entity.setMinValue(kpi.getMinValue());
+			entity.setMaxValue(kpi.getMaxValue());
 			kpiDao.save(entity);
+		}
+	}
+
+	/**
+	 * No update if exist value in measurement < minValue or exist value in
+	 * measurements > maxValue If minValue == null and before it was not null,
+	 * no problem If maxValue == null and before it was not null, no problem
+	 * 
+	 * @param entity
+	 * @param minValue
+	 * @param maxValue
+	 */
+	private void checkMinMax(ManualNumericKpi entity, Float minValue,
+			Float maxValue) {
+		if (minValue != null) {
+			Iterable<KpiValue> values = kpiValueDao.findValuesLessThan(
+					entity.getId(), minValue);
+			if (values != null && values.iterator().hasNext()) {
+				throw new RuntimeException("There are smaller values than "
+						+ minValue + " in measurements");
+			}
+		}
+		if (maxValue != null) {
+			Iterable<KpiValue> values = kpiValueDao.findValuesGreaterThan(
+					entity.getId(), maxValue);
+			if (values != null && values.iterator().hasNext()) {
+				throw new RuntimeException("There are greater values than "
+						+ maxValue + " in measurements");
+			}
 		}
 	}
 

@@ -23,7 +23,7 @@ public class FileStorageController {
 	@Autowired
 	IDefaultStorageSetManager storageManager;
 
-	@RequestMapping(value = "/service/storeFile", method = RequestMethod.POST)
+	@RequestMapping(value = "/service/storage/storeFile", method = RequestMethod.POST)
 	public @ResponseBody
 	String uploadFile(@RequestParam("file") MultipartFile file) {
 
@@ -45,7 +45,7 @@ public class FileStorageController {
 		return generatedFileId;
 	}
 
-	@RequestMapping(value = "/service/file/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/service/storage/file/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public byte[] getFile(@PathVariable String id) {
 
@@ -57,19 +57,19 @@ public class FileStorageController {
 			return null;
 	}
 
-	@RequestMapping(value = "/service/storages", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/storage/storages", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
 	List<StorageView> getStorages() {
 		return storageManager.getStorages();
 	}
 
-	@RequestMapping(value = "/service/createNewStore", method = RequestMethod.POST, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/storage/createNewStore", method = RequestMethod.POST, headers = "Accept=application/json")
 	public @ResponseBody
 	StorageView createNewStore(@RequestParam("store") StorageView s) {
 		return storageManager.createNewStorage(s);
 	}
 
-	@RequestMapping(value = "/service/deleteStorage/{idStorage}", method = RequestMethod.POST, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/storage/deleteStorage/{idStorage}", method = RequestMethod.POST, headers = "Accept=application/json")
 	public @ResponseBody
 	void deleteStorage(@PathVariable("idStorage") Long idStorage) {
 		storageManager.deleteStorage(idStorage);

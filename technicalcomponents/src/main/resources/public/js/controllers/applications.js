@@ -15,47 +15,20 @@ applicationsControllers
 					// l'integration
 					$scope.loadApps = function() {
 						$scope.applications = [];
-						$http.get("/service/applications").success(
+						$http.get("/service/application/applications").success(
 								function(response) {
 									$scope.applications = response;
-									$scope.buildTree($scope.applications);
+									buildTree($scope,$scope.applications);
 								});
 					}
-					$scope.applicationsTree = [];
-					$scope.buildTree = function(apps) {
-						$scope.applicationsTree = [];
-						if (apps != null) {
-							for (i = 0; i < apps.length; i++) {
-								var node = {};
-								var app = apps[i];
-								node.label = app.name;
-								node.obj = app;
-								node.type = "APPLICATION";
-								$scope.applicationsTree.push(node);
-								if (app.versions != null
-										&& app.versions.length > 0) {
-									node.children = [];
-									for (j = 0; j < app.versions.length; j++) {
-										var nodeChild = {};
-										nodeChild.label = app.versions[j].name;
-										nodeChild.type = "APPLICATION_VERSION";
-										nodeChild.isAppVersion = true;
-										nodeChild.obj = app.versions[j];
-										node.children.push(nodeChild);
-									}
-								}
-							}
-						}
-					}
-
+					$scope.applicationsTree = [];					
 					$scope.searchComponents = null;
 					$scope.searchComponentsFromFullPathNameExpression = "";
 					$scope.searchComponentsFromFullPathName = function(
 							searchComponentsFromFullPathNameExpression) {
-						console.log(searchComponentsFromFullPathNameExpression);
 						$http(
 								{
-									url : "/service/searchComponentsFromFullPathName",
+									url : "/service/component/searchComponentsFromFullPathName",
 									method : "GET",
 									params : {
 										regexp : searchComponentsFromFullPathNameExpression
@@ -78,34 +51,16 @@ applicationsControllers
 							$scope.selectedApplicationVersion = application;
 							$scope.selectedApplication = null;
 							$scope.builtOn = [];
-							$scope.initializeBuiltOn(application);
+							initializeBuiltOn($scope,application);
 							$scope.canRunOn = [];
-							$scope.initializeCanRunOn(application);
-							$scope.loadExistingSnapshots();
+							initializeCanRunOn($scope,application);
+							loadExistingSnapshots($scope,$http);
 						} else if (node.type == "APPLICATION") {
 							$scope.selectedApplication = node.obj;
 							$scope.selectedApplicationVersion = null;
 						}
 						$scope.currentSnapshot = null;
-					}
-					$scope.initializeBuiltOn = function(application) {
-						if (application.builtOn != null
-								&& application.builtOn.components != null) {
-							for (i = 0; i < application.builtOn.components.length; i++) {
-								var c = application.builtOn.components[i];
-								$scope.builtOn.push(c);
-							}
-						}
-					}
-					$scope.initializeCanRunOn = function(application) {
-						if (application.canRunOn != null
-								&& application.canRunOn.components != null) {
-							for (i = 0; i < application.canRunOn.components.length; i++) {
-								var c = application.canRunOn.components[i];
-								$scope.canRunOn.push(c);
-							}
-						}
-					}
+					}					
 
 					$scope.updateFullSelection = function() {
 						// Pop all members
@@ -247,7 +202,6 @@ applicationsControllers
 					}
 
 					$scope.saveComponentsOfApplication = function(application) {
-						console.log(application);
 						$http.post(
 								"/service/application/setTechnicalComponents",
 								application).success(function(response) {
@@ -267,7 +221,7 @@ applicationsControllers
 					$scope.hasSnapshot = false;
 					$scope.takeNewSnapshot = function() {
 						$http.get(
-								"/service/createSnapshot/"
+								"/service/application/createSnapshot/"
 										+ $scope.selectedApplicationVersion.id)
 								.success(function(response) {
 									if (response != null) {
@@ -285,28 +239,7 @@ applicationsControllers
 									});
 								});
 					}
-					$scope.loadExistingSnapshots = function() {
-						$scope.hasSnapshot = false;
-						$scope.currentSnapshots = null;
-						$http
-								.get(
-										"/service/getSnapshots/"
-												+ $scope.selectedApplicationVersion.id)
-								.success(
-										function(response) {
-											if (response != null
-													&& response.length > 0) {
-												$scope.currentSnapshots = response;
-												$scope.hasSnapshot = true;
-											}
-										})
-								.error(function(data, status, headers, config) {
-									BootstrapDialog.show({
-										title : 'Error',
-										message : data.message
-									});
-								});
-					}
+					
 
 					$scope.showSnapshotMeasurements = function(snapshot) {
 						$scope.currentSnapshot = snapshot;
@@ -323,7 +256,7 @@ applicationsControllers
 							// TODO check if not already exist
 
 							$http({
-								url : "/service/createMeasurement",
+								url : "/service/application/createMeasurement",
 								method : "POST",
 								params : {
 									snapshotId : snapshot.id,
@@ -377,7 +310,7 @@ applicationsControllers
 					$scope.allUsers = null;
 					$scope.selectUserForNewMeasurementAndGo = function() {
 						$scope.allUsers = $http
-								.get("/service/allUsers")
+								.get("/service/application/allUsers")
 								.success(
 										function(all) {
 											$scope.allUsers = all;
@@ -442,7 +375,7 @@ applicationsControllers
 							return "ERROR";
 						}
 						$http
-								.post("/service/updateMeasurement", measurement)
+								.post("/service/application/updateMeasurement", measurement)
 								.success(
 										function(response) {
 											if (response != null
@@ -507,7 +440,7 @@ applicationsControllers
 						theDate = $scope.convertDate(data.forDate);
 
 						// We cannot create 2 snapshots for the same date
-						if ($scope.existSnapshotWithSameDate(snapshot, theDate)) {
+						if (existSnapshotWithSameDate($scope,snapshot, theDate)) {
 							BootstrapDialog
 									.show({
 										title : 'Error',
@@ -523,7 +456,7 @@ applicationsControllers
 							frozenVal = true;
 						}
 						$http({
-							url : "/service/updateSnapshot",
+							url : "/service/application/updateSnapshot",
 							method : "POST",
 							params : {
 								snapshotId : snapshot.id,
@@ -549,25 +482,7 @@ applicationsControllers
 										});
 					}
 
-					$scope.existSnapshotWithSameDate = function(snapshot,
-							theDate) {
-						for (i = 0; i < $scope.currentSnapshots.length; i++) {
-							var otherSnapshot = $scope.currentSnapshots[i];
-							if (otherSnapshot != snapshot) {
-								var otherDate = Date
-										.parse(otherSnapshot.forDate);
-								var toCompare = Date.parse(theDate);
-								if (otherDate.getFullYear() == toCompare
-										.getFullYear()
-										&& otherDate.getDate() == toCompare
-												.getDate()
-										&& otherDate.getMonth() == toCompare
-												.getMonth())
-									return true;
-							}
-						}
-						return false;
-					}
+					
 
 					$scope.deleteSnapshot = function(idx) {
 						snapshot = $scope.currentSnapshots[idx];
@@ -591,7 +506,7 @@ applicationsControllers
 					}
 					$scope.deleteSnapshotOnServer = function(snapshot) {
 						$http
-								.post("/service/deleteSnapshot/" + snapshot.id)
+								.post("/service/application/deleteSnapshot/" + snapshot.id)
 								.success(
 										function(response) {
 											$scope.currentSnapshots = $scope.currentSnapshots
@@ -637,7 +552,7 @@ applicationsControllers
 					$scope.deleteMeasurementOnServer = function(measurementId) {
 						$http
 								.post(
-										"/service/deleteMeasurement/"
+										"/service/application/deleteMeasurement/"
 												+ measurementId)
 								.success(
 										function(response) {
@@ -689,7 +604,7 @@ applicationsControllers
 
 						$http
 								.get(
-										"/service/computeAutomaticApplicationKpis/"
+										"/service/application/computeAutomaticApplicationKpis/"
 												+ snapshot.id)
 								.success(
 										function(kpis) {
@@ -793,7 +708,7 @@ applicationsControllers
 					$scope.buildKpiHistoryDashboard = function() {
 						$http
 								.get(
-										"/service/getApplicationDashboard/"
+										"/service/application/getApplicationDashboard/"
 												+ $scope.selectedApplication.id)
 								.success(
 										function(dashboard) {
@@ -973,3 +888,94 @@ applicationsControllers
 					// Init
 					$scope.loadApps();
 				});
+
+
+function buildTree($scope,apps) {
+	$scope.applicationsTree = [];
+	if (apps != null) {
+		for (i = 0; i < apps.length; i++) {
+			var node = {};
+			var app = apps[i];
+			node.label = app.name;
+			node.obj = app;
+			node.type = "APPLICATION";
+			$scope.applicationsTree.push(node);
+			if (app.versions != null
+					&& app.versions.length > 0) {
+				node.children = [];
+				for (j = 0; j < app.versions.length; j++) {
+					var nodeChild = {};
+					nodeChild.label = app.versions[j].name;
+					nodeChild.type = "APPLICATION_VERSION";
+					nodeChild.isAppVersion = true;
+					nodeChild.obj = app.versions[j];
+					node.children.push(nodeChild);
+				}
+			}
+		}
+	}
+}
+
+function initializeBuiltOn($scope,application) {
+	if (application.builtOn != null
+			&& application.builtOn.components != null) {
+		for (i = 0; i < application.builtOn.components.length; i++) {
+			var c = application.builtOn.components[i];
+			$scope.builtOn.push(c);
+		}
+	}
+}
+
+function initializeCanRunOn($scope,application) {
+	if (application.canRunOn != null
+			&& application.canRunOn.components != null) {
+		for (i = 0; i < application.canRunOn.components.length; i++) {
+			var c = application.canRunOn.components[i];
+			$scope.canRunOn.push(c);
+		}
+	}
+}
+
+
+function loadExistingSnapshots($scope,$http) {
+	$scope.hasSnapshot = false;
+	$scope.currentSnapshots = null;
+	$http
+			.get(
+					"/service/application/getSnapshots/"
+							+ $scope.selectedApplicationVersion.id)
+			.success(
+					function(response) {
+						if (response != null
+								&& response.length > 0) {
+							$scope.currentSnapshots = response;
+							$scope.hasSnapshot = true;
+						}
+					})
+			.error(function(data, status, headers, config) {
+				BootstrapDialog.show({
+					title : 'Error',
+					message : data.message
+				});
+			});
+}
+
+function existSnapshotWithSameDate($scope,snapshot,
+		theDate) {
+	for (i = 0; i < $scope.currentSnapshots.length; i++) {
+		var otherSnapshot = $scope.currentSnapshots[i];
+		if (otherSnapshot != snapshot) {
+			var otherDate = Date
+					.parse(otherSnapshot.forDate);
+			var toCompare = Date.parse(theDate);
+			if (otherDate.getFullYear() == toCompare
+					.getFullYear()
+					&& otherDate.getDate() == toCompare
+							.getDate()
+					&& otherDate.getMonth() == toCompare
+							.getMonth())
+				return true;
+		}
+	}
+	return false;
+}

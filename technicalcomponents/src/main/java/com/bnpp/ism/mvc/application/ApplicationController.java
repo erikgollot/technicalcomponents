@@ -30,7 +30,7 @@ public class ApplicationController {
 	@Autowired
 	IApplicationVersionKpiSnapshotManager snapshotService;
 
-	@RequestMapping(value = "/service/applications", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/application/applications", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
 	List<ApplicationView> getApplications() {
 		return appService.getApplications();
@@ -43,7 +43,7 @@ public class ApplicationController {
 		appService.setTechnicalComponents(applicationVersion);
 	}
 
-	@RequestMapping(value = "/service/createSnapshot/{applicationVersionId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/application/createSnapshot/{applicationVersionId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
 	ApplicationVersionKpiSnapshotView createSnapshot(
 			@PathVariable("applicationVersionId") Long applicationVersionId) {
@@ -51,7 +51,7 @@ public class ApplicationController {
 
 	}
 
-	@RequestMapping(value = "/service/updateSnapshot", method = RequestMethod.POST, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/application/updateSnapshot", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ApplicationVersionKpiSnapshotView updateSnapshot(
 			@RequestParam("snapshotId") Long snapshotId,
 			@RequestParam("frozen") boolean frozen,
@@ -68,7 +68,7 @@ public class ApplicationController {
 
 	}
 
-	@RequestMapping(value = "/service/getSnapshots/{applicationVersionId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/application/getSnapshots/{applicationVersionId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
 	List<ApplicationVersionKpiSnapshotView> getSnapshots(
 			@PathVariable("applicationVersionId") Long applicationVersionId) {
@@ -76,34 +76,34 @@ public class ApplicationController {
 
 	}
 
-	@RequestMapping(value = "/service/createMeasurement", method = RequestMethod.POST, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/application/createMeasurement", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ManualUserMeasurementView createMeasurement(
 			@RequestParam("snapshotId") Long snapshotId,
 			@RequestParam("userId") Long userId) {
 		return snapshotService.createMeasurement(snapshotId, userId);
 	}
 
-	@RequestMapping(value = "/service/updateMeasurement", method = RequestMethod.POST, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/application/updateMeasurement", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ManualUserMeasurementView updateMeasurement(
 			@RequestBody ManualUserMeasurementView measurement) {
 		return snapshotService.updateMeasurement(measurement);
 	}
 
-	@RequestMapping(value = "/service/deleteSnapshot/{snapshotId}", method = RequestMethod.POST, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/application/deleteSnapshot/{snapshotId}", method = RequestMethod.POST, headers = "Accept=application/json")
 	public @ResponseBody
 	void deleteSnapshot(@PathVariable("snapshotId") Long snapshotId) {
 		snapshotService.deleteSnapshot(snapshotId);
 
 	}
 
-	@RequestMapping(value = "/service/deleteMeasurement/{measurementId}", method = RequestMethod.POST, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/application/deleteMeasurement/{measurementId}", method = RequestMethod.POST, headers = "Accept=application/json")
 	public @ResponseBody
 	void deleteMeasurement(@PathVariable("measurementId") Long measurementId) {
 		snapshotService.deleteMeasurement(measurementId);
 
 	}
 
-	@RequestMapping(value = "/service/computeAutomaticApplicationKpis/{snapshotId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/application/computeAutomaticApplicationKpis/{snapshotId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
 	List<KpiValueView> computeAutomaticApplicationKpis(
 			@PathVariable("snapshotId") Long snapshotId) {
@@ -111,7 +111,7 @@ public class ApplicationController {
 
 	}
 
-	@RequestMapping(value = "/service/getApplicationDashboard/{applicationId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/service/application/getApplicationDashboard/{applicationId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody
 	ApplicationKpiDashboard getApplicationDashboard(
 			@PathVariable("applicationId") Long applicationId) {

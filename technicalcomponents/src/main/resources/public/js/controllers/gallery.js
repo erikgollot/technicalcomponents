@@ -5,7 +5,7 @@ galleryControllers.controller('galleryController', function($scope, $http,
 		$upload) {
 
 	$scope.isGalleryAvailable = false;
-	$http.get("/componentGallery/canStoreImage").success(function(response) {
+	$http.get("/service/component/componentGallery/canStoreImage").success(function(response) {
 		$scope.isGalleryAvailable = response;
 	});
 
@@ -16,7 +16,7 @@ galleryControllers.controller('galleryController', function($scope, $http,
 	$scope.hasImages = false;
 
 	$scope.refreshGallery = function() {
-		$http.get("/componentGallery/all").success(function(response) {
+		$http.get("/service/component/componentGallery/all").success(function(response) {
 			$scope.galleryImages = response;
 			if ($scope.galleryImages.length > 0)
 				$scope.hasImages = true;
@@ -41,7 +41,7 @@ galleryControllers.controller('galleryController', function($scope, $http,
 					{
 						label : 'Delete',
 						action : function(dialog) {
-							$http.post("/componentGallery/removeImage/" + id)
+							$http.post("/service/component/componentGallery/removeImage/" + id)
 									.success(function(response) {
 										$scope.refreshGallery();
 									}).error(
@@ -65,7 +65,7 @@ galleryControllers.controller('galleryController', function($scope, $http,
 				var file = files[i];
 				console.log("file name " + file.name);
 				$upload.upload({
-					url : '/componentGallery/storeImage',
+					url : '/service/component/componentGallery/storeImage',
 					file : file
 				}).progress(
 						function(evt) {

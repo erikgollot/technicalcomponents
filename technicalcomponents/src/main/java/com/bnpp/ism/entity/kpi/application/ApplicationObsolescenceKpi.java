@@ -102,4 +102,9 @@ public class ApplicationObsolescenceKpi extends ApplicationVersionComputedKpi im
 		}
 	}
 
+	@Override
+	public boolean acceptValue(float value) {
+		return true;
+	}
+
 }

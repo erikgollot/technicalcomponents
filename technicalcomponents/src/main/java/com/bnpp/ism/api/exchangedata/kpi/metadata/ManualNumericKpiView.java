@@ -3,7 +3,7 @@ package com.bnpp.ism.api.exchangedata.kpi.metadata;
 import com.bnpp.ism.entity.kpi.metadata.KpiKindEnum;
 
 public class ManualNumericKpiView extends AbstractKpiView {
-	String clazz = "com.bnpp.ism.api.exchangedata.kpi.metadata.ManualNumericKpiView";
+	//String clazz = "com.bnpp.ism.api.exchangedata.kpi.metadata.ManualNumericKpiView";
 	Float minValue;
 
 	Float maxValue;
@@ -44,13 +44,7 @@ public class ManualNumericKpiView extends AbstractKpiView {
 	}
 	
 
-	public String getClazz() {
-		return clazz;
-	}
-
-	public void setClazz(String clazz) {
-		this.clazz = clazz;
-	}
+	
 
 	
 

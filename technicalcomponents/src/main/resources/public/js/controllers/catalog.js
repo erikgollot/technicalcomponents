@@ -24,7 +24,7 @@ techMain
 					// moment
 					$scope.loadCatalog = function() {
 						$http
-								.get("/service/catalogs")
+								.get("/service/component/catalogs")
 								.success(
 										function(response) {
 											$scope.catalogs = response;
@@ -64,7 +64,7 @@ techMain
 					$scope.hasImages = false;
 
 					$scope.refreshGallery = function() {
-						$http.get("/componentGallery/all").success(
+						$http.get("/service/component/componentGallery/all").success(
 								function(response) {
 									$scope.galleryImages = response;
 									if ($scope.galleryImages.length > 0)
@@ -86,7 +86,7 @@ techMain
 							category_id) {
 						$http
 								.get(
-										"/service/componentsOfCategory/"
+										"/service/component/componentsOfCategory/"
 												+ category_id)
 								.success(
 										function(response) {
@@ -110,7 +110,7 @@ techMain
 					$scope.changeCategoryName = function(newName) {
 						return $http(
 								{
-									url : "/service/changeCategoryName/"
+									url : "/service/component/changeCategoryName/"
 											+ $scope.selectedCategoryNode.category_id,
 									method : "POST",
 									params : {
@@ -174,7 +174,7 @@ techMain
 						if (newComp.id == null) {
 							$http
 									.post(
-											"/service/createComponent/"
+											"/service/component/createComponent/"
 													+ $scope.selectedCategoryNode.category_id,
 											newComp)
 									.success(
@@ -182,7 +182,7 @@ techMain
 												if (newComp.image != null) {
 													$http
 															.post(
-																	"/service/setImageComponent/"
+																	"/service/component/setImageComponent/"
 																			+ response.id
 																			+ "/"
 																			+ newComp.image.id)
@@ -220,13 +220,13 @@ techMain
 						} else {
 							// Update existing one
 							$http
-									.post("/service/updateComponent", newComp)
+									.post("/service/component/updateComponent", newComp)
 									.success(
 											function(response) {
 												if (newComp.image != null) {
 													$http
 															.post(
-																	"/service/setImageComponent/"
+																	"/service/component/setImageComponent/"
 																			+ newComp.id
 																			+ "/"
 																			+ newComp.image.id)
@@ -268,7 +268,7 @@ techMain
 
 					$scope.saved = false;
 					$scope.createCatalog = function(catalog) {
-						$http.post("/service/create", catalog).success(
+						$http.post("/service/component/create", catalog).success(
 								function(data, status, headers, config) {
 									$scope.saved = true;
 									$scope.reset();
@@ -355,7 +355,7 @@ techMain
 					$scope.searchWarningComponents = function() {
 						$http
 								.get(
-										"/service/searchTechnicalComponentsWithStatus/WARNING")
+										"/service/component/searchTechnicalComponentsWithStatus/WARNING")
 								.success(function(response) {
 									$scope.warningComponents = response;
 								});
@@ -364,7 +364,7 @@ techMain
 					$scope.searchHotComponents = function() {
 						$http
 								.get(
-										"/service/searchTechnicalComponentsWithStatus/HOT")
+										"/service/component/searchTechnicalComponentsWithStatus/HOT")
 								.success(function(response) {
 									$scope.hotComponents = response;
 								});
@@ -373,7 +373,7 @@ techMain
 					$scope.searchAvailableComponents = function() {
 						$http
 								.get(
-										"/service/searchTechnicalComponentsWithStatus/AVAILABLE")
+										"/service/component/searchTechnicalComponentsWithStatus/AVAILABLE")
 								.success(function(response) {
 									$scope.availableComponents = response;
 								});
@@ -412,7 +412,7 @@ techMain
 												action : function(dialog) {
 													$http
 															.post(
-																	"/service/deleteComponent/"
+																	"/service/component/deleteComponent/"
 																			+ component.id)
 															.success(
 																	function(
@@ -445,7 +445,7 @@ techMain
 						// added to selectedCategoryNode
 						$http
 								.post(
-										"/service/addCategory/"
+										"/service/component/addCategory/"
 												+ $scope.selectedCategoryNode.category_id,
 										catName)
 								.success(
@@ -514,7 +514,7 @@ techMain
 												action : function(dialog) {
 													$http
 															.post(
-																	"/service/deleteCategory/"
+																	"/service/component/deleteCategory/"
 																			+ $scope.selectedCategoryNode.category_id)
 															.success(
 																	function(

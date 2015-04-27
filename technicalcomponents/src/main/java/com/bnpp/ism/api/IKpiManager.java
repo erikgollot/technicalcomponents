@@ -1,16 +1,12 @@
 package com.bnpp.ism.api;
 
-import java.util.List;
-
-import com.bnpp.ism.api.exchangedata.kpi.metadata.AbstractKpiView;
+import com.bnpp.ism.api.exchangedata.kpi.metadata.AbstractKpiListView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.KpiEnumLiteralView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.ManualEnumKpiView;
 import com.bnpp.ism.api.exchangedata.kpi.metadata.ManualNumericKpiView;
-import com.bnpp.ism.api.exchangedata.kpi.value.ApplicationVersionKpiSnapshotView;
-import com.bnpp.ism.api.exchangedata.kpi.value.ManualUserMeasurementView;
 
 public interface IKpiManager {
-	List<AbstractKpiView> loadAllKpiDefinitions();
+	AbstractKpiListView loadAllKpiDefinitions();
 
 	ManualEnumKpiView createEnumKpi(ManualEnumKpiView kpi);
 
@@ -27,5 +23,5 @@ public interface IKpiManager {
 	ManualNumericKpiView createNumericKpi(ManualNumericKpiView kpi);
 
 	void updateNumericKpi(ManualNumericKpiView kpi);
-	
+
 }

@@ -44,6 +44,12 @@ public class ManualEnumKpi extends AbstractKpi implements KpiEnum {
 		}
 		return enumLiteral;
 	}
+	
+	@Override
+	public boolean acceptValue(float value) {
+		return getLiteralWithValue(value)!=null;		
+	}
+
 
 	public void addLiteral(KpiEnumLiteral l) {
 		if (getLiterals() == null) {
@@ -80,5 +86,6 @@ public class ManualEnumKpi extends AbstractKpi implements KpiEnum {
 		return enCurrent.getValue();
 	}
 
+	
 	
 }
