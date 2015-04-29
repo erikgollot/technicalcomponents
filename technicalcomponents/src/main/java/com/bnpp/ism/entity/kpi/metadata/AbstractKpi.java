@@ -16,7 +16,7 @@ import javax.persistence.Version;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "BASE_KPI_TYPE", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "BASE_KPI_TYPE", discriminatorType = DiscriminatorType.STRING, columnDefinition="VARCHAR(50)")
 public abstract class AbstractKpi implements Kpi, Comparable<AbstractKpi> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +42,7 @@ public abstract class AbstractKpi implements Kpi, Comparable<AbstractKpi> {
 	String shortName;
 	
 	@Lob
+	@Column(length=5000)
 	@Basic(fetch = FetchType.LAZY)
 	String description;
 

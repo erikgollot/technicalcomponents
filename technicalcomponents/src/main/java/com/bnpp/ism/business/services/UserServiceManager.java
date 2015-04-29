@@ -34,4 +34,22 @@ public class UserServiceManager implements IUserManager {
 		}
 		return ret.size() == 0 ? null : ret;
 	}
+
+	@Override
+	public List<UserView> findByNameExtended(String name) {
+		Iterable<User> all = userDao.findByName(name);
+		List<UserView> ret = new ArrayList<UserView>();
+		if (all != null) {
+			for (User u : all) {
+				ret.add(dozerBeanMapper.map(u, UserView.class));
+			}
+		}
+		return ret.size() == 0 ? null : ret;
+	}
+
+	@Override
+	public List<UserView> findApplicationAuthorizedUsers(Long applicationId) {
+		// TODO - for now getAllUsers
+		return getAllUsers();
+	}
 }

@@ -310,7 +310,7 @@ applicationsControllers
 					$scope.allUsers = null;
 					$scope.selectUserForNewMeasurementAndGo = function() {
 						$scope.allUsers = $http
-								.get("/service/application/allUsers")
+								.get("/service/application/findApplicationAuthorizedUsers/"+$scope.selectedApplication.id)
 								.success(
 										function(all) {
 											$scope.allUsers = all;
@@ -324,7 +324,7 @@ applicationsControllers
 											BootstrapDialog
 													.show({
 														title : 'Error',
-														message : 'Cannot retrieve all users\nReason is : '
+														message : 'Cannot retrieve users\nReason is : '
 																+ data.message
 													});
 										})
