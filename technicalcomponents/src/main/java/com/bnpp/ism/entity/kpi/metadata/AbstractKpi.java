@@ -14,14 +14,18 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
 import javax.persistence.Version;
 
+import com.bnpp.ism.diffmerge.stereotype.DiffMergeIgnore;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "BASE_KPI_TYPE", discriminatorType = DiscriminatorType.STRING, columnDefinition="VARCHAR(50)")
 public abstract class AbstractKpi implements Kpi, Comparable<AbstractKpi> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@DiffMergeIgnore
 	Long id;
 	@Version
+	@DiffMergeIgnore
 	Long version;
 
 	@Column(columnDefinition = "VARCHAR(32)")

@@ -1,4 +1,4 @@
-var techMain = angular.module('techMain', [ 'ui.tree', 'ui.bootstrap',
+var techMain = angular.module('techMain', [ 'ui.tree', 'ui.bootstrap', 
 		'angularBootstrapNavTree' ,'ngAnimate']);
 
 techMain
@@ -56,6 +56,7 @@ techMain
 						var treeNode = new Object();
 						treeNode.label = cat.name;
 						treeNode.onSelect = $scope.on_select_category;
+						treeNode.draggable = 'all';
 						treeNode.category_id = cat.id;
 						treeNode.isLeafCategory = true;
 						return treeNode;
