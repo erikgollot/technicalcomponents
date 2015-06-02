@@ -142,7 +142,7 @@ kpisControllers
 								message.error = "update";
 							}
 							return $http
-									.post('/service/createEnumKpi', data)
+									.post(url, data)
 									.success(
 											function(response) {
 

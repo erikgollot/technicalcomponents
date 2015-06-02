@@ -310,7 +310,7 @@ applicationsControllers
 					$scope.allUsers = null;
 					$scope.selectUserForNewMeasurementAndGo = function() {
 						$scope.allUsers = $http
-								.get("/service/application/findApplicationAuthorizedUsers/"+$scope.selectedApplication.id)
+								.get("/service/user/findApplicationAuthorizedUsers/"+$scope.selectedApplicationVersion.applicationId)
 								.success(
 										function(all) {
 											$scope.allUsers = all;

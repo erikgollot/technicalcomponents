@@ -2,10 +2,17 @@ package com.bnpp.ism.configuration;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.type.filter.RegexPatternTypeFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,16 +68,49 @@ public class InitialContentInitializer {
 		initDefaultStorage();
 
 		initSomeApplications();
+		testscan();
+	}
+	private final Logger logger = LoggerFactory.getLogger(InitialContentInitializer.class);
+	private void testscan() {
+		ClassPathScanningCandidateComponentProvider scan = new ClassPathScanningCandidateComponentProvider(
+				false);
+		Pattern pattern = Pattern.compile(".*");
+		scan.addIncludeFilter(new RegexPatternTypeFilter(pattern));
+		
+		Set<BeanDefinition> beans = scan
+				.findCandidateComponents("com.bnpp.ism.entity");
+		logger.info("BEANS________");
+		
+		if (beans != null) {
+			for (BeanDefinition bean : beans) {
+				logger.info("BEAN : "+bean.getBeanClassName());
+				try {
+					Class<?> clazz = Class.forName(bean.getBeanClassName());
+					logger.info("GOT CLASS : "+clazz.getCanonicalName());
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	private void initUsers() {
 		User erik = new User();
 		erik.setName("Erik");
 		userDao.save(erik);
-		
+
 		User alex = new User();
 		alex.setName("Alex");
 		userDao.save(alex);
+		
+		User gilles = new User();
+		gilles.setName("Gilles");
+		userDao.save(gilles);
+		
+		User dominique = new User();
+		dominique.setName("Dominique");
+		userDao.save(dominique);
 
 	}
 
@@ -79,8 +119,8 @@ public class InitialContentInitializer {
 		application.setName("ISM");
 		for (int i = 0; i < 10; i++) {
 			ApplicationVersion app = new ApplicationVersion();
-			app.setName("1.1."+i);
-			application.addVersion(app);			
+			app.setName("1.1." + i);
+			application.addVersion(app);
 		}
 		appDao.save(application);
 	}

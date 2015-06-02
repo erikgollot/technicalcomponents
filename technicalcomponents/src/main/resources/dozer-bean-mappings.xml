@@ -25,6 +25,17 @@
 			<b>parentFileId</b>
 		</field>
 	</mapping>
+	
+	<mapping>
+		<class-a>com.bnpp.ism.entity.application.ApplicationVersion
+		</class-a>
+		<class-b>com.bnpp.ism.api.exchangedata.application.ApplicationVersionView
+		</class-b>
+		<field>
+			<a>application.id</a>
+			<b>applicationId</b>
+		</field>
+	</mapping>
 
 	<!-- Manual KPI -->
 	<mapping>

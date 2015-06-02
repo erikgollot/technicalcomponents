@@ -10,6 +10,7 @@ public class ApplicationVersionView implements Serializable {
 	private static final long serialVersionUID = -1012506178511265828L;
 
 	private Long id;
+	private Long applicationId;
 
 	private Long version;
 
@@ -89,5 +90,13 @@ public class ApplicationVersionView implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public Long getApplicationId() {
+		return applicationId;
+	}
+
+	public void setApplicationId(Long applicationId) {
+		this.applicationId = applicationId;
 	}
 }

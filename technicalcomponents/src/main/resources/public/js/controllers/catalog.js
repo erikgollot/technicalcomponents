@@ -1,4 +1,4 @@
-var techMain = angular.module('techMain', [ 'ui.tree', 'ui.bootstrap', 
+var techMain = angular.module('techMain', [ 'ui.tree', 'ui.bootstrap',
 		'angularBootstrapNavTree' ,'ngAnimate']);
 
 techMain
