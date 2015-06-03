@@ -74,35 +74,39 @@ public class DashboardHelper {
 							&& snapshot.getManualMeasurements() != null) {
 						float total = 0.0f;
 						int num = 0;
-						// Sum all measurements of all users
+						// Sum all measurements of all users, but only if value
+						// is set
 						for (ManualUserMeasurement measurement : snapshot
 								.getManualMeasurements()) {
 
 							for (KpiValue v : measurement.getValues()) {
-								if (v.getKpi() == kpi) {
+								if (v.getKpi() == kpi && v.isSet()) {
 									num++;
 									total += v.getValue();
 								}
 							}
 
 						}
-						// num is not null because we came here because
-						// computedFound = false. So we necessarily have at
-						// least one value.
-						total = total / num;
-						// Now adjust value...reason is for ENUM Kpi that
-						// needs to give only literals
-						total = kpi.adjustValue(total);
-						DateKpiValue val = new DateKpiValue();
-						val.setDate(snapshot.getForDate());
-						val.setValue(total);
-						val.setDateStr(format.format(snapshot.getForDate()));
-						if (kpi instanceof KpiEnum) {
-							KpiEnum kpiAsEnum = (KpiEnum) kpi;
-							val.setValueAsString(kpiAsEnum.getLiteralWithValue(
-									total).toString());
+						// add only if we've at least one value. It's possible
+						// to have some measurements that does not contains all
+						// kpi value because the person is just in charge of
+						// defining part of the kpis.
+						if (num != 0) {
+							total = total / num;
+							// Now adjust value...reason is for ENUM Kpi that
+							// needs to give only literals
+							total = kpi.adjustValue(total);
+							DateKpiValue val = new DateKpiValue();
+							val.setDate(snapshot.getForDate());
+							val.setValue(total);
+							val.setDateStr(format.format(snapshot.getForDate()));
+							if (kpi instanceof KpiEnum) {
+								KpiEnum kpiAsEnum = (KpiEnum) kpi;
+								val.setValueAsString(kpiAsEnum
+										.getLiteralWithValue(total).toString());
+							}
+							history.addValue(val);
 						}
-						history.addValue(val);
 					}
 				}
 			}

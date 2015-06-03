@@ -9,6 +9,8 @@ public class KpiValueView {
 	Long version;
 
 	float value;	
+	
+	boolean isSet;
 
 	AbstractKpiView kpi;
 
@@ -42,5 +44,13 @@ public class KpiValueView {
 
 	public void setKpi(AbstractKpiView kpi) {
 		this.kpi = kpi;
+	}
+
+	protected boolean isSet() {
+		return isSet;
+	}
+
+	protected void setSet(boolean isSet) {
+		this.isSet = isSet;
 	}
 }

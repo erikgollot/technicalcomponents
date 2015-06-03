@@ -19,6 +19,8 @@ public class KpiValue {
 	Long version;
 	@Column
 	float value;
+	@Column
+	boolean isSet=false;
 	@ManyToOne
 	AbstractKpi kpi;
 
@@ -27,7 +29,7 @@ public class KpiValue {
 	}
 
 	public void setValue(float value) {
-		this.value = value;
+		this.value = value;		
 	}
 
 	public Long getId() {
@@ -52,5 +54,13 @@ public class KpiValue {
 
 	public void setKpi(AbstractKpi kpi) {
 		this.kpi = kpi;
+	}
+
+	public boolean isSet() {
+		return isSet;
+	}
+
+	public void setSet(boolean isSet) {
+		this.isSet = isSet;
 	}
 }
