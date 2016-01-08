@@ -10,7 +10,7 @@ public class KpiValueView {
 
 	float value;	
 	
-	boolean isSet;
+	boolean isSet=false;
 
 	AbstractKpiView kpi;
 
@@ -20,6 +20,7 @@ public class KpiValueView {
 
 	public void setValue(float value) {
 		this.value = value;
+		setSet(true);
 	}
 
 	public Long getId() {

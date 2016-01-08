@@ -2,24 +2,22 @@
 <div class="row"> 
 <div class="col-md-12">
 <button type="button" class="btn btn-default btn-sm"
-					ng-click="saveComponentsOfApplication(selectedApplicationVersion)"><a class="glyphicon glyphicon-save"></a>&nbsp;Save
-					components</button>
+					ng-click="saveComponentsOfApplication(selectedApplicationVersion)"><a class="glyphicon glyphicon-save"></a>&nbsp;Sauver</button>
 </div>
 <div class="row"><div class="col-md-12"><hr></div></div>
 </div>
 <div class="row"> 
 <div class="col-md-6">
 				<div class="panel panel-default">
-					<div class="panel-heading">Build On Components</div>
+					<div class="panel-heading">Fabriqué avec</div>
 					<div class="panel-body nav_search_components">
 						<button type="button" class="btn btn-primary btn-sm"
 							ng-disabled="!hasSelection()"
-							ng-click="addToBuiltOn(selectedApplicationVersion)">Add
-							to build on</button>
+							ng-click="addToBuiltOn(selectedApplicationVersion)">Ajouter
+							</button>
 						<button type="button" class="btn btn-primary btn-sm"
 							ng-disabled="!hasSelectionInBuiltOn(selectedApplicationVersion)"
-							ng-click="removeFromBuiltOn(selectedApplicationVersion)">Remove
-							from build on</button>
+							ng-click="removeFromBuiltOn(selectedApplicationVersion)">Supprimer</button>
 						<table class="table table-striped">
 							<tbody>
 								<tr
@@ -37,16 +35,14 @@
 			</div>
 			<div class="col-md-6">
 				<div class="panel panel-default">
-					<div class="panel-heading">Can Run On Components</div>
+					<div class="panel-heading">Peut tourner sur</div>
 					<div class="panel-body nav_search_components">
 						<button type="button" class="btn btn-primary btn-sm"
 							ng-disabled="!hasSelection()"
-							ng-click="addToCanRunOn(selectedApplicationVersion)">Add
-							to build on</button>
+							ng-click="addToCanRunOn(selectedApplicationVersion)">Ajouter</button>
 						<button type="button" class="btn btn-primary btn-sm"
 							ng-disabled="!hasSelectionInCanRunOn(selectedApplicationVersion)"
-							ng-click="removeFromCanRunOn(selectedApplicationVersion)">Remove
-							from build on</button>
+							ng-click="removeFromCanRunOn(selectedApplicationVersion)">Supprimer</button>
 						<table class="table table-striped">
 							<tbody>
 								<tr
@@ -67,20 +63,19 @@
 	ng-show="selectedApplicationVersion!=null">
 	<div class="col-md-12">
 		<div class="panel panel-default">
-			<div class="panel-heading">Search components in catalog for
-				application {{selectedApplicationVersion.name}}</div>
+			<div class="panel-heading">Rechercher composants pour {{selectedApplicationVersion.name}}</div>
 			<div class="panel-body nav_search_result">
 				<form name="searchComponentForm" class="form-group form-group-sm">
-					<label class="col-md-2 control-label">Path expression</label>
+					<label class="col-md-2 control-label">Expression pour nom</label>
 					<div class="col-md-4">
 						<input type="text" class="form-control" name="expression"
 							ng-model="searchComponentsFromFullPathNameExpression" />
 					</div>
 					<div class="col-md-4">
 						<button type="submit" class="btn btn-primary"
-							ng-click="searchComponentsFromFullPathName(searchComponentsFromFullPathNameExpression)">Search</button>
+							ng-click="searchComponentsFromFullPathName(searchComponentsFromFullPathNameExpression)">Rechercher</button>
 							<button type="submit" class="btn btn-primary"
-							ng-click="resetFullSelection()">Reset Selection</button>
+							ng-click="resetFullSelection()">Annuler sélection</button>
 					</div>
 				</form>
 				<!-- Result beginning -->
@@ -89,10 +84,9 @@
 						<tr>
 							<th></th>
 							<th><a href=""
-								ng-click="predicate = '-localInformations.name'; reverse=!reverse">Name</a></th>
+								ng-click="predicate = '-localInformations.name'; reverse=!reverse">Nom</a></th>
 							<th><a href=""
-								ng-click="predicate = 'fullPathname'; reverse=!reverse">Full
-									Pathname</a></th>
+								ng-click="predicate = 'fullPathname'; reverse=!reverse">Nom complet</a></th>
 
 						</tr>
 					</thead>

@@ -14,8 +14,8 @@ import com.bnpp.ism.entity.kpi.metadata.UnitEnum;
 @Entity
 @DiscriminatorValue("ApplicationObsolescenceKpi")
 public class ApplicationObsolescenceKpi extends ApplicationVersionComputedKpi implements KpiEnum {
-	public static final String MY_NAME = "Application landscape obsolescence";
-	public static final String MY_SHORT_NAME = "Obsoclescence";
+	public static final String MY_NAME = "Obsolescence de l'application";
+	public static final String MY_SHORT_NAME = "KC2d";
 
 	@Override
 	public float compute(ApplicationVersion applicationVersion) {

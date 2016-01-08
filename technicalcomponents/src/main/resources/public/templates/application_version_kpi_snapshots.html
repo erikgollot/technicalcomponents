@@ -1,18 +1,17 @@
 <br>
 <button type="button" class="btn btn-default"
 	ng-click="takeNewSnapshot()"
-	ng-hide="selectedApplicationVersion == null">Create new KPI
-	snapshot</button>
+	ng-hide="selectedApplicationVersion == null">Définir une mesure</button>
 <hr>
 <div class="panel panel-default" ng-show="hasSnapshot">
-	<div class="panel-heading">KPI snapshots for
+	<div class="panel-heading">Attributs pour
 		{{selectedApplicationVersion.name}}</div>
 	<div class="panel-body">
 		<table class="table table-striped table-hover table-condensed">
 			<thead>
 				<tr>
-					<th>For Date</th>
-					<th>Frozen</th>
+					<th>Date</th>
+					<th>Gelé</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -60,7 +59,7 @@
 <hr>
 <!-- Current edited measurement -->
 <div class="panel panel-default" ng-show="currentSnapshot!=null">
-	<div class="panel-heading">Measurements for
+	<div class="panel-heading">Valorisation pour 
 		{{currentSnapshot.forDate}}</div>
 	<div class="panel-body">
 		<div class="container-fluid">
@@ -70,15 +69,14 @@
 					<div class="row">
 						<button class="btn btn-default btn-xs"
 							ng-click="computeAutomaticKpi(currentSnapshot)"
-							ng-disabled="currentSnapshot.frozen">Compute Automatic
-							KPis</button>
+							ng-disabled="currentSnapshot.frozen">Attrributs automatiques</button>
 					</div>
 					<div class="row">
 						<table name="tableAutomaticKpis" class="table table-striped">
 							<thead>
 								<tr>
-									<th>Name</th>
-									<th>Value</th>
+									<th>Nom</th>
+									<th>Valeur</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -109,11 +107,10 @@
 								<li role="presentation"
 									ng-click="createNewMeasurement(currentSnapshot)"><a
 									role="menuitem" tabindex="-1"
-									ng-show="!alreadyExistMeasurementForLoggedUser()" href>For
-										me</a></li>
+									ng-show="!alreadyExistMeasurementForLoggedUser()" href>Pour moi</a></li>
 								<li role="presentation" data-toggle="modal" ng-click="selectUserForNewMeasurementAndGo()"
 									><a
-									role="menuitem" tabindex="-1" href>For another user</a></li>
+									role="menuitem" tabindex="-1" href>Pour autre utilisateurr</a></li>
 							</ul>
 						</div>
 
@@ -126,8 +123,8 @@
 							class="table table-striped table-hover table-condensed">
 							<thead>
 								<tr>
-									<th>Who</th>
-									<th>Comments</th>
+									<th>Qui</th>
+									<th>Commentaires</th>
 									<th
 										ng-repeat="kpi in manualMeasurementsOfSnapshot(currentSnapshot)">{{kpi.name}}</th>
 									<th>Edit</th>
@@ -196,8 +193,7 @@
 	<div class="col-md-2">
 		<button class="btn btn-primary btn-xs"
 			ng-click="refreshMeasurementsKiviaChart()"
-			ng-disabled="currentSnapshot==null || currentSnapshot.manualMeasurements==null || currentSnapshot.manualMeasurements.length==0">Refresh
-			chart</button>
+			ng-disabled="currentSnapshot==null || currentSnapshot.manualMeasurements==null || currentSnapshot.manualMeasurements.length==0">Rafraichir</button>
 	</div>
 	<div class="col-md-9">
 		<div id="chart"></div>
@@ -231,9 +227,9 @@
 							<div class="modal-footer">
 								<button type="submit" class="btn btn-primary"
 									data-dismiss="modal"
-									ng-click="createNewMeasurementForOtherUserThanMe(currentSnapshot)">Save</button>
+									ng-click="createNewMeasurementForOtherUserThanMe(currentSnapshot)">Sauve</button>
 								<button type="button" class="btn btn-default"
-									data-dismiss="modal">Cancel</button>
+									data-dismiss="modal">Annule</button>
 							</div>
 						</div>
 					</div>

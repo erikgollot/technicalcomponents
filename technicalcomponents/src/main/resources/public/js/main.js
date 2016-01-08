@@ -30,9 +30,9 @@ app.config([ '$routeProvider', function($routeProvider) {
 	}).when("/applications", {
 		templateUrl : "partials/applications.html",
 		controller : "applicationsController"
-	}).when("/tests", {
-		templateUrl : "partials/tests.html",
-		controller : "testsController"
+	}).when("/dashboards", {
+		templateUrl : "partials/dashboards.html",
+		controller : "nopCtrl"
 	}).otherwise("/", {
 		redirectTo : '/',
 		controller : "nopCtrl"

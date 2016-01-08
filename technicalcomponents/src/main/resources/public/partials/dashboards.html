@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>Exemple APM</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+<style>
+html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -webkit-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    -ms-text-rendering: optimizeLegibility;
+    -o-text-rendering: optimizeLegibility;
+}
+body { 
+    font-family: "Open Sans", Arial, sans-serif; 
+    font-size: 13px;
+    line-height: 22px;
+    max-width: 740px !important;
+    padding: 0px 20px 0px 20px;
+    margin: 32px auto 32px auto;
+    box-sizing: border-box;
+}
+svg { font: 9px "Open Sans", Arial, sans-serif; }
+</style>
+</head>
+<body>
+<br></br>
+<h1>Exemple de graphique d'APM pour la DSI BDDF</h1>
+<p>Voici un exemple de "Bubble Chart" permettant de suivre l'évolution de 4 applications BDDF dans le temps. En ordonnée, nous avons mis la valeur métier. 
+En abscisse, nous avons le coût du RUN de l'application. La taille de la bulle représente sa taille en points de fonction. La couleur représente sa conformité vis-à-vis de la dette technique.</a>.</p>
+<div>
+<svg id="chart" width="700" height="500" />
+<link rel="stylesheet" type="text/css" href="css/grapher.css" />
+<script src="vendors/d3/d3.v3.min.js"></script>
+<script src="vendors/grapher/grapher.js"></script>
+<script>
+d3.json("json/data.json", function(data) {
+	var chart = new Grapher.MotionChart(document.getElementById("chart"));
+	chart.dataSource = data;
+	chart.labelData = "Name";
+	chart.xData = "Run Cost";
+  	chart.yData = "Business Value";
+	chart.radiusData = "Size in Function Points";
+	chart.colorData = "Technical Debt Compliance";
+	chart.startTime = new Date("2002/12/31");
+	chart.endTime = new Date("2014/12/31");
+	chart.select("Referentiel Contrat Titre");
+	chart.select("Serveur Monetique Emetteur");
+	chart.draw();
+	chart.startTransition();
+});
+</script>
+</div>
+</body>
+</html>

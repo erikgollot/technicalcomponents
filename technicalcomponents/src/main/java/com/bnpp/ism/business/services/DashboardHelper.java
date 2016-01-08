@@ -112,13 +112,16 @@ public class DashboardHelper {
 			}
 		}
 		// Sort history values list by date
-		Collections.sort(history.getValues(), new Comparator<DateKpiValue>() {
-			@Override
-			public int compare(DateKpiValue o1, DateKpiValue o2) {
-				return o1.getDate().compareTo(o2.getDate());
-			}
+		if (history.getValues() != null) {
+			Collections.sort(history.getValues(),
+					new Comparator<DateKpiValue>() {
+						@Override
+						public int compare(DateKpiValue o1, DateKpiValue o2) {
+							return o1.getDate().compareTo(o2.getDate());
+						}
 
-		});
+					});
+		}
 		dashboard.addKpiHistory(history);
 	}
 

@@ -206,7 +206,7 @@ public class ApplicationVersionKpiSnapshotManager implements
 			ApplicationVersionKpiSnapshot snapshot, Long userId) {
 		if (snapshot.getManualMeasurements() != null) {
 			for (ManualUserMeasurement m : snapshot.getManualMeasurements()) {
-				if (m.getWho().getId() == userId) {
+				if (m.getWho().getId().longValue() == userId.longValue()) {
 					throw new RuntimeException("This user ["
 							+ m.getWho().getName()
 							+ "] has already done a measurement");
@@ -232,6 +232,7 @@ public class ApplicationVersionKpiSnapshotManager implements
 					if (newVal != null) {
 						if (v.getKpi().acceptValue(newVal.getValue())) {
 							v.setValue(newVal.getValue());
+							v.setSet(true);
 						} else {
 							throw new RuntimeException("Value "
 									+ newVal.getValue() + " not accepted");

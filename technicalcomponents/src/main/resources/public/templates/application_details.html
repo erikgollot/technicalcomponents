@@ -2,15 +2,14 @@
 	<div class="row">
 		<div class="col-md-1">
 			<button class="btn btn-primary btn-xs"
-				ng-click="buildKpiHistoryDashboard()">Load Dashboard</button>
+				ng-click="buildKpiHistoryDashboard()">Charger tableau de bord</button>
 		</div>
 
 		<div class="col-md-11"
 			ng-show="dashboards[selectedApplication.id] != null">
 			<div class="row">
-				<h1>{{selectedApplication.name}} Key Performance Indicators
-					History</h1>
-				<hr>
+				<h1>Historique des attributs de {{selectedApplication.name}}</h1>
+				<hr>				
 				<div
 					ng-repeat="cat in dashboards[selectedApplication.id].categoryNames">
 					<h3 ng-hide="cat=='default'">{{cat}}</h3>
@@ -31,3 +30,9 @@
 		</div>
 	</div>
 </div>
+<script>
+	$('#myTabGraphs a').click(function(e) {
+		e.preventDefault()
+		$(this).tab('show')
+	})
+</script>

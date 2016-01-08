@@ -1,19 +1,19 @@
 <div class="row">
 	<div class="col-md-12">
-		<h3>Numeric Key Performance Indicators</h3>
+		<h3>Attributs numériques</h3>
 		<table class="table table-striped table-hover table-condensed">
 			<thead>
 				<tr>
-					<th>Name</th>
-					<th>Short Name</th>
+					<th>Nom</th>
+					<th>Nom court</th>
 					<th>Description</th>
-					<th>Unit</th>
-					<th>Active</th>
-					<th>Category</th>
-					<th>Is Integer ?</th>
-					<th>Min value</th>
-					<th>Max value</th>
-					<th>Edit</th>
+					<th>Unité</th>
+					<th>Actif</th>
+					<th>Catégorie</th>
+					<th>Est entier ?</th>
+					<th>Valeur Min</th>
+					<th>Valeur Max</th>
+					<th>Edite</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -56,28 +56,27 @@
 							onbeforesave="saveKpi($data, kpi)" ng-show="rowform.$visible"
 							class="form-buttons form-inline" shown="inserted == kpi">
 							<button type="submit" ng-disabled="rowform.$waiting"
-								class="btn btn-primary btn-xs">save</button>
+								class="btn btn-primary btn-xs">sauve</button>
 							<button type="button" class="btn btn-xs"
 								ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"
-								class="btn btn-default">cancel</button>
+								class="btn btn-default">annule</button>
 						</form>
 						<div class="buttons" ng-show="!rowform.$visible">
-							<button class="btn btn-primary btn-xs" ng-click="rowform.$show()">edit</button>
+							<button class="btn btn-primary btn-xs" ng-click="rowform.$show()">edite</button>
 							<button class="btn btn-danger btn-xs"
-								ng-click="removeNumericKpi($index)">del</button>
+								ng-click="removeNumericKpi($index)">supp</button>
 						</div>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<button class="btn btn-default" ng-click="addNewEmptyNumericKpi()">Add
-			new KPI</button>
+		<button class="btn btn-default" ng-click="addNewEmptyNumericKpi()">Ajout attribut</button>
 	</div>
 </div>
 <hr>
 <div class="row">
 	<div class="col-md-7">
-		<h3>Enumeration Key Performance Indicators</h3>
+		<h3>Attributs de type énumération</h3>
 	</div>
 	<div class="col-md-5">
 		<h3 ng-show="hasEditedEnumKpi">Values of {{editedEnumKpi.name}}</h3>
@@ -89,13 +88,13 @@
 
 		<table class="table table-striped table-hover table-condensed">
 			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Short Name</th>
+				<tr>					
+					<th>Nom</th>
+					<th>Nom court</th>
 					<th>Description</th>
-					<th>Unit</th>
-					<th>Active</th>
-					<th>Edit</th>
+					<th>Unité</th>
+					<th>Actif</th>					
+					<th>Edite</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -130,7 +129,7 @@
 							onbeforesave="saveKpi($data, kpi)" ng-show="rowEnumform.$visible"
 							class="form-buttons form-inline" shown="inserted == kpi">
 							<button type="submit" ng-disabled="rowEnumform.$waiting"
-								class="btn btn-primary btn-xs">save</button>
+								class="btn btn-primary btn-xs">sauve</button>
 							<button type="button" class="btn btn-xs"
 								ng-disabled="rowEnumform.$waiting"
 								ng-click="rowEnumform.$cancel()" class="btn btn-default">
@@ -138,19 +137,18 @@
 						</form>
 						<div class="buttons" ng-show="!rowEnumform.$visible">
 							<button class="btn btn-primary btn-xs"
-								ng-click="rowEnumform.$show()">edit</button>
+								ng-click="rowEnumform.$show()">edite</button>
 							<button class="btn btn-primary btn-xs"
-								ng-click="setEditedEnumKpi(kpi)" ng-disabled="kpi.id==null">edit
-								values</button>
+								ng-click="setEditedEnumKpi(kpi)" ng-disabled="kpi.id==null">edite valeurs
+							</button>
 							<button class="btn btn-danger btn-xs"
-								ng-click="removeEnumKpi($index)">del</button>
+								ng-click="removeEnumKpi($index)">supp</button>
 						</div>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<button class="btn btn-default" ng-click="addNewEmptyEnumKpi()">Add
-			new KPI</button>
+		<button class="btn btn-default" ng-click="addNewEmptyEnumKpi()">Ajout attribut</button>
 	</div>
 	<!-- Enumerationn literals of current edited enum kpi -->
 	<div class="col-md-5">
@@ -158,9 +156,9 @@
 			ng-show="hasEditedEnumKpi">
 			<thead>
 				<tr>
-					<th>Name</th>
-					<th>Value</th>
-					<th>Edit</th>
+					<th>Nom</th>
+					<th>Valeur</th>
+					<th>Edite</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -184,23 +182,23 @@
 							ng-show="rowLiteralform.$visible"
 							class="form-buttons form-inline" shown="inserted == literal">
 							<button type="submit" ng-disabled="rowLiteralform.$waiting"
-								class="btn btn-primary btn-xs">save</button>
+								class="btn btn-primary btn-xs">sauve</button>
 							<button type="button" class="btn btn-xs"
 								ng-disabled="rowLiteralform.$waiting"
 								ng-click="rowLiteralform.$cancel()" class="btn btn-default">
-								cancel</button>
+								annule</button>
 						</form>
 						<div class="buttons" ng-show="!rowLiteralform.$visible">
 							<button class="btn btn-primary btn-xs"
-								ng-click="rowLiteralform.$show()">edit</button>
+								ng-click="rowLiteralform.$show()">edite</button>
 							<button class="btn btn-danger btn-xs"
-								ng-click="removeEnumLiteral($index)">del</button>
+								ng-click="removeEnumLiteral($index)">supp</button>
 						</div>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 		<button class="btn btn-default" ng-click="addLiteralIntoEditEnumKpi()"
-			ng-show="hasEditedEnumKpi">Add new value</button>
+			ng-show="hasEditedEnumKpi">Ajout valeur</button>
 	</div>
 </div>
