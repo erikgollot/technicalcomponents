@@ -1,7 +1,7 @@
 <br>
 <button type="button" class="btn btn-default"
 	ng-click="takeNewSnapshot()"
-	ng-hide="selectedApplicationVersion == null">Définir une mesure</button>
+	ng-hide="selectedApplicationVersion == null">DÃ©finir une mesure</button>
 <hr>
 <div class="panel panel-default" ng-show="hasSnapshot">
 	<div class="panel-heading">Attributs pour
@@ -11,7 +11,7 @@
 			<thead>
 				<tr>
 					<th>Date</th>
-					<th>Gelé</th>
+					<th>GelÃ©</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -139,7 +139,7 @@
 										e-name="comments" e-form="rowMeasurementform"> {{
 											measurement.comments || 'empty' }} </span></td>
 
-									<!-- prendre les values du measurements et pas les kpis car on pointe sur la même donnée dans chaque colonne -->
+									<!-- prendre les values du measurements et pas les kpis car on pointe sur la mÃªme donnÃ©e dans chaque colonne -->
 									<td ng-repeat="val in measurement.values">
 										<!-- MANUAL_APPLICATION_NUMERIC --> <span
 										ng-if="val.kpi.kind == 'MANUAL_APPLICATION_NUMERIC'"

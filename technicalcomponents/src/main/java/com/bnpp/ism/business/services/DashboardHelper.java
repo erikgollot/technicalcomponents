@@ -32,7 +32,7 @@ public class DashboardHelper {
 	private static void createHistory(ApplicationKpiDashboard dashboard,
 			AbstractKpi kpi, List<ApplicationVersion> versions) {
 		ApplicationKpiHistory history = new ApplicationKpiHistory();
-		SimpleDateFormat format = new SimpleDateFormat("yyy-MM-dd");
+		SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
 		history.setKpiName(kpi.getName());
 		history.setKpiCategory(kpi.getCategory());
 		if (kpi instanceof ComputedKpi) {

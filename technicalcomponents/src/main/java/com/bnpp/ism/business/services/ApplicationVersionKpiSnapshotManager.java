@@ -1,5 +1,7 @@
 package com.bnpp.ism.business.services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -225,6 +227,20 @@ public class ApplicationVersionKpiSnapshotManager implements
 
 			entity.setComments(measurement.getComments());
 			entity.setWho(userDao.findOne(measurement.getWho().getId()));
+			// TODO revoir histoire des dates
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+			try {
+				entity.setCreationDate(format.parse(measurement.getCreationDate()));
+			} catch (ParseException e) {
+				format = new SimpleDateFormat("dd/mm/yyyy");
+				try {
+					entity.setCreationDate(format.parse(measurement.getCreationDate()));
+				} catch (ParseException e1) {
+					throw new RuntimeException("Date format incorrect for measurement"
+							+ measurement.getId() + "), date =  "
+							+ measurement.getCreationDate().toString());
+				}
+			}
 			if (entity.getValues() != null) {
 				for (KpiValue v : entity.getValues()) {
 					KpiValueView newVal = findValue(v.getId(),

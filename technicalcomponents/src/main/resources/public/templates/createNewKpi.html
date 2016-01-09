@@ -1,15 +1,15 @@
 <div class="row">
 	<div class="col-md-12">
-		<h3>Attributs numériques</h3>
+		<h3>Attributs numÃ©riques</h3>
 		<table class="table table-striped table-hover table-condensed">
 			<thead>
 				<tr>
 					<th>Nom</th>
 					<th>Nom court</th>
 					<th>Description</th>
-					<th>Unité</th>
+					<th>UnitÃ©</th>
 					<th>Actif</th>
-					<th>Catégorie</th>
+					<th>CatÃ©gorie</th>
 					<th>Est entier ?</th>
 					<th>Valeur Min</th>
 					<th>Valeur Max</th>
@@ -62,9 +62,9 @@
 								class="btn btn-default">annule</button>
 						</form>
 						<div class="buttons" ng-show="!rowform.$visible">
-							<button class="btn btn-primary btn-xs" ng-click="rowform.$show()">edite</button>
+							<button class="btn btn-primary btn-xs" ng-click="rowform.$show()">Edite</button>
 							<button class="btn btn-danger btn-xs"
-								ng-click="removeNumericKpi($index)">supp</button>
+								ng-click="removeNumericKpi($index)">Supp</button>
 						</div>
 					</td>
 				</tr>
@@ -76,7 +76,7 @@
 <hr>
 <div class="row">
 	<div class="col-md-7">
-		<h3>Attributs de type énumération</h3>
+		<h3>Attributs de type Ã©numÃ©ration</h3>
 	</div>
 	<div class="col-md-5">
 		<h3 ng-show="hasEditedEnumKpi">Values of {{editedEnumKpi.name}}</h3>
@@ -92,7 +92,7 @@
 					<th>Nom</th>
 					<th>Nom court</th>
 					<th>Description</th>
-					<th>Unité</th>
+					<th>UnitÃ©</th>
 					<th>Actif</th>					
 					<th>Edite</th>
 				</tr>
@@ -139,10 +139,10 @@
 							<button class="btn btn-primary btn-xs"
 								ng-click="rowEnumform.$show()">edite</button>
 							<button class="btn btn-primary btn-xs"
-								ng-click="setEditedEnumKpi(kpi)" ng-disabled="kpi.id==null">edite valeurs
+								ng-click="setEditedEnumKpi(kpi)" ng-disabled="kpi.id==null">Edite valeurs
 							</button>
 							<button class="btn btn-danger btn-xs"
-								ng-click="removeEnumKpi($index)">supp</button>
+								ng-click="removeEnumKpi($index)">Supp</button>
 						</div>
 					</td>
 				</tr>

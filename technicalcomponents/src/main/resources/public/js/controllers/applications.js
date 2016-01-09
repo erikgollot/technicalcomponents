@@ -724,11 +724,16 @@ applicationsControllers
 												// default one when no category
 												// is defined for a kpi
 												$scope.dashboards[$scope.selectedApplication.id].categories = [];
+												$scope.dashboards[$scope.selectedApplication.id].categoriesList = [];
 												$scope.dashboards[$scope.selectedApplication.id].categories["default"] = {
 													catName : "default",
 													graphNames : new Array()
 												};
+												$scope.dashboards[$scope.selectedApplication.id].categoriesList[0] = {
+														catName :"default"
+												};
 												$scope.dashboards[$scope.selectedApplication.id].categoryNames = [ "default" ];
+												var numCat = 1;
 												for (k = 0; k < dashboard.kpiHistories.length; k++) {
 													var hist = dashboard.kpiHistories[k];
 													if (hist.kpiCategory != null
@@ -736,14 +741,19 @@ applicationsControllers
 														if ($scope.dashboards[$scope.selectedApplication.id].categories[hist.kpiCategory] == null) {
 															$scope.dashboards[$scope.selectedApplication.id].categories[hist.kpiCategory] = {
 																catName : hist.kpiCategory,
-																graphNames : new Array()
+																graphNames : new Array(),
+																graphValues : new Array()
 															}
 															$scope.dashboards[$scope.selectedApplication.id].categoryNames
 																	.push(hist.kpiCategory);
+															$scope.dashboards[$scope.selectedApplication.id].categoriesList[numCat] = {
+																	catName : hist.kpiCategory
+															}
+															numCat = numCat+1;
 														}
 													}
 												}
-												// Now add graph names into
+												// Now add graph names and values into
 												// category
 												for (k = 0; k < dashboard.kpiHistories.length; k++) {
 													var hist = dashboard.kpiHistories[k];
@@ -758,8 +768,11 @@ applicationsControllers
 															|| hist.kpiCategory == "") {
 														catRank = "default";
 													}
+													
 													$scope.dashboards[$scope.selectedApplication.id].categories[catRank].graphNames
 															.push(names);
+													$scope.dashboards[$scope.selectedApplication.id].categories[catRank].graphValues
+													.push(dashboard.kpiHistories[k].values);
 												}
 												$timeout(
 														$scope.refreshKpiDashboard,
@@ -779,14 +792,8 @@ applicationsControllers
 					// Dashboard graphs creation after loading dashboard data
 					$scope.refreshKpiDashboard = function() {
 						var dashboard = $scope.dashboards[$scope.selectedApplication.id];
-						for (k = 0; k < dashboard.dashboard.kpiHistories.length; k++) {
-							var history = dashboard.dashboard.kpiHistories[k];
-							// graphnames are in...graphNames of category
-							var catRank = history.kpiCategory;
-							if (history.kpiCategory == null
-									|| history.kpiCategory == "") {
-								catRank = "default";
-							}
+						for (k=0;k<dashboard.categoriesList.length;k++) {
+							var catRank = dashboard.categoriesList[k].catName;						
 							var graphNames = dashboard.categories[catRank].graphNames;
 							for (i = 0; i < graphNames.length; i++) {
 								var nameOfUIGraph = graphNames[i].id;
@@ -794,14 +801,17 @@ applicationsControllers
 								var element = document
 										.getElementById(nameOfUIGraph);
 								var ctx = element.getContext("2d");
+								var historyValues = dashboard.categories[catRank].graphValues[i];
 								// Build data
 								var data = {};
 								var dates = [];
 								var points = [];
 								// X-axis labels are the dates
-								for (j = 0; j < history.values.length; j++) {
-									dates.push(history.values[j].dateStr);
-									points.push(history.values[j].value);
+								
+								
+								for (j = 0; j < historyValues.length; j++) {
+									dates.push(historyValues[j].dateStr);
+									points.push(historyValues[j].value);
 								}
 								data.labels = dates;
 								data.datasets = [ {

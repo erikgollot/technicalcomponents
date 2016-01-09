@@ -120,21 +120,55 @@ public class InitialContentInitializer {
 			for (KpiValueView kpiVal : measurement.getValues()) {				
 				if (kpiVal.getKpi().getShortName().equals("KC2")) {
 					kpiVal.setValue(30.0f);
-				}
+				}else
 				if (kpiVal.getKpi().getShortName().equals("KC2a")) {
 					kpiVal.setValue(20.0f);
-				}
-				if (kpiVal.getKpi().getShortName().equals("KC2d")) {
+				}else
+				if (kpiVal.getKpi().getShortName().equals(ApplicationObsolescenceKpi.MY_SHORT_NAME)) {
 					kpiVal.setValue(5.0f);
-				}
+				}else
 				if (kpiVal.getKpi().getShortName().equals("TE01")) {
-					kpiVal.setValue(2500.0f);
-				}
+					kpiVal.setValue(1500.0f);
+				}else
 				if (kpiVal.getKpi().getShortName().equals("ME05")) {
 					kpiVal.setValue(8.0f);
 				}
 			}
 			applicationVersionKpiSnapshotManager.updateMeasurement(measurement);
+			// Snapshot 2
+			 mpp_1_0_0_snapshot = applicationVersionKpiSnapshotManager
+					.createSnapshot(mpp_1_0_0.getId());
+			applicationVersionKpiSnapshotManager.updateSnapshot(
+					mpp_1_0_0_snapshot.getId(), false,
+					format.parse("01/03/2016"));
+			// Attributs
+			// KC2 cout run par FP
+//			KC2a incidents
+//			KC2d Obsole
+//			TE01 FPs
+//			ME05 Valeur métier
+			measurement = applicationVersionKpiSnapshotManager
+					.createMeasurement(mpp_1_0_0_snapshot.getId(), erik.getId());
+			measurement.setCreationDate("01/03/2016");
+			for (KpiValueView kpiVal : measurement.getValues()) {				
+				if (kpiVal.getKpi().getShortName().equals("KC2")) {
+					kpiVal.setValue(32.0f);
+				}else
+				if (kpiVal.getKpi().getShortName().equals("KC2a")) {
+					kpiVal.setValue(25.0f);
+				}else
+				if (kpiVal.getKpi().getShortName().equals(ApplicationObsolescenceKpi.MY_SHORT_NAME)) {
+					kpiVal.setValue(3.0f);
+				}else
+				if (kpiVal.getKpi().getShortName().equals("TE01")) {
+					kpiVal.setValue(2550.0f);
+				}else
+				if (kpiVal.getKpi().getShortName().equals("ME05")) {
+					kpiVal.setValue(8.0f);
+				}
+			}
+			applicationVersionKpiSnapshotManager.updateMeasurement(measurement);
+			
 			// Fin attributs
 
 			ApplicationVersionKpiSnapshotView mpp_1_0_1_snapshot = applicationVersionKpiSnapshotManager
@@ -148,16 +182,16 @@ public class InitialContentInitializer {
 			for (KpiValueView kpiVal : measurement.getValues()) {				
 				if (kpiVal.getKpi().getShortName().equals("KC2")) {
 					kpiVal.setValue(35.0f);
-				}
+				}else
 				if (kpiVal.getKpi().getShortName().equals("KC2a")) {
 					kpiVal.setValue(15.0f);
-				}
-				if (kpiVal.getKpi().getShortName().equals("KC2d")) {
+				}else
+				if (kpiVal.getKpi().getShortName().equals(ApplicationObsolescenceKpi.MY_SHORT_NAME)) {
 					kpiVal.setValue(5.0f);
-				}
+				}else
 				if (kpiVal.getKpi().getShortName().equals("TE01")) {
 					kpiVal.setValue(2600.0f);
-				}
+				}else
 				if (kpiVal.getKpi().getShortName().equals("ME05")) {
 					kpiVal.setValue(8.0f);
 				}
@@ -176,16 +210,16 @@ public class InitialContentInitializer {
 			for (KpiValueView kpiVal : measurement.getValues()) {				
 				if (kpiVal.getKpi().getShortName().equals("KC2")) {
 					kpiVal.setValue(32.0f);
-				}
+				}else
 				if (kpiVal.getKpi().getShortName().equals("KC2a")) {
 					kpiVal.setValue(8.0f);
-				}
-				if (kpiVal.getKpi().getShortName().equals("KC2d")) {
+				}else
+				if (kpiVal.getKpi().getShortName().equals(ApplicationObsolescenceKpi.MY_SHORT_NAME)) {
 					kpiVal.setValue(3.0f);
-				}
+				}else
 				if (kpiVal.getKpi().getShortName().equals("TE01")) {
 					kpiVal.setValue(2680.0f);
-				}
+				}else
 				if (kpiVal.getKpi().getShortName().equals("ME05")) {
 					kpiVal.setValue(9.0f);
 				}

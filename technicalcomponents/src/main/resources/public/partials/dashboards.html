@@ -43,10 +43,10 @@ d3.json("json/data.json", function(data) {
 	var chart = new Grapher.MotionChart(document.getElementById("chart"));
 	chart.dataSource = data;
 	chart.labelData = "Name";
-	chart.xData = "Run Cost";
-  	chart.yData = "Business Value";
-	chart.radiusData = "Size in Function Points";
-	chart.colorData = "Technical Debt Compliance";
+	chart.xData = "Coût du RUN par point de fonction";
+  	chart.yData = "Valeur métier";
+	chart.radiusData = "Taille en points de fonction";
+	chart.colorData = "Dette technique";
 	chart.startTime = new Date("2002/12/31");
 	chart.endTime = new Date("2014/12/31");
 	chart.select("Referentiel Contrat Titre");
